@@ -1,0 +1,1 @@
+from Intectainment.app import app
