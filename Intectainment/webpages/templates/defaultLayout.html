@@ -1,33 +1,16 @@
-{#
-Main Class for all Pages
-    - Der Inhalt der Blöcke ist in anderen Seiten dynamisch überschreibbar,
-    du musst einfach die äußeren divs hier stylen für globale Struktur
-    und in den jeweiligen Datein für lokale
+{% extends "baseLayout.html" %}
 
-    - siehe: https://flask.palletsprojects.com/en/2.0.x/patterns/templateinheritance/
-    außerdem "home.html", "login.html" usw
-#}
-<!doctype html>
-<html>
-  <head>
-    <title>{% block title %}{% endblock %} - EDDI</title>
-    {% block head %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    {% endblock %}
-  </head>
-  <body>
 
-    {% block header %}
-    <header>
-        {% block navbar %}
-        <nav>
-            {% block navbar_content %}{% endblock %}
-        </nav>
-        {% endblock %}
-    </header>
-    {% endblock %}
+{% block head %}
+    {{super()}}
+    <!-- Style sheets here -->
+{% endblock %}
 
-    <div id="content">{% block content %}{% endblock %}</div>
-    <div id="footer"> {% block footer %} {% endblock %}</div>
-  </body>
-</html>
+{# Navbar #}
+{% block header %}
+  {% block navbar %}
+    <nav>
+        {% block navbar_content %}{% endblock %}
+    </nav>
+  {% endblock %}
+{% endblock %}

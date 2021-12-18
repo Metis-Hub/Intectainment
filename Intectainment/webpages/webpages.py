@@ -3,7 +3,7 @@ from Intectainment.app import app
 
 @app.route("/")
 def mainPage():
-    return render_template("main/start.html")
+    return render_template("main/start.html", argument="Hiiiiiii")
 
 
 
@@ -19,6 +19,4 @@ def page_not_found(e):
     
 @app.errorhandler(500)
 def server_error(e):
-    return "put gemacht"
-    # TODO
-    #return render_template("errors/error_500.html"), 500
+    return render_template("errors/error_500.html"), 500

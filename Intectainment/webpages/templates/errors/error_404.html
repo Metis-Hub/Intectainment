@@ -1,0 +1,8 @@
+{% extends "errors/errorLayout.html" %}
+{% block title %}404{%endblock%}
+
+{%block content%}
+    <p> Upsi wupsi, die seite gibts wohl nicht</p>
+    <!-- Redirects to the last visited page -->
+    <button type="button" onclick="history.go(-1)">Zurück zur letzten Seite</button>
+{%endblock%}
