@@ -1,1 +1,1 @@
-from Intectainment.app import app
+from Intectainment.app import app, db

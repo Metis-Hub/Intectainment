@@ -3,7 +3,7 @@ from Intectainment.app import app
 
 @app.route("/")
 def mainPage():
-    return render_template("main/start.html", argument="Hiiiiiii")
+    return render_template("main/start.html")
 
 
 

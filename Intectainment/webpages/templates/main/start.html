@@ -6,8 +6,11 @@
 {% block title %}Start{%endblock%}
 
 {% block content %}
-<p>Hallihallo, das ist der Anfang</p>
+    <p>Hallihallo, das ist der Anfang</p>
+    <p> Hier kommt ein Text von Python: {{argument}}</p>
 
-<p> Hier kommt ein Text von Python: {{argument}}</p>
 
+    {% for item in items%}
+        <p> Hallo, {{item}} </p>
+    {% endfor %}
 {%endblock%}
