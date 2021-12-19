@@ -130,3 +130,6 @@ dmypy.json
 
 # no Visual Studio
 .vs/
+
+# and also not may nice batch-file
+run.bat
