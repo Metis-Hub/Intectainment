@@ -1,6 +1,3 @@
-
-/venv
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -133,6 +130,3 @@ dmypy.json
 
 # no Visual Studio
 .vs/
-
-# and also not may nice batch-file
-run.bat
