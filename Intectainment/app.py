@@ -15,9 +15,9 @@ db = SQLAlchemy(app)
 import Intectainment.database.models
 #TODO only for dev
 try:
-    db.create_all()
+	db.create_all()
 except:
-    print("Database not connected")
+	print("Database not connected")
 
 # load webpages
 from Intectainment.webpages import webpages
