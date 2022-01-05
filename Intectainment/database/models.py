@@ -12,6 +12,37 @@ class User(db.Model):
 	def __repr__(self):
 		return '<User %r>' % self.username
 
+	@staticmethod
+	def LogIn(password):
+		# TODO: varification
+		if True:
+			session["IsLogedIn"] = True
+
+	@staticmethod
+	def LogOut():
+		if session["IsLogedIn"] != None:
+			session.pop("IsLogedIn", None)
+
+	@staticmethod
+	def IsLogedIn():
+		if session["IsLogedIn"] != None & session["IsLogedIn"] == True:
+			return True
+		return False
+
+	@staticmethod
+	def ChangePW():
+		# TODO
+		pass
+
+	@staticmethod
+	def ChangeAttribute(attr, value):
+		# TODO
+		pass
+
+	@staticmethod
+	def HasAccess(level):
+		return level >= self.privilege
+
 
 class UserInfo(db.Model):
 	id = db.Column(db.Integer, primary_key=True)

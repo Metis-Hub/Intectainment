@@ -8,13 +8,13 @@ def mainPage():
 @app.route("/login", methods = ["POST"])
 def login():
 	# TODO
-	ActualUser.LogIn("passwort")
+	User.LogIn("passwort")
 	pass
 
 @app.route("/logout", methods = ["POST"])
 def logout():
 	# TODO
-	ActualUser.LogOut()
+	User.LogOut()
 	pass
 
 
