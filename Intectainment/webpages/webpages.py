@@ -1,4 +1,6 @@
-from flask import render_template
+from flask import render_template, send_from_directory
+import os
+
 from Intectainment.app import app
 from Intectainment.database.models import User
 
@@ -21,8 +23,11 @@ def logout():
 
 
 
-
-
+##### Favicon #####
+@app.route("/favicon.ico")
+def getIcon():
+    return send_from_directory(os.path.join(app.root_path, 'webpages/static'),
+                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 ##### Errors #####
 @app.errorhandler(404)
