@@ -28,6 +28,8 @@ class User(db.Model):
 			return True
 		else:
 			user: User = User.query.filter_by(username=username).first()
+			if not user:
+				return False
 
 			if user.validatePassword(password):
 				session["User"] = user
@@ -45,10 +47,10 @@ class User(db.Model):
 		return "User" in session
 
 	def validatePassword(self, password: str) -> bool:
-		return bcrypt.checkpw(password, self.password)
+		return bcrypt.checkpw(password.encode("utf-8"), self.password)
 
-	def changePW(self, newPassword: str) -> None:
-		self.password = bcrypt.hashpw(newPassword, bcrypt.getsalt())
+	def changePassword(self, newPassword: str) -> None:
+		self.password = bcrypt.hashpw(newPassword.encode("utf-8"), bcrypt.gensalt())
 
 	def changeAttribute(self, attr, value) -> None:
 		# TODO
@@ -61,3 +63,7 @@ class User(db.Model):
 		return self.privilege
 	
 	
+#
+#bruno = User(username="Bruno", password=bcrypt.hashpw(b"1234", bcrypt.gensalt()), email="ja")
+#db.session.add(bruno)
+#db.session.commit()
