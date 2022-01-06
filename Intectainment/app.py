@@ -4,7 +4,7 @@ import configparser, os
 
 # init config
 config = configparser.ConfigParser()
-config.read(os.path.join(os.path.dirname(__file__), 'config.ini'))
+config.read(os.path.join(os.path.dirname(__file__), 'config.conf'))
 for section in ["Server", "Database", "Development"]:
 	if section not in config:
 		config.add_section(section)
