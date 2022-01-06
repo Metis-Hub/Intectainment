@@ -6,11 +6,10 @@
 {% block title %}Start{%endblock%}
 
 {% block content %}
-<p>Hallihallo, das i234553st der Anfang</p>
-<p> Hier kommt ein Text von Python: {{argument}}</p>
-
-
-    {% for item in items%}
-<p> Hallo, {{item}} </p>
-    {% endfor %}
+<p>Hallihallo, logge dich bitte ein</p>
+<form method="post" action="">
+    <input type="text" placeholder="Nutzername" name="username" required/>
+    <input type="password" placeholder="Passwort" name="password" required/>
+    <input type="submit"/>
+</form>
 {%endblock%}

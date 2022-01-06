@@ -1,6 +1,6 @@
 from Intectainment.app import db
 from flask import session
-import bcrypt
+import bcrypt, json
 
 class User(db.Model):
 	class PrivilegeLevel:
@@ -22,7 +22,7 @@ class User(db.Model):
 		return '<User %r>' % self.username
 	
 	@staticmethod
-	def LogIn(username: str, password: str) -> bool:
+	def logIn(username: str, password: str) -> bool:
 		if "User" in session:
 			#already logged in
 			return True
@@ -32,10 +32,11 @@ class User(db.Model):
 				return False
 
 			if user.validatePassword(password):
-				session["User"] = user
+				#cant save object in session
+				session["User"] = user.id
 				return True
-			else:
-				return False
+			
+		return False
 
 	@staticmethod
 	def logOut() -> None:
@@ -43,7 +44,7 @@ class User(db.Model):
 			session.pop("User", None)
 
 	@staticmethod
-	def isLogedIn() -> bool:
+	def isLoggedIn() -> bool:
 		return "User" in session
 
 	def validatePassword(self, password: str) -> bool:
@@ -55,6 +56,9 @@ class User(db.Model):
 	def changeAttribute(self, attr, value) -> None:
 		# TODO
 		pass
+
+	def getName(self) -> str:
+		return self.displayname or self.username
 
 	def hasAccess(self, level: int) -> bool:
 		return level >= self.privilege

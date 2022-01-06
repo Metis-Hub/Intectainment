@@ -1,5 +1,5 @@
-from flask import render_template, send_from_directory
-import os
+from flask import render_template, send_from_directory, request, redirect, url_for, session
+import os, json
 
 from Intectainment.app import app
 from Intectainment.database.models import User
@@ -8,17 +8,36 @@ from Intectainment.database.models import User
 def mainPage():
 	return render_template("main/start.html")
 
+@app.route("/home")
+def home():
+	if not User.isLoggedIn():
+		return redirect(url_for("login"))
+	else:
+		return render_template("main/home.html")
+
+
 @app.route("/login", methods = ["GET", "POST"])
 def login():
-	# TODO
-	User.LogIn("günter", "passwort")
-	return "Hi"
-	pass
+	if User.isLoggedIn():
+		return redirect(url_for("home"))
+
+	if request.method == "GET":
+		return render_template("main/login.html")
+	elif request.method == "POST":
+		if "username" and "password" in request.form:
+			if User.logIn(request.form["username"], request.form["password"]):
+				#success
+				return redirect(url_for("home"))
+			else:
+				#failed login
+				return redirect("?badLogin=1")
+		else:
+			#form nicht ausgefüllt
+			pass
 
 @app.route("/logout", methods = ["POST"])
 def logout():
-	# TODO
-	User.LogOut()
+	User.logOut()
 	pass
 
 
