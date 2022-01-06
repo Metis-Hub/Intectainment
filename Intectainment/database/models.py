@@ -35,19 +35,9 @@ class User(db.Model):
 				#cant save object in session
 				session["User"] = user.id
 				return True
+			
 		return False
-	
-	def toJson(self):
-		return json.dumps(self, default=lambda o: o.__dict__)
-	
-	@staticmethod
-	def getCurrentUser():
-		#TODO mabe find better way to do this, also see logIn()
-		if "User" in session:
-			return User.query.filter_by(id=session["User"]).first()
-		else:
-			return None
-	
+
 	@staticmethod
 	def logOut() -> None:
 		if "User" in session:
