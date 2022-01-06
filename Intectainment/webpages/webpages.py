@@ -1,14 +1,16 @@
 from flask import render_template
 from Intectainment.app import app
+from Intectainment.database.models import User
 
 @app.route("/")
 def mainPage():
 	return render_template("main/start.html")
 
-@app.route("/login", methods = ["POST"])
+@app.route("/login", methods = ["GET", "POST"])
 def login():
 	# TODO
-	User.LogIn("passwort")
+	User.LogIn("günter", "passwort")
+	return "Hi"
 	pass
 
 @app.route("/logout", methods = ["POST"])
