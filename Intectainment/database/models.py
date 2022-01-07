@@ -1,6 +1,9 @@
 from Intectainment.app import db
 from flask import session
-import bcrypt, json
+import bcrypt, threading, time, string, random
+
+
+
 
 class User(db.Model):
 	class PrivilegeLevel:
@@ -10,6 +13,12 @@ class User(db.Model):
 		ADMIN = 255
 
 
+	## Timeout check
+	TIMEOUT_TIME: int = 60*30
+	activeUsers:dict = dict()
+	
+
+
 	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
 	username	=	db.Column( db.String(80)	, unique=True	, nullable=False )
@@ -17,6 +26,9 @@ class User(db.Model):
 	password	=	db.Column( db.String(80)	, unique=False	, nullable=False )
 	email		=	db.Column( db.String(320)	, unique=True	, nullable=False )
 	privilege	=	db.Column( db.Integer		, unique=False	, nullable=True	 )
+
+	lastActive = time.time()
+
 
 	def __repr__(self):
 		return '<User %r>' % self.username
@@ -33,7 +45,14 @@ class User(db.Model):
 
 			if user.validatePassword(password):
 				#cant save object in session
-				session["User"] = user.id
+
+				key: str = None
+				while not key or key in User.activeUsers:
+					key = ''.join(random.choices(string.ascii_uppercase + string.digits, k=20))
+				
+				print(f"Added {user} with key {key} at {user.lastActive}")
+				User.activeUsers[key] = user
+				session["User"] = key
 				return True
 			
 		return False
@@ -41,6 +60,7 @@ class User(db.Model):
 	@staticmethod
 	def logOut() -> None:
 		if "User" in session:
+			User.activeUsers.pop(session["User"])
 			session.pop("User", None)
 
 	@staticmethod
@@ -65,7 +85,19 @@ class User(db.Model):
 	
 	def getAccessLevel(self) -> int:
 		return self.privilege
-	
+
+
+# init timeout check
+def checkUsers():
+	for key in User.activeUsers.keys():
+		user = User.activeUsers[key]
+		if(time.time() - user.lastActive >= User.TIMEOUT_TIME):
+			User.activeUsers.pop(key)
+		
+	time.sleep(User.TIMEOUT_TIME)
+afkCheckThread = threading.Thread(name="afkChecker", target=checkUsers)
+afkCheckThread.setDaemon(True)
+afkCheckThread.start()	
 	
 #
 #bruno = User(username="Bruno", password=bcrypt.hashpw(b"1234", bcrypt.gensalt()), email="ja")

@@ -1,5 +1,5 @@
 from flask import render_template, send_from_directory, request, redirect, url_for, session
-import os, json
+import os
 
 from Intectainment.app import app
 from Intectainment.database.models import User
