@@ -25,7 +25,7 @@ def home():
 
 
 ### Access Points ###
-accessPoints: Blueprint = Blueprint("accessPoints", __name__, url_prefix="/admin")
+accessPoints: Blueprint = Blueprint("accessPoints", __name__, url_prefix="/inteface")
 @accessPoints.route("/user/login", methods = ["POST"])
 def login():
 	"""login access point"""
