@@ -5,6 +5,11 @@ from Intectainment.app import app
 from Intectainment.database.models import User
 
 
+@app.before_request
+def before_request():
+	User.resetTimeout()
+	pass
+
 
 @app.route("/")
 def mainPage():
@@ -19,11 +24,7 @@ def home():
 
 
 
-@app.before_request
-def before_request():
-	User.resetTimeout()
-	pass
-
+### Access Points ###
 accessPoints: Blueprint = Blueprint("accessPoints", __name__, url_prefix="/admin")
 @accessPoints.route("/user/login", methods = ["POST"])
 def login():
