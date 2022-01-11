@@ -1,8 +1,10 @@
-from flask import render_template, send_from_directory, request, redirect, url_for, session
+from flask import render_template, send_from_directory, request, redirect, url_for, session, Blueprint
 import os
 
 from Intectainment.app import app
 from Intectainment.database.models import User
+
+
 
 @app.route("/")
 def mainPage():
@@ -16,29 +18,39 @@ def home():
 		return render_template("main/home.html")
 
 
-@app.route("/login", methods = ["GET", "POST"])
+
+@app.before_request
+def before_request():
+	User.resetTimeout()
+	pass
+
+accessPoints: Blueprint = Blueprint("accessPoints", __name__, url_prefix="/admin")
+@accessPoints.route("/user/login", methods = ["POST"])
 def login():
+	"""login access point"""
 	if User.isLoggedIn():
 		return redirect(url_for("home"))
 
-	if request.method == "GET":
-		return render_template("main/login.html")
-	elif request.method == "POST":
+	if request.method == "POST":
 		if "username" and "password" in request.form:
 			if User.logIn(request.form["username"], request.form["password"]):
 				#success
-				return redirect(url_for("home"))
+				return redirect(request.form.get("redirect") or url_for("home"))
 			else:
 				#failed login
 				return redirect("?badLogin=1")
 		else:
 			#form nicht ausgefüllt
-			pass
+			return redirect("?badLogin=1")
 
-@app.route("/logout", methods = ["POST"])
+
+@accessPoints.route("/user/logout", methods = ["POST"])
 def logout():
+	"""logout access point"""
 	User.logOut()
-	pass
+	return redirect(url_for("home"))
+
+app.register_blueprint(accessPoints)
 
 
 

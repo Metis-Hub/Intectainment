@@ -28,7 +28,13 @@ class User(db.Model):
 	privilege	=	db.Column( db.Integer		, unique=False	, nullable=True	 )
 
 	lastActive = time.time()
-
+	
+	@staticmethod
+	def resetTimeout():
+		if "User" in session:
+			if session["User"] in User.activeUsers:
+				user = User.activeUsers[session["User"]]
+				user.lastActive = time.time()
 
 	def __repr__(self):
 		return '<User %r>' % self.username
