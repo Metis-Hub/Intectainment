@@ -60,19 +60,25 @@ class User(db.Model):
 				User.activeUsers[key] = user
 				session["User"] = key
 				return True
-			
 		return False
 
 	@staticmethod
 	def logOut() -> None:
 		if "User" in session:
-			User.activeUsers.pop(session["User"])
+			User.activeUsers.pop(session["User"], None)
 			session.pop("User", None)
 
 	@staticmethod
 	def isLoggedIn() -> bool:
 		return "User" in session
 
+	@staticmethod
+	def getCurrentUser():
+		if "User" in session:
+			if session["User"] in User.activeUsers:
+				return User.activeUsers[session["User"]]
+		return None
+			
 	def validatePassword(self, password: str) -> bool:
 		return bcrypt.checkpw(password.encode("utf-8"), self.password)
 

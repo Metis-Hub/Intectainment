@@ -8,29 +8,32 @@ from Intectainment.database.models import User
 @app.before_request
 def before_request():
 	User.resetTimeout()
+	print(User.activeUsers)
 	pass
 
 
 @app.route("/")
 def mainPage():
-	return render_template("main/start.html")
+	return render_template("main/start.html", user=User.getCurrentUser())
 
 @app.route("/home")
 def home():
 	if not User.isLoggedIn():
-		return redirect(url_for("login"))
+		return redirect(url_for("interface.login"))
 	else:
 		return render_template("main/home.html")
 
-
+@app.route("/test")
+def test():
+	return render_template("main/LoginLogoutTest.html", user=User.getCurrentUser())
 
 ### Access Points ###
-accessPoints: Blueprint = Blueprint("accessPoints", __name__, url_prefix="/inteface")
+accessPoints: Blueprint = Blueprint("interface", __name__, url_prefix="/interface")
 @accessPoints.route("/user/login", methods = ["POST"])
 def login():
 	"""login access point"""
 	if User.isLoggedIn():
-		return redirect(url_for("home"))
+		return redirect(request.form.get("redirect") or url_for("home"))
 
 	if request.method == "POST":
 		if "username" and "password" in request.form:
@@ -39,17 +42,17 @@ def login():
 				return redirect(request.form.get("redirect") or url_for("home"))
 			else:
 				#failed login
-				return redirect("?badLogin=1")
+				return redirect("/nö")
 		else:
 			#form nicht ausgefüllt
-			return redirect("?badLogin=1")
+			return redirect("/nö")
 
 
 @accessPoints.route("/user/logout", methods = ["POST"])
 def logout():
 	"""logout access point"""
 	User.logOut()
-	return redirect(url_for("home"))
+	return redirect(url_for("mainPage"))
 
 app.register_blueprint(accessPoints)
 
