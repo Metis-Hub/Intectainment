@@ -7,10 +7,11 @@
 
 {% block content %}
     <p>Hallihallo, das ist der Anfang</p>
-    <p> Hier kommt ein Text von Python: {{argument}}</p>
+    {%if session.get('User')%}
+        <p>Du bist angemeldet</p>
+    {%else%}
+        <p> Du bist nicht angemeldet</p>
+    {%endif%}
 
-
-    {% for item in items%}
-        <p> Hallo, {{item}} </p>
-    {% endfor %}
+    <p> Test für Login: <a href="{{url_for('test')}}"> Test </a></p>
 {%endblock%}

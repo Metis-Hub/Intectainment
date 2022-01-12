@@ -8,7 +8,6 @@ from Intectainment.database.models import User
 @app.before_request
 def before_request():
 	User.resetTimeout()
-	print(User.activeUsers)
 	pass
 
 

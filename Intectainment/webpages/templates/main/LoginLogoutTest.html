@@ -19,7 +19,7 @@
     <label>Login</label>
     <input type="text" placeholder="Nutzername" name="username" required/>
     <input type="password" placeholder="Passwort" name="password" required/>
-    <input type="hidden" name="redirect" value="/test"/>
+    <input type="hidden" name="redirect" value="{{url_for(request.endpoint)}}"/>
     <input type="submit"/>
 </form>
 
