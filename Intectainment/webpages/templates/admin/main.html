@@ -1,0 +1,10 @@
+{% extends "admin/adminLayout.html" %}
+{% block title %}Admin Interface{%endblock%}
+
+{% block content %}
+    <p>Hallihallo, das ist Admininterface</p>
+    
+    <ul>
+        <li><a href="{{url_for('admin.userconfig')}}">Benutzer Konfiguration</a></li>
+    </ul>
+{%endblock%}

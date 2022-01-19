@@ -1,0 +1,20 @@
+{% extends "admin/adminLayout.html" %}
+{% block title %}Nutzereinstellung{%endblock%}
+
+{% block content %}
+    <p>Hallihallo, das ist die Benutzerkonfigurationsseite</p>
+    
+    <hr/>
+    <label>Benutzer erstellen</label>
+    {%if createUser == "success"%}
+        <p>Nutzer {{userName}} erfolgreich erstellt</p>
+    {%elif createUser == "fail"%}
+        <p>Nutzer konnte nicht erstellt werden ({{error}})</p>
+    {%endif%}
+    <form method="POST">
+        <input type="text" name="username" placeholder="Username" required/>
+        <input type=password name="password" placeholder="Passwort" required/>
+        <input type=text name="email" placeholder="E-Mail" required/>
+        <input type="submit" name="createUser" value="Erstellen"/>
+    </form>
+{%endblock%}
