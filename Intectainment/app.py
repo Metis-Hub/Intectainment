@@ -20,12 +20,12 @@ app.config["SQLALCHEMY_DATABASE_URI"] = config['Database'].get("URI")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = (config['Development'].get("deyMode")) == "yes" #dev state
 db = SQLAlchemy(app)
 # load tables
+
 import Intectainment.database.models
+
 #TODO only for dev
-try:
+if config['Development'].get("deyMode"):
 	db.create_all()
-except:
-	print("Database not connected")
 
 # load webpages
 from Intectainment.webpages import webpages
