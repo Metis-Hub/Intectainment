@@ -26,6 +26,10 @@ def home():
 def test():
 	return render_template("main/LoginLogoutTest.html", user=User.getCurrentUser())
 
+@app.route("/profile/<username>")
+def profile(username):
+	return render_template("main/userProfile.html", search=username)
+
 ### Access Points ###
 accessPoints: Blueprint = Blueprint("interface", __name__, url_prefix="/interface")
 @accessPoints.route("/user/login", methods = ["POST"])
