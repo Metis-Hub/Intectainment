@@ -134,4 +134,4 @@ dmypy.json
 # and also not may nice batch-file
 run.bat
 *.db
-*.conf
+config.conf
