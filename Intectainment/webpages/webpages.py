@@ -26,9 +26,10 @@ def home():
 def test():
 	return render_template("main/LoginLogoutTest.html", user=User.getCurrentUser())
 
-@app.route("/profile/<username>")
-def profile(username):
-	return render_template("main/userProfile.html", search=username)
+@app.route("/profile/<search>")
+def profile(search):
+	user = User.query.filter_by(username=search).first()
+	return render_template("main/userProfile.html", searchUser=user)
 
 ### Access Points ###
 accessPoints: Blueprint = Blueprint("interface", __name__, url_prefix="/interface")
@@ -60,7 +61,6 @@ def logout():
 app.register_blueprint(accessPoints)
 
 
-import Intectainment.webpages.admin
 
 ##### Favicon #####
 @app.route("/favicon.ico")
