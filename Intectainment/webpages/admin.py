@@ -22,7 +22,7 @@ def userconfig():
             if post.get("username") and post.get("email") and post.get("password"):
 
                 #if username is not taken
-                if User.query.filter_by(username=post.get("username")).first() is not None:
+                if User.query.filter_by(username=post.get("username")).first() is None:
                     user = User()
                     user.username = post.get("username")
                     user.email = post.get("email")
