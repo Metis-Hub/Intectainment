@@ -24,7 +24,17 @@
     </tr>
     <tr>
         <td>Stellung</td>
-        <td>{% if user.privilege</td>
+        {% if searchUser.privilege == 0%}
+            <td>Gast</td>
+        {%elif searchUser.privilege == 1%}
+            <td>Nutzer </td>
+        {%elif searchUser.privilege == 10%}
+            <td>Moderator</td>
+        {%elif searchUser.privilege == 255%}
+            <td>Admin</td>
+        {%else%}
+            <td>Systemfehler</td>
+        {%endif%}
     </tr>
 </table>
     
