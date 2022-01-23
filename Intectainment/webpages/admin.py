@@ -41,7 +41,13 @@ def userconfig():
                 #nicht ausgefüllt
                 pass
             pass
-        elif False:
+        elif post.get("queryUser"):
+            users = User.query
+
+            if post.get("queryname"):
+                users = users.filter_by(username=post.get("queryname"))
+
+            return render_template("admin/userConfig.html", users = users.all())
             #continue
             pass
 
