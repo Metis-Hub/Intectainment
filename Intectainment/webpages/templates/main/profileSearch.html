@@ -16,7 +16,7 @@
 
 {%if users%}
     {%for user in users%}
-        <a href="main/profile/{{user.getName()}}">{{user.getName}}</a>
+        <a href="p/{{user.username}}"> {{user.getName()}} </a>
     {%endfor%}
 {%endif%}
 {%endblock%}

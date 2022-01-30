@@ -38,9 +38,8 @@ def profile(search):
 def profileSearch():
 	if request.method == 'GET':
 		search = request.args.get('username')
-		searchedUsers = db.execute("SELECT * FROM user WHERE username LIKE %" + search + "%").fetchall()
-		return render_template("main/start.html")
-		#return render_template("main/profileSearch.html", users = searchedUsers)
+		searchedUsers = User.query.filter(User.username.like(f"%{search}%")).all()
+		return render_template("main/profileSearch.html", users = searchedUsers)
 	else:
 		return render_template("main/profileSearch.html")
 	
