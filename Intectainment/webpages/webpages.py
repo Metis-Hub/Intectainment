@@ -1,9 +1,11 @@
+import re
 from flask import render_template, send_from_directory, request, redirect, url_for, session, Blueprint
 import os
 
+from sqlalchemy import null
+
 from Intectainment.app import app
 from Intectainment.database.models import User
-
 
 @app.before_request
 def before_request():
@@ -31,6 +33,17 @@ def test():
 def profile(search):
 	user = User.query.filter_by(username=search).first()
 	return render_template("main/userProfile.html", searchUser=user)
+
+@app.route("/profileSearch", methods = ["GET"])
+def profileSearch():
+	if request.method == 'GET':
+		search = request.args.get('username')
+		searchedUsers = db.execute("SELECT * FROM user WHERE username LIKE %" + search + "%").fetchall()
+		return render_template("main/start.html")
+		#return render_template("main/profileSearch.html", users = searchedUsers)
+	else:
+		return render_template("main/profileSearch.html")
+	
 
 
 

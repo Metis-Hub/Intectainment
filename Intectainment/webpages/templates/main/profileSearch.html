@@ -1,0 +1,22 @@
+{#
+    URL: /
+#}
+
+{% extends "defaultLayout.html" %}
+{% block title %}Start{%endblock%}
+
+{% block content %}
+
+{%print users%}
+
+<form method="get" action="profileSearch">
+    <label>Nutzer-Suche</label>
+    <input type="text" placeholder="Nutzername" name="username" required/>
+</form>
+
+{%if users%}
+    {%for user in users%}
+        <a href="main/profile/{{user.getName()}}">{{user.getName}}</a>
+    {%endfor%}
+{%endif%}
+{%endblock%}
