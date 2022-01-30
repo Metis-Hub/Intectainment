@@ -27,9 +27,12 @@ def test():
 	return render_template("main/LoginLogoutTest.html", user=User.getCurrentUser())
 
 @app.route("/profile/<search>")
+@app.route("/p/<search>")
 def profile(search):
 	user = User.query.filter_by(username=search).first()
 	return render_template("main/userProfile.html", searchUser=user)
+
+
 
 ### Access Points ###
 accessPoints: Blueprint = Blueprint("interface", __name__, url_prefix="/interface")
