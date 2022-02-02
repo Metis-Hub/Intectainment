@@ -12,6 +12,10 @@ Subscription = db.Table('subscribedChannels',
     db.Column('user_id', db.Integer, db.ForeignKey('users.id'))
 )
 
+Favorites = db.Table('favoriteBlogs',
+    db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
+	db.Column('blog_id', db.Integer, db.ForeignKey('blogentries.id'))
+)
 class User(db.Model):
 	__tablename__ = "users"
 	TIMEOUT_TIME: int = 60*30
@@ -34,6 +38,8 @@ class User(db.Model):
 	email		=	db.Column( db.String(320)	, unique=True	, nullable=False )
 
 	subscriptions = db.relationship("Channel", secondary=Subscription)
+	favoriteBlogs = db.relationship("BlogEntry", secondary=Favorites)
+
 
 	def __repr__(self):
 		return '<User %r>' % self.username
