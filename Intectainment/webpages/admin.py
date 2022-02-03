@@ -29,8 +29,15 @@ def userconfig():
                     user.changePassword(post.get("password"))
 
                     db.session.add(user)
-                    db.session.commit()
-                    return render_template("admin/userConfig.html", createUser="success", userName=post.get("username"))
+                    fail = False
+                    try:
+                        db.session.commit()
+                    except:
+                        fail = True
+                    if not fail:
+                        return render_template("admin/userConfig.html", createUser="success", userName=post.get("username"))
+                    else:
+                        return render_template("admin/userConfig.html", createUser="fail", error="SQL Fehler")
                     pass
                 else:
                     #username taken
