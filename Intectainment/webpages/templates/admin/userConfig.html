@@ -4,6 +4,8 @@
 {% block content %}
     <p>Hallihallo, das ist die Benutzerkonfigurationsseite</p>
     
+
+    {# Erstellen von Nutzern #}
     <hr/>
     <label>Benutzer erstellen</label>
     {%if createUser == "success"%}
@@ -17,4 +19,23 @@
         <input type=text name="email" placeholder="E-Mail" required/>
         <input type="submit" name="createUser" value="Erstellen"/>
     </form>
+
+    <hr/>
+    <label> Benutzer anzeigen </label>
+    <form method="post">
+        <input type="text" name="queryname" placeholder="Namens Abfrage"/>
+        <input type="submit" name="queryUser" value="Suchen"/>
+    </form>
+    {%if users!=None%}
+        {%if users|length > 0%}
+        <table>
+            <tr><th>Name</th><th>E-Mail</th></tr>
+        {%for user in users%}
+            <tr><td>{{user.getName()}}</td><td>{{user.email}}</td></tr>
+        {%endfor%}
+        </table>
+        {%else%}
+            <p>Keine Nutzer gefunden</p>
+        {%endif%}
+    {%endif%}
 {%endblock%}

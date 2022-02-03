@@ -24,7 +24,7 @@ db = SQLAlchemy(app)
 import Intectainment.database.models
 
 #TODO only for dev
-if config['Development'].get("deyMode"):
+if config['Development'].get("devMode"):
 	db.create_all()
 
 # load webpages

@@ -75,7 +75,7 @@ def logout():
 
 app.register_blueprint(accessPoints)
 
-
+import Intectainment.webpages.admin
 
 ##### Favicon #####
 @app.route("/favicon.ico")
