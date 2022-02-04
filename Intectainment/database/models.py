@@ -132,7 +132,7 @@ class Category(db.Model):
 def checkUsers():
 	for key in User.activeUsers.keys():
 		user = User.activeUsers[key]
-		if(time.time() - user.lastActive >= User.TIMEOUT_TIME):
+		if(time.time() - user.lastActive >= User.TIMEOUT_TIME and User.activeUsers[key].TIMEOUT_TIME != -1):
 			User.activeUsers.pop(key)
 		
 	time.sleep(User.TIMEOUT_TIME)

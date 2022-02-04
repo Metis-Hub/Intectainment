@@ -1,18 +1,19 @@
 import re
 from flask import render_template, send_from_directory, request, redirect, url_for, session, Blueprint
 import os
-
-from sqlalchemy import null
-
 from Intectainment.app import app
 from Intectainment.database.models import User
 
+
+# reset user timeout
 @app.before_request
 def before_request():
 	User.resetTimeout()
 	pass
 
 
+
+##### Home/Start ######
 @app.route("/")
 def mainPage():
 	return render_template("main/start.html", user=User.getCurrentUser())
@@ -24,10 +25,8 @@ def home():
 	else:
 		return render_template("main/home.html")
 
-@app.route("/test")
-def test():
-	return render_template("main/LoginLogoutTest.html", user=User.getCurrentUser())
 
+##### Profile #####
 @app.route("/profile/<search>")
 @app.route("/p/<search>")
 def profile(search):
@@ -36,17 +35,16 @@ def profile(search):
 
 @app.route("/profileSearch", methods = ["GET"])
 def profileSearch():
-	if request.method == 'GET':
-		search = request.args.get('username')
-		searchedUsers = User.query.filter(User.username.like(f"%{search}%")).all()
-		return render_template("main/profileSearch.html", users = searchedUsers)
-	else:
-		return render_template("main/profileSearch.html")
+	search = request.args.get('username')
+	searchedUsers = User.query.filter(User.username.like(f"%{search}%")).all()
+	return render_template("main/profileSearch.html", users = searchedUsers)
 	
+#TODO: remove
+@app.route("/test")
+def test():
+	return render_template("main/LoginLogoutTest.html", user=User.getCurrentUser())
 
-
-
-### Access Points ###
+##### Access Points #####
 accessPoints: Blueprint = Blueprint("interface", __name__, url_prefix="/interface")
 @accessPoints.route("/user/login", methods = ["POST"])
 def login():
@@ -75,7 +73,11 @@ def logout():
 
 app.register_blueprint(accessPoints)
 
+
+#Import Admin Interface
 import Intectainment.webpages.admin
+
+
 
 ##### Favicon #####
 @app.route("/favicon.ico")

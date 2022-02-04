@@ -1,15 +1,13 @@
 {#
-    URL: /
+    URL: /profile/<user>
 #}
 
 {% extends "defaultLayout.html" %}
-{% block title %}Start{%endblock%}
+{% block title %}Nutzerprofil{%endblock%}
 
 {% block content %}
 
-{% if searchUser == none %}
-<h1>User not found</h1>
-{% else %}
+{% if searchUser%}
 <h1>{{searchUser.getName()}}</h1>
 
 <table>
@@ -21,8 +19,11 @@
         <td>Email</td>
         <td><a href="mailto:{{searchUser.email}}">{{searchUser.email}}</a></td>
     </tr>
-
 </table>
+
+{% else %}
+<h1>User not found</h1>
+<p> Dieser Nutzer scheint nicht zu existieren </p>
 {% endif %}
     
 {%endblock%}
