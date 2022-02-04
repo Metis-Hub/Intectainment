@@ -1,53 +1,51 @@
-import re
-from flask import render_template, send_from_directory, request, redirect, url_for, session, Blueprint
 import os
+from flask import render_template, send_from_directory, request, redirect, url_for, session, Blueprint
+
 from Intectainment.app import app
 from Intectainment.database.models import User
 
+gui: Blueprint = Blueprint("gui", __name__)
+ap: Blueprint = Blueprint("interface", __name__, url_prefix="/interface")
 
 # reset user timeout
-@app.before_request
+@gui.before_request
 def before_request():
 	User.resetTimeout()
 	pass
 
 
-
 ##### Home/Start ######
-@app.route("/")
-def mainPage():
+@gui.route("/")
+def start():
 	return render_template("main/start.html", user=User.getCurrentUser())
 
-@app.route("/home")
+@gui.route("/home")
 def home():
 	if not User.isLoggedIn():
 		return redirect(url_for("interface.login"))
 	else:
 		return render_template("main/home.html")
 
+@gui.route("/dashboard")
+def dashboard():
+	return render_template("main/dashboard.html")
+	pass
 
 ##### Profile #####
-@app.route("/profile/<search>")
-@app.route("/p/<search>")
+@gui.route("/profile/<search>")
+@gui.route("/p/<search>")
 def profile(search):
 	user = User.query.filter_by(username=search).first()
 	return render_template("main/userProfile.html", searchUser=user)
 
-@app.route("/profileSearch", methods = ["GET"])
-def profileSearch():
-	search = request.args.get('username')
-	query = User.query.filter(User.username.like(f"%{search}%"))
-	
-	return render_template("main/profileSearch.html", users = query.all())
 	
 #TODO: remove
-@app.route("/test")
+@gui.route("/test")
 def test():
 	return render_template("main/LoginLogoutTest.html", user=User.getCurrentUser())
 
 ##### Access Points #####
-accessPoints: Blueprint = Blueprint("interface", __name__, url_prefix="/interface")
-@accessPoints.route("/user/login", methods = ["POST"])
+@ap.route("/user/login", methods = ["POST"])
 def login():
 	"""login access point"""
 	if User.isLoggedIn():
@@ -60,20 +58,20 @@ def login():
 				return redirect(request.form.get("redirect") or url_for("home"))
 			else:
 				#failed login
-				return redirect("/nö")
+				return redirect(request.form.get("returnTo") or url_for("start"))
 		else:
 			#form nicht ausgefüllt
-			return redirect("/nö")
+			return redirect(request.form.get("returnTo") or url_for("start"))
 
-
-@accessPoints.route("/user/logout", methods = ["POST"])
+@ap.route("/user/logout", methods = ["POST"])
 def logout():
 	"""logout access point"""
 	User.logOut()
-	return redirect(url_for("mainPage"))
+	return redirect(url_for("gui.start"))
 
-app.register_blueprint(accessPoints)
 
+app.register_blueprint(ap)
+app.register_blueprint(gui)
 
 #Import Admin Interface
 import Intectainment.webpages.admin

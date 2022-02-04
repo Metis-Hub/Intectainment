@@ -60,9 +60,8 @@ class User(db.Model):
 
 				key: str = None
 				while not key or key in User.activeUsers:
-					key = ''.join(random.choices(string.ascii_uppercase + string.digits, k=20))
-				
-				print(f"Added {user} with key {key}")
+					key = ''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase + string.digits, k=40))
+
 				User.activeUsers[key] = user
 				session["User"] = key
 				return True
