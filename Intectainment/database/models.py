@@ -1,3 +1,4 @@
+from email.headerregistry import SingleAddressHeader
 from Intectainment.app import db
 from flask import session
 import bcrypt, threading, time, string, random
@@ -93,6 +94,15 @@ class User(db.Model):
 	def getName(self) -> str:
 		return self.displayname or self.username
 
+	def getContent(self):
+		content = []
+		for sub in self.subscriptions:
+			content.append(sub.entries)
+   
+		return content
+	
+	def getFavoritePosits(self):
+		pass
 
 
 class Channel(db.Model):
@@ -103,7 +113,10 @@ class Channel(db.Model):
 	description =   db.Column( db.String(80), unique=True, nullable=True )
 
 	categories = db.relationship("Category", secondary=ChannelCategory)
-	channel = db.relationship("BlogEntry", backref="channels")
+	entries = db.relationship("BlogEntry", backref="blogentries")
+
+	#TODO: remove (example code)
+	
 
 
 class BlogEntry(db.Model):
@@ -112,8 +125,7 @@ class BlogEntry(db.Model):
 	contentPath = db.Column(db.String(60), nullable=False)
 	modDate = db.Column(db.DateTime, nullable=False)
 
-	channel_id = db.Column(db.Integer, db.ForeignKey('channels.id'),
-        nullable=False)
+	channel_id = db.Column(db.Integer, db.ForeignKey('channels.id'), nullable=False)
 
 
 
@@ -121,11 +133,6 @@ class Category(db.Model):
 	__tablename__ = "categories"
 	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 	name	=	db.Column( db.String(80)	, unique=True	, nullable=False )
-	
-#
-#bruno = User(username="Bruno", password=bcrypt.hashpw(b"1234", bcrypt.gensalt()), email="ja")
-#db.session.add(bruno)
-#db.session.commit()
 
 
 # init timeout check

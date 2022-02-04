@@ -1,22 +1,26 @@
 {#
     URL: /profileSearch
+    Description: 
 #}
 
 {% extends "defaultLayout.html" %}
 {% block title %}Nutzersuche{%endblock%}
 
 {% block content %}
+    <form method="get" action="profileSearch">
+        <label>Nutzer-Suche</label>
+        <input type="text" placeholder="Nutzername" name="username" required/>
+        <input type="submit" value="Suchen"/>
+    </form>
 
-{%print users%}
-
-<form method="get" action="profileSearch">
-    <label>Nutzer-Suche</label>
-    <input type="text" placeholder="Nutzername" name="username" required/>
-</form>
-
-{%if users%}
-    {%for user in users%}
-        <a href="p/{{user.username}}"> {{user.getName()}} </a>
-    {%endfor%}
-{%endif%}
+    {%if request.args.get('username')%}
+        {%if users%}
+            <p> Gefundene Nutzer ({{users|length}}): </p>
+            {%for user in users%}
+                <a href="p/{{user.username}}"> {{user.getName()}} </a><br/>
+            {%endfor%}
+        {%else%}
+            <p> Es gibt keinen Nutzer mit einem Namen wie "{{request.args.get('username')}}" </p>
+        {%endif%}
+    {%endif%}
 {%endblock%}

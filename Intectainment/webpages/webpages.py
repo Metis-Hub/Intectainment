@@ -36,8 +36,9 @@ def profile(search):
 @app.route("/profileSearch", methods = ["GET"])
 def profileSearch():
 	search = request.args.get('username')
-	searchedUsers = User.query.filter(User.username.like(f"%{search}%")).all()
-	return render_template("main/profileSearch.html", users = searchedUsers)
+	query = User.query.filter(User.username.like(f"%{search}%"))
+	
+	return render_template("main/profileSearch.html", users = query.all())
 	
 #TODO: remove
 @app.route("/test")
