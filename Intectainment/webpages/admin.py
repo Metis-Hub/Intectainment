@@ -1,7 +1,8 @@
-from Intectainment.app import app, db
-from flask import Blueprint, render_template, request, redirect, url_for
-
+from Intectainment.app import db
+from Intectainment.webpages.webpages import gui
 from Intectainment.database.models import User
+
+from flask import Blueprint, render_template, request, redirect, url_for
 
 
 admin: Blueprint = Blueprint("admin", __name__, url_prefix="/admin")
@@ -64,4 +65,4 @@ def userconfig():
 
 
 
-app.register_blueprint(admin)
+gui.register_blueprint(admin)

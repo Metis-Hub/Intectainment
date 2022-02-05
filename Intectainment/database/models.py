@@ -38,8 +38,8 @@ class User(db.Model):
 	password	=	db.Column( db.String(80)	, unique=False	, nullable=False )
 	email		=	db.Column( db.String(320)	, unique=True	, nullable=False )
 
-	subscriptions = db.relationship("Channel", secondary=Subscription)
-	favoriteBlogs = db.relationship("BlogEntry", secondary=Favorites)
+	subscriptions = db.relationship("Channel", secondary=Subscription, backref="subscibers")
+	favoriteBlogs = db.relationship("BlogEntry", secondary=Favorites, backref="favUsers")
 
 
 	def __repr__(self):
@@ -112,7 +112,7 @@ class Channel(db.Model):
 	description =   db.Column( db.String(80), unique=True, nullable=True )
 
 	categories = db.relationship("Category", secondary=ChannelCategory)
-	entries = db.relationship("BlogEntry", backref="blogentries")
+	entries = db.relationship("BlogEntry", backref="channel")
 
 	#TODO: remove (example code)
 	
@@ -138,7 +138,7 @@ class Category(db.Model):
 def checkUsers():
 	for key in User.activeUsers.keys():
 		user = User.activeUsers[key]
-		if(time.time() - user.lastActive >= User.TIMEOUT_TIME and User.activeUsers[key].TIMEOUT_TIME != -1):
+		if time.time() - user.lastActive >= User.TIMEOUT_TIME and User.activeUsers[key].TIMEOUT_TIME != -1:
 			User.activeUsers.pop(key)
 		
 	time.sleep(User.TIMEOUT_TIME)
