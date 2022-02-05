@@ -56,19 +56,22 @@ def test():
 def login():
 	"""login access point"""
 	if User.isLoggedIn():
-		return redirect(request.form.get("redirect") or url_for("home"))
+		return redirect(request.form.get("redirect") or url_for("gui.home"))
 
 	if request.method == "POST":
 		if "username" and "password" in request.form:
 			if User.logIn(request.form["username"], request.form["password"]):
 				#success
-				return redirect(request.form.get("redirect") or url_for("home"))
+				return redirect(request.form.get("redirect") or url_for("gui.home"))
 			else:
 				#failed login
-				return redirect(request.form.get("returnTo") or url_for("start"))
+				url = request.referrer
+				if "?failedLogin=1" not in url:
+					url += "?failedLogin=1"
+				return redirect(url)
 		else:
 			#form nicht ausgefüllt
-			return redirect(request.form.get("returnTo") or url_for("start"))
+			return redirect(request.referrer)
 
 @ap.route("/user/logout", methods = ["POST"])
 def logout():
