@@ -2,7 +2,7 @@ import os
 from flask import render_template, send_from_directory, request, redirect, url_for, session, Blueprint
 
 from Intectainment.app import app
-from Intectainment.database.models import User
+from Intectainment.database.models import User, Channel, Category
 
 gui: Blueprint = Blueprint("gui", __name__)
 ap: Blueprint = Blueprint("interface", __name__, url_prefix="/interface")
@@ -35,6 +35,8 @@ def dashboard():
 @gui.route("/profile/<search>")
 @gui.route("/p/<search>")
 def profile(search):
+	# TODO: paginate query result
+
 	user = User.query.filter_by(username=search).first()
 	return render_template("main/user/userProfile.html", searchUser=user)
 
@@ -45,6 +47,28 @@ def profileSearch():
 	query = User.query.filter(User.username.like(f"%{search}%"))
 
 	return render_template("main/user/profileSearch.html", users=query.all())
+
+
+##### Kanäle #####
+@gui.route("/channel/<search>")
+@gui.route("/c/<search>")
+def channel(search):
+	user = Channel.query.filter_by(username=search).first()
+	return render_template("main/user/userProfile.html", searchUser=user)
+
+
+@gui.route("/channels", methods=["GET"])
+def channelSearch():
+	#TODO: paginate query result
+
+	name, category = request.args.get('channelName'), request.args.get('category')
+	channels = []
+	if name:
+		channels = Channel.query.filter(Channel.name.like(f"%{name}%")).all()
+	elif category:
+		channels = Category.query.filter_by(name=category).first().channels
+	
+	return render_template("main/channel/channelSearch.html", channels=channels, categories=Category.query.all())
 
 #TODO: remove
 @gui.route("/test")

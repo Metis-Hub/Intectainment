@@ -1,0 +1,25 @@
+{#
+    URL: /channel/(channel)
+    Description: Displays channel details
+#}
+
+{% extends "defaultLayout.html" %}
+{% block title %}Kanalansicht{%endblock%}
+
+{% block content %}
+    {% if channel%}
+    <h1>{{channel.name}}</h1>
+
+    <table>
+        <tr>
+            <td>Name</td>
+            <td>{{channel.name}}</td>
+        </tr>
+    </table>
+
+    {% else %}
+        //TODO
+        <h1>Channel not found</h1>
+        <p> Dieser Kanal scheint nicht zu existieren </p>
+    {% endif %}
+{%endblock%}
