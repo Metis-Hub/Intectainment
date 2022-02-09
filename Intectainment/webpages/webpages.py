@@ -21,10 +21,11 @@ def start():
 
 @gui.route("/home")
 def home():
-	if not User.isLoggedIn():
-		return redirect(url_for("interface.login"))
-	else:
-		return render_template("main/home.html")
+	return render_template("main/home.html")
+#	if not User.isLoggedIn():
+#		return redirect(url_for("interface.login"))
+#	else:
+#h		return render_template("main/home.html")
 
 @gui.route("/dashboard")
 def dashboard():
