@@ -4,13 +4,13 @@
 #}
 
 {% extends "defaultLayout.html" %}
-{% block title %}Nutzersuche{%endblock%}
+{% block title %}Kanalsuche{%endblock%}
 
 {% block content %}
     <form method="get">
         <label>Nutzer-Suche</label>
-        <input type="text" placeholder="Kanalname" name="channelname" required/>
-        <input list="categories" name="category"/>
+        <input type="text" placeholder="Kanalname" name="channelname"/>
+        <input list="categories" placeholder="Kategorie" name="category"/>
         <datalist id="categories">
             {%if categories%}
                 {%for category in categories%}
@@ -22,15 +22,14 @@
 
         <input type="submit" value="Suchen"/>
     </form>
-
     {%if channels%}
-        {%if users%}
-            <p> Gefundene Nutzer ({{users|length}}): </p>
-            {%for user in users%}
-                <a href="p/{{user.username}}"> {{user.getName()}} </a><br/>
+        {%if channels|length>0%}
+            <p> Gefundene Kanäle ({{channels|length}}): </p>
+            {%for channel in channels%}
+                <a href="c/{{channel.name}}"> {{channel.name}} </a><br/>
             {%endfor%}
         {%else%}
-            <p> Es gibt keinen Nutzer mit einem Namen wie "{{request.args.get('username')}}" </p>
+            <p> Es wurden keine Kanäle gefunden </p>
         {%endif%}
     {%endif%}
 {%endblock%}

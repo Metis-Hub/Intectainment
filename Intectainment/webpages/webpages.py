@@ -1,7 +1,7 @@
 import os
-from flask import render_template, send_from_directory, request, redirect, url_for, session, Blueprint
+from flask import render_template, send_from_directory, request, redirect, url_for, session, Blueprint, jsonify
 
-from Intectainment.app import app
+from Intectainment.app import app, db
 from Intectainment.database.models import User, Channel, Category
 
 gui: Blueprint = Blueprint("gui", __name__)
@@ -52,22 +52,25 @@ def profileSearch():
 ##### Kanäle #####
 @gui.route("/channel/<search>")
 @gui.route("/c/<search>")
-def channel(search):
-	user = Channel.query.filter_by(username=search).first()
-	return render_template("main/user/userProfile.html", searchUser=user)
+def channelView(search):
+	channel = Channel.query.filter_by(name=search).first()
+	return render_template("main/channel/channelView.html", channel=channel)
 
 
 @gui.route("/channels", methods=["GET"])
 def channelSearch():
 	#TODO: paginate query result
 
-	name, category = request.args.get('channelName'), request.args.get('category')
+	name, category = request.args.get('channelname'), request.args.get('category')
 	channels = []
 	if name:
 		channels = Channel.query.filter(Channel.name.like(f"%{name}%")).all()
 	elif category:
-		channels = Category.query.filter_by(name=category).first().channels
-	
+		channels = Category.query.filter_by(name=category).first()
+		if channels:
+			channels = channels.channels
+
+	print(channels)
 	return render_template("main/channel/channelSearch.html", channels=channels, categories=Category.query.all())
 
 #TODO: remove
@@ -100,13 +103,12 @@ def logout():
 	User.logOut()
 	return redirect(url_for("gui.start"))
 
+#Import Admin Interface
+import Intectainment.webpages.admin
+import Intectainment.webpages.RestInterface
 
 app.register_blueprint(ap)
 app.register_blueprint(gui)
-
-#Import Admin Interface
-import Intectainment.webpages.admin
-
 
 
 ##### Favicon #####

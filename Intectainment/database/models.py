@@ -1,7 +1,7 @@
-from email.headerregistry import SingleAddressHeader
 from Intectainment.app import db
 from flask import session
 import bcrypt, threading, time, string, random
+
 
 ChannelCategory = db.Table('channelCategories',
     db.Column('category_id', db.Integer, db.ForeignKey('categories.id'), primary_key=True),
@@ -111,7 +111,7 @@ class Channel(db.Model):
 	name	=	db.Column( db.String(80), unique=True, nullable=False )
 	description =   db.Column( db.String(80), unique=True, nullable=True )
 
-	categories = db.relationship("Category", secondary=ChannelCategory)
+	categories = db.relationship("Category", secondary=ChannelCategory, backref="channels")
 	entries = db.relationship("BlogEntry", backref="channels")
 	
 
@@ -129,7 +129,7 @@ class BlogEntry(db.Model):
 class Category(db.Model):
 	__tablename__ = "categories"
 	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-	name	=	db.Column( db.String(80)	, unique=True	, nullable=False )
+	name = db.Column( db.String(80), unique=True, nullable=False )
 
 
 # init timeout check
