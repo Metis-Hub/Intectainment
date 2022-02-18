@@ -8,28 +8,28 @@
 
 {% block content %}
     <form method="get">
-        <label>Nutzer-Suche</label>
+        <label>Kanal-Suche</label>
         <input type="text" placeholder="Kanalname" name="channelname"/>
-        <input list="categories" placeholder="Kategorie" name="category"/>
-        <datalist id="categories">
-            {%if categories%}
-                {%for category in categories%}
-                    <option value="{{category.name}}"/>
-                {%endfor%}
-            {%endif%}
-        </datalist>
-
-
         <input type="submit" value="Suchen"/>
     </form>
-    {%if channels%}
-        {%if channels|length>0%}
-            <p> Gefundene Kanäle ({{channels|length}}): </p>
-            {%for channel in channels%}
-                <a href="c/{{channel.name}}"> {{channel.name}} </a><br/>
-            {%endfor%}
+
+    {%if channels.total>0%}
+        <p> Gefundene Kanäle ({{channels.total}}): </p>
+        {%for channel in channels.items%}
+            <a href="c/{{channel.name}}"> {{channel.name}} </a><br/>
+        {%endfor%}
+    {%else%}
+        <p> Es wurden keine Kanäle gefunden </p>
+    {%endif%}
+
+    {%if channels.pages > 1 %}
+    <hr/>
+    {% for page in channels.iter_pages() %}
+        {%if page%}
+            <a href="?channelname={{request.args.get('channelname')}}&page={{page}}">{{page}}</a>
         {%else%}
-            <p> Es wurden keine Kanäle gefunden </p>
+            ...
         {%endif%}
+    {% endfor %}
     {%endif%}
 {%endblock%}

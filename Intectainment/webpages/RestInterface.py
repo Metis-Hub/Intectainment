@@ -6,7 +6,7 @@ from flask import request, jsonify
 
 ##### Category Accesspoint ######
 #TODO: remove?
-@ap.route("/category", methods=["PUT", "GET", "DELETE"])
+@ap.route("/categories", methods=["PUT", "GET", "DELETE"])
 def categoryREST():
 	if request.method == "GET":
 		"""returns a list of categories"""
@@ -35,7 +35,7 @@ def categoryREST():
 	pass
 
 
-@ap.route("/channel", methods=["PUT", "GET", "DELETE"])
+@ap.route("/channels", methods=["PUT", "GET", "DELETE"])
 def channelREST():
 	if request.method == "GET":
 		"""returns a list of categories"""

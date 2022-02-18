@@ -50,28 +50,67 @@ def profileSearch():
 
 
 ##### Kanäle #####
-@gui.route("/channel/<search>")
-@gui.route("/c/<search>")
-def channelView(search):
-	channel = Channel.query.filter_by(name=search).first()
-	return render_template("main/channel/channelView.html", channel=channel)
-
-
 @gui.route("/channels", methods=["GET"])
 def channelSearch():
-	#TODO: paginate query result
+	name = request.args.get('channelname')
 
-	name, category = request.args.get('channelname'), request.args.get('category')
-	channels = []
-	if name:
-		channels = Channel.query.filter(Channel.name.like(f"%{name}%")).all()
-	elif category:
-		channels = Category.query.filter_by(name=category).first()
-		if channels:
-			channels = channels.channels
+	page_num = 1
+	try:
+		page_num = int(request.args.get("page"))
+	except (ValueError, TypeError):
+		pass
 
-	print(channels)
-	return render_template("main/channel/channelSearch.html", channels=channels, categories=Category.query.all())
+	channels = Channel.query.filter(Channel.name.like(f"%{name}%")).paginate(per_page=20, page=page_num, error_out=False)
+	return render_template("main/channel/channelSearch.html", channels=channels)
+
+@gui.route("/c/<channel>")
+@gui.route("/channel/<channel>")
+def channelView(channel):
+	channel = Channel.query.filter_by(name=channel).first()
+	return render_template("main/channel/channelView.html", channel=channel)
+
+@gui.route("/c/<channel>/settings")
+@gui.route("/channel/<channel>/settings", methods=["GET", "POST"])
+def channelSettings(channel):
+	channel = Channel.query.filter_by(name=channel).first()
+
+	return render_template("main/channel/channelSettings.html", channel=channel, categories=Category.query.all())
+
+
+
+##### Kategorien #####
+@gui.route("/categories", methods=["GET"])
+def viewCategories():
+	page_num = 1
+	try:
+		page_num = int(request.args.get("page"))
+	except (ValueError, TypeError):
+		pass
+
+	categories = Category.query.paginate(per_page=20, page=page_num, error_out=False)
+	return render_template("main/category/categoryList.html", categories = categories)
+
+@gui.route("/categories/new", methods=["GET", "POST"])
+def createCategory():
+	if request.method == "GET":
+		return render_template("main/category/categoryCreation.html")
+	elif request.method == "POST":
+		name = request.form.get("name")
+		if name:
+			if Category.query.filter_by(name=name).count() > 0:
+				#exists allready
+				return render_template("main/category/categoryCreation.html", error="exists", message="Die Kategorie existiert bereits")
+				pass
+			else:
+				category = Category(name=name)
+				db.session.add(category)
+				db.session.commit()
+
+				return render_template("main/category/categoryCreation.html", message="Kategorie erfolgreich erstellt")
+				pass
+		else:
+			return render_template("main/category/categoryCreation.html", error="noargument", message="Name als Argument benötigt")
+
 
 #TODO: remove
 @gui.route("/test")

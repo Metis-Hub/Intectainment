@@ -59,7 +59,7 @@ def userconfig():
             #continue
             pass
 
-        return redirect(url_for("admin.userconfig"))
+        return redirect(url_for("gui.admin.userconfig"))
     pass
 
 

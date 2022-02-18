@@ -1,0 +1,18 @@
+{#
+    URL: /categories/new
+    Description: A visual interface to create a new category
+#}
+
+{% extends "defaultLayout.html" %}
+{% block title %}Neue Kategorie{%endblock%}
+
+{% block content %}
+    <h1>Kategorien</h1>
+    <p><a href="{{url_for('gui.viewCategories')}}">Kategorien anzeigen</a></p>
+
+    {{message}}
+    <form method="POST">
+        <input type="test" name="name" placeholder="Name"/>
+        <input type="submit" value="Erstellen"/>
+    </form>
+{%endblock%}

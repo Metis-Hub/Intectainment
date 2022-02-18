@@ -1,0 +1,30 @@
+{#
+    URL: /categories
+    Description: Displays a list of all categories
+#}
+
+{% extends "defaultLayout.html" %}
+{% block title %}Kategorien{%endblock%}
+
+{% block content %}
+    <h1>Kategorien</h1>
+    <a href="{{url_for('gui.createCategory')}}">Kategorie erstellen</a>
+    <ul>
+        {% for cat in categories.items %}
+        <li>{{cat.name}}</li>
+        {% endfor %}
+    </ul>
+
+
+    {%if categories.pages > 1 %}
+        <!-- hyperlinks to more pages -->
+        <hr/>
+        {% for page in categories.iter_pages() %}
+            {%if page%}
+                <a href="?viewAll=Anzeigen&page={{page}}">{{page}}</a>
+            {%else%}
+                ...
+            {%endif%}
+        {% endfor %}
+        {%endif%}
+{%endblock%}
