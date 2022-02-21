@@ -1,0 +1,19 @@
+{#
+    URL: /channels/new
+    Description:
+#}
+
+{% extends "defaultLayout.html" %}
+{% block title %}Kanalsuche{%endblock%}
+
+{% block content %}
+    <h1>Kanalerstellung</h1>
+
+    {# Kanal existiert schon? #}
+    {%if error%}{{error}}{%endif%}
+
+    <form method="POST">
+        <input type="text" placeholder="Name" name="name" required/>
+        <input type="submit"/>
+    </form>
+{%endblock%}

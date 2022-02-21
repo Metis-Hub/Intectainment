@@ -1,7 +1,7 @@
 from Intectainment.app import db
-from Intectainment.database.models import Channel, Category
+from Intectainment.datamodels import Channel, Category
 from Intectainment.webpages.webpages import gui
-from flask import request, render_template, redirect
+from flask import request, render_template, redirect, url_for
 
 ##### Kanäle #####
 @gui.route("/channels", methods=["GET"])
@@ -17,6 +17,23 @@ def channelSearch():
     channels = Channel.query.filter(Channel.name.like(f"%{name}%")).paginate(per_page=20, page=page_num,
                                                                              error_out=False)
     return render_template("main/channel/channelSearch.html", channels=channels)
+
+
+@gui.route("/channels/new", methods=["GET", "POST"])
+def channelCreation():
+    if request.method == "POST":
+        name = request.form.get("name")
+        if name:
+            if not Channel.query.filter_by(name=name).first():
+                channel = Channel(name=name)
+                db.session.add(channel)
+                db.session.commit()
+
+                return redirect(url_for("gui.channelView", channel=name))
+            else:
+                return render_template("main/channel/channelCreation.html", error="Kanal existiert schon")
+    return render_template("main/channel/channelCreation.html")
+
 
 
 @gui.route("/c/<channel>")

@@ -21,11 +21,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = (config['Development'].get("deyMo
 db = SQLAlchemy(app)
 # load tables
 
-import Intectainment.database.models
-
 #TODO only for dev
 if config['Development'].get("devMode"):
 	db.create_all()
 
 # load webpages
-from Intectainment.webpages import webpages

@@ -1,6 +1,6 @@
 from Intectainment.app import db
 from Intectainment.webpages.webpages import gui
-from Intectainment.database.models import User
+from Intectainment.datamodels import User
 
 from flask import Blueprint, render_template, request, redirect, url_for
 

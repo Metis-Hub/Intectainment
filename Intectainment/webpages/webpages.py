@@ -1,9 +1,9 @@
 import markdown
 import os
-from flask import render_template, send_from_directory, request, redirect, url_for, session, Blueprint, Markup
+from flask import render_template, send_from_directory, request, redirect, url_for, Blueprint, Markup
 
-from Intectainment.app import app, db
-from Intectainment.database.models import User, Channel, Category
+from Intectainment.app import app
+from Intectainment.datamodels import User
 
 gui: Blueprint = Blueprint("gui", __name__)
 ap: Blueprint = Blueprint("interface", __name__, url_prefix="/interface")
@@ -91,9 +91,6 @@ def logout():
 	return redirect(url_for("gui.start"))
 
 #Import other routing files
-import Intectainment.webpages.channelsCategories
-import Intectainment.webpages.admin
-import Intectainment.webpages.RestInterface
 
 
 app.register_blueprint(ap)

@@ -1,5 +1,5 @@
 from Intectainment.app import db
-from Intectainment.database.models import Category, Channel
+from Intectainment.datamodels import Category, Channel
 from Intectainment.webpages.webpages import ap
 
 from flask import request, jsonify
