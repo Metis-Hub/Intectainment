@@ -145,5 +145,5 @@ def checkUsers():
 		
 	time.sleep(User.TIMEOUT_TIME)
 afkCheckThread = threading.Thread(name="afkChecker", target=checkUsers)
-afkCheckThread.setDaemon(True)
+afkCheckThread.daemon = True
 afkCheckThread.start()	
