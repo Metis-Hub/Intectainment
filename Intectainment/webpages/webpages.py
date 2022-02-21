@@ -40,7 +40,7 @@ def profile(search):
 	return render_template("main/user/userProfile.html", searchUser=user)
 
 
-@gui.route("/profileSearch", methods=["GET"])
+@gui.route("/profiles", methods=["GET"])
 def profileSearch():
 	search = request.args.get('username')
 	query = User.query.filter(User.username.like(f"%{search}%"))
