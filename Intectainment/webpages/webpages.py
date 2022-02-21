@@ -1,4 +1,4 @@
-import html
+import markdown
 import os
 from flask import render_template, send_from_directory, request, redirect, url_for, session, Blueprint, Markup
 
@@ -49,7 +49,6 @@ def profileSearch():
 
 @gui.route("/showPost/<fileName>")
 def md(fileName):
-	import markdown
 	with open('Intectainment/webpages/posts/'+fileName+".txt", 'r') as f:
 		mdIn = f.read()
 		html = markdown.markdown(mdIn)
