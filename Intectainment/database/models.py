@@ -132,6 +132,10 @@ class Category(db.Model):
 	name = db.Column( db.String(80), unique=True, nullable=False )
 
 
+	def __repr__(self):
+		return self.name
+
+
 # init timeout check
 def checkUsers():
 	for key in User.activeUsers.keys():

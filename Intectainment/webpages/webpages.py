@@ -49,68 +49,6 @@ def profileSearch():
 
 	return render_template("main/user/profileSearch.html", users=query.all())
 
-##### Kanäle #####
-@gui.route("/channels", methods=["GET"])
-def channelSearch():
-	name = request.args.get('channelname')
-
-	page_num = 1
-	try:
-		page_num = int(request.args.get("page"))
-	except (ValueError, TypeError):
-		pass
-
-	channels = Channel.query.filter(Channel.name.like(f"%{name}%")).paginate(per_page=20, page=page_num, error_out=False)
-	return render_template("main/channel/channelSearch.html", channels=channels)
-
-@gui.route("/c/<channel>")
-@gui.route("/channel/<channel>")
-def channelView(channel):
-	channel = Channel.query.filter_by(name=channel).first()
-	return render_template("main/channel/channelView.html", channel=channel)
-
-@gui.route("/c/<channel>/settings")
-@gui.route("/channel/<channel>/settings", methods=["GET", "POST"])
-def channelSettings(channel):
-	channel = Channel.query.filter_by(name=channel).first()
-
-	return render_template("main/channel/channelSettings.html", channel=channel, categories=Category.query.all())
-
-
-
-##### Kategorien #####
-@gui.route("/categories", methods=["GET"])
-def viewCategories():
-	page_num = 1
-	try:
-		page_num = int(request.args.get("page"))
-	except (ValueError, TypeError):
-		pass
-
-	categories = Category.query.paginate(per_page=20, page=page_num, error_out=False)
-	return render_template("main/category/categoryList.html", categories = categories)
-
-@gui.route("/categories/new", methods=["GET", "POST"])
-def createCategory():
-	if request.method == "GET":
-		return render_template("main/category/categoryCreation.html")
-	elif request.method == "POST":
-		name = request.form.get("name")
-		if name:
-			if Category.query.filter_by(name=name).count() > 0:
-				#exists allready
-				return render_template("main/category/categoryCreation.html", error="exists", message="Die Kategorie existiert bereits")
-				pass
-			else:
-				category = Category(name=name)
-				db.session.add(category)
-				db.session.commit()
-
-				return render_template("main/category/categoryCreation.html", message="Kategorie erfolgreich erstellt")
-				pass
-		else:
-			return render_template("main/category/categoryCreation.html", error="noargument", message="Name als Argument benötigt")
-
 @gui.route("/showPost/<fileName>")
 def md(fileName):
 	with open('Intectainment/webpages/posts/'+fileName+".txt", 'r') as f:
@@ -152,9 +90,11 @@ def logout():
 	User.logOut()
 	return redirect(url_for("gui.start"))
 
-#Import Admin Interface
+#Import other routing files
+import Intectainment.webpages.channelsCategories
 import Intectainment.webpages.admin
 import Intectainment.webpages.RestInterface
+
 
 app.register_blueprint(ap)
 app.register_blueprint(gui)

@@ -14,9 +14,16 @@
         <tr>
             <td>Name</td>
             <td>{{channel.name}}</td>
-            <td>{{channel.categories}}</td>
+        </tr>
+        <tr>
+            <td>Kategorien</td>
+            <td>
+                {% for cat in channel.categories %}{{cat.name}}, {%endfor%}
+            </td>
         </tr>
     </table>
+
+    <a href="{{url_for('gui.channelSettings', channel=channel.name)}}">Einstellungen</a>
 
     {% else %}
         <h1></h1>
