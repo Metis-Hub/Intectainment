@@ -91,6 +91,9 @@ def logout():
 	return redirect(url_for("gui.start"))
 
 #Import other routing files
+from Intectainment.webpages import admin, channelsCategories, RestInterface
+
+
 
 
 app.register_blueprint(ap)

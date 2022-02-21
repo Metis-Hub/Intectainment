@@ -20,9 +20,11 @@ app.config["SQLALCHEMY_DATABASE_URI"] = config['Database'].get("URI")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = (config['Development'].get("deyMode")) == "yes" #dev state
 db = SQLAlchemy(app)
 # load tables
+import Intectainment.datamodels
 
 #TODO only for dev
 if config['Development'].get("devMode"):
 	db.create_all()
 
 # load webpages
+from Intectainment.webpages import webpages

@@ -1,5 +1,5 @@
 from Intectainment.app import db
-from Intectainment.datamodels import Channel, Category
+from Intectainment.datamodels import Channel, Category, Post
 from Intectainment.webpages.webpages import gui
 from flask import request, render_template, redirect, url_for
 
@@ -101,3 +101,12 @@ def createCategory():
         else:
             return render_template("main/category/categoryCreation.html", error="noargument",
                                    message="Name als Argument benötigt")
+
+@gui.route("/posttest")
+def posttest():
+    channel = Channel.query.filter_by(name="intectainment").first()
+    post = Post(channel_id = channel.id)
+
+    db.session.add(post)
+    db.session.commit()
+    return "jo"

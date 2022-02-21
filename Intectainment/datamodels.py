@@ -1,3 +1,5 @@
+import os.path, datetime, pathlib
+
 from Intectainment.app import db
 from flask import session
 import bcrypt, threading, time, string, random
@@ -15,7 +17,7 @@ Subscription = db.Table('subscribedChannels',
 
 Favorites = db.Table('favoriteBlogs',
     db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
-	db.Column('blog_id', db.Integer, db.ForeignKey('blogentries.id'))
+	db.Column('post_id', db.Integer, db.ForeignKey('posts.id'))
 )
 class User(db.Model):
 	__tablename__ = "users"
@@ -39,7 +41,7 @@ class User(db.Model):
 	email		=	db.Column( db.String(320)	, unique=True	, nullable=False )
 
 	subscriptions = db.relationship("Channel", secondary=Subscription, backref="subscibers")
-	favoriteBlogs = db.relationship("BlogEntry", secondary=Favorites, backref="favUsers")
+	favoriteBlogs = db.relationship("Post", secondary=Favorites, backref="favUsers")
 
 
 	def __repr__(self):
@@ -112,19 +114,43 @@ class Channel(db.Model):
 	description =   db.Column( db.String(80), unique=True, nullable=True )
 
 	categories = db.relationship("Category", secondary=ChannelCategory, backref="channels")
-	entries = db.relationship("BlogEntry", backref="channels")
+	post = db.relationship("Post", backref="channel")
 	
 
 
-class BlogEntry(db.Model):
-	__tablename__ = "blogentries"
-	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-	contentPath = db.Column(db.String(60), nullable=False)
-	modDate = db.Column(db.DateTime, nullable=False)
+class Post(db.Model):
+	__tablename__ = "posts"
+	CONTENTDIRECTORY = "content/posts"
 
+	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+	creationDate = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
+	modDate = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
 	channel_id = db.Column(db.Integer, db.ForeignKey('channels.id'), nullable=False)
 
+	def getContent(self):
+		with open(self.getFilePath(), "r") as file:
+			pass
 
+	def setContent(self, content):
+		with open(self.getFilePath(), "w") as file:
+			file.write(content)
+
+	def getFilePath(self):
+		return os.path.join(os.path.dirname(__file__), self.CONTENTDIRECTORY, f"{self.channel_id}-{self.id}.md")
+
+@db.event.listens_for(Post, 'after_insert')
+def receive_after_insert(mapper, connection, target):
+	if not os.path.isfile(target.getFilePath()):
+		with open(target.getFilePath(), "x") as f:
+			f.write("# Hallo")
+			pass
+	pass
+
+#TODO only triggers if directly deleted from session, not via query -> fix
+@db.event.listens_for(Post, 'before_delete')
+def receive_after_delete(mapper, connection, target):
+	os.remove(target.getFilePath())
+	pass
 
 class Category(db.Model):
 	__tablename__ = "categories"
