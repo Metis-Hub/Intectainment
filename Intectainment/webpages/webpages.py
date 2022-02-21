@@ -1,5 +1,6 @@
+import markdown
 import os
-from flask import render_template, send_from_directory, request, redirect, url_for, session, Blueprint, jsonify
+from flask import render_template, send_from_directory, request, redirect, url_for, session, Blueprint, Markup
 
 from Intectainment.app import app, db
 from Intectainment.database.models import User, Channel, Category
@@ -41,13 +42,12 @@ def profile(search):
 	return render_template("main/user/userProfile.html", searchUser=user)
 
 
-@gui.route("/profileSearch", methods=["GET"])
+@gui.route("/profiles", methods=["GET"])
 def profileSearch():
 	search = request.args.get('username')
 	query = User.query.filter(User.username.like(f"%{search}%"))
 
 	return render_template("main/user/profileSearch.html", users=query.all())
-
 
 ##### Kanäle #####
 @gui.route("/channels", methods=["GET"])
@@ -111,6 +111,13 @@ def createCategory():
 		else:
 			return render_template("main/category/categoryCreation.html", error="noargument", message="Name als Argument benötigt")
 
+@gui.route("/showPost/<fileName>")
+def md(fileName):
+	with open('Intectainment/webpages/posts/'+fileName+".txt", 'r') as f:
+		mdIn = f.read()
+		html = markdown.markdown(mdIn)
+	htmlOut = Markup(html)
+	return render_template("main/markdownTest.html", post=htmlOut)
 
 #TODO: remove
 @gui.route("/test")
