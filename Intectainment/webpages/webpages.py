@@ -1,5 +1,6 @@
+import html
 import os
-from flask import render_template, send_from_directory, request, redirect, url_for, session, Blueprint
+from flask import render_template, send_from_directory, request, redirect, url_for, session, Blueprint, Markup
 
 from Intectainment.app import app
 from Intectainment.database.models import User
@@ -45,6 +46,16 @@ def profileSearch():
 	query = User.query.filter(User.username.like(f"%{search}%"))
 
 	return render_template("main/user/profileSearch.html", users=query.all())
+
+@gui.route("/showPost/<fileName>")
+def md(fileName):
+	import markdown
+	with open('Intectainment/webpages/posts/'+fileName+".txt", 'r') as f:
+		mdIn = f.read()
+		html = markdown.markdown(mdIn)
+		print(fileName)
+	htmlOut = Markup(html)
+	return render_template("main/markdownTest.html", post=htmlOut)
 
 #TODO: remove
 @gui.route("/test")
