@@ -138,7 +138,7 @@ class Post(db.Model):
 	def getContent(self):
 		"""returns the content of post"""
 		with open(self.getFilePath(), "r") as file:
-			pass
+			return file.readlines()
 
 	def setContent(self, content):
 		"""sets the content of the post"""
