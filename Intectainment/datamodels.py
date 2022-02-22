@@ -15,24 +15,13 @@ Subscription = db.Table('subscribedChannels',
     db.Column('user_id', db.Integer, db.ForeignKey('users.id'))
 )
 
-Favorites = db.Table('favoriteBlogs',
+Favorites = db.Table('favoritePost',
     db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
 	db.Column('post_id', db.Integer, db.ForeignKey('posts.id'))
 )
 class User(db.Model):
 	__tablename__ = "users"
-	TIMEOUT_TIME: int = 60*30
 
-	activeUsers:dict = dict()
-	lastActive = time.time()
-	
-	@staticmethod
-	def resetTimeout():
-		if "User" in session:
-			if session["User"] in User.activeUsers:
-				user = User.activeUsers[session["User"]]
-				user.lastActive = time.time()
-	
 	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
 	username	=	db.Column( db.String(80)	, unique=True	, nullable=False )
@@ -41,12 +30,26 @@ class User(db.Model):
 	email		=	db.Column( db.String(320)	, unique=True	, nullable=False )
 
 	subscriptions = db.relationship("Channel", secondary=Subscription, backref="subscibers")
-	favoriteBlogs = db.relationship("Post", secondary=Favorites, backref="favUsers")
+	favoritePosts = db.relationship("Post", secondary=Favorites, backref="favUsers")
 
+	def __init__(self, **kwargs):
+		super(User, self).__init__(**kwargs)
+		self.lastActive = time.time()
 
 	def __repr__(self):
 		return '<User %r>' % self.username
-	
+
+	# Timeout management
+	TIMEOUT_TIME: int = 60 * 30
+	activeUsers: dict = dict()
+	@staticmethod
+	def resetTimeout():
+		if "User" in session:
+			if session["User"] in User.activeUsers:
+				user = User.activeUsers[session["User"]]
+				user.lastActive = time.time()
+
+	# login/logout utility
 	@staticmethod
 	def logIn(username: str, password: str) -> bool:
 		if "User" in session:
@@ -92,18 +95,21 @@ class User(db.Model):
 	def changePassword(self, newPassword: str) -> None:
 		self.password = bcrypt.hashpw(newPassword.encode("utf-8"), bcrypt.gensalt())
 
+	#
 	def getName(self) -> str:
 		return self.displayname or self.username
 
+	#TODO
 	def getContent(self):
 		content = []
 		for sub in self.subscriptions:
 			content.append(sub.entries)
    
 		return content
-	
+
+	#TODO test
 	def getFavoritePosits(self):
-		pass
+		return self.favoritePosts
 
 
 class Channel(db.Model):
@@ -115,6 +121,8 @@ class Channel(db.Model):
 
 	categories = db.relationship("Category", secondary=ChannelCategory, backref="channels")
 	post = db.relationship("Post", backref="channel")
+
+	#TODO add utility
 	
 
 
@@ -128,35 +136,37 @@ class Post(db.Model):
 	channel_id = db.Column(db.Integer, db.ForeignKey('channels.id'), nullable=False)
 
 	def getContent(self):
+		"""returns the content of post"""
 		with open(self.getFilePath(), "r") as file:
 			pass
 
 	def setContent(self, content):
+		"""sets the content of the post"""
 		with open(self.getFilePath(), "w") as file:
 			file.write(content)
 
 	def getFilePath(self):
+		"""returns the path to the related post file"""
 		return os.path.join(os.path.dirname(__file__), self.CONTENTDIRECTORY, f"{self.channel_id}-{self.id}.md")
 
 @db.event.listens_for(Post, 'after_insert')
-def receive_after_insert(mapper, connection, target):
+def createPostFile(mapper, connection, target):
+	"""creates post file in content directory"""
 	if not os.path.isfile(target.getFilePath()):
 		with open(target.getFilePath(), "x") as f:
 			f.write("# Hallo")
-			pass
-	pass
 
 #TODO only triggers if directly deleted from session, not via query -> fix
 @db.event.listens_for(Post, 'before_delete')
-def receive_after_delete(mapper, connection, target):
+def deletePostFile(mapper, connection, target):
+	"""removes post file from content directory"""
+
 	os.remove(target.getFilePath())
-	pass
 
 class Category(db.Model):
 	__tablename__ = "categories"
 	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 	name = db.Column( db.String(80), unique=True, nullable=False )
-
 
 	def __repr__(self):
 		return self.name
@@ -172,4 +182,4 @@ def checkUsers():
 	time.sleep(User.TIMEOUT_TIME)
 afkCheckThread = threading.Thread(name="afkChecker", target=checkUsers)
 afkCheckThread.daemon = True
-afkCheckThread.start()	
+afkCheckThread.start()
