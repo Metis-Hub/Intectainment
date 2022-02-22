@@ -1,0 +1,23 @@
+{#
+  URL: /showPost
+#}
+
+{% extends "defaultLayout.html" %}
+{% block title %}Post{%endblock%}
+
+{% block head %}
+  <script src="https://cdn.rawgit.com/showdownjs/showdown/1.0.1/dist/showdown.min.js"></script>
+  {% endblock %}
+
+{% block content %}
+  <div id="postDiv"></div>
+
+  <script>
+    var text = `{{ post }}`,
+    target = document.getElementById('postDiv'),
+    converter = new showdown.Converter(),
+    html = converter.makeHtml(text);
+    
+    target.innerHTML = html;
+  </script>
+{%endblock%}

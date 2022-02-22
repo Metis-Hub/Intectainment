@@ -51,9 +51,7 @@ def profileSearch():
 def md(fileName):
 	with open('Intectainment/webpages/posts/'+fileName+".txt", 'r') as f:
 		mdIn = f.read()
-		html = markdown.markdown(mdIn)
-	htmlOut = Markup(html)
-	return render_template("main/markdownTest.html", post=htmlOut)
+	return render_template("main/showPost.html", post=mdIn)
 
 #TODO: remove
 @gui.route("/test")
