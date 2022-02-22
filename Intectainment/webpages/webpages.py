@@ -53,6 +53,10 @@ def md(fileName):
 		mdIn = f.read()
 	return render_template("main/showPost.html", post=mdIn)
 
+@gui.route("/newPost/")
+def creaPost():
+	return render_template("main/newPost.html")
+
 #TODO: remove
 @gui.route("/test")
 def test():

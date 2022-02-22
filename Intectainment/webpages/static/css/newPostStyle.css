@@ -1,0 +1,15 @@
+#sourceTA {
+    width: 47%;
+    display: block;
+    float: left;
+    height: 100%;
+    background-color: #eeeeee;
+}
+
+#targetDiv {
+    width: 47%;
+  border: 1px dashed #000000;
+  float: right;
+  height: 100%;
+  padding: 2%;
+}
