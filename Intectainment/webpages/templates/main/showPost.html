@@ -10,14 +10,12 @@
   {% endblock %}
 
 {% block content %}
-  <div id="postDiv"></div>
+  <div id="postDiv">{{ post }}</div>
 
   <script>
-    var text = `{{ post }}`,
-    target = document.getElementById('postDiv'),
-    converter = new showdown.Converter(),
-    html = converter.makeHtml(text);
+    converter = new showdown.Converter();
+    target = document.getElementById('postDiv');
     
-    target.innerHTML = html;
+    target.innerHTML = converter.makeHtml(target.innerHTML);
   </script>
 {%endblock%}

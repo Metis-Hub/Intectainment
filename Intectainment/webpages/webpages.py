@@ -51,7 +51,7 @@ def profileSearch():
 
 @gui.route("/showPost/<fileName>")
 def md(fileName):
-	with open('Intectainment/webpages/posts/'+fileName+".txt", 'r') as f:
+	with open('Intectainment/content/posts/'+fileName+".md", 'r') as f:
 		mdIn = f.read()
 	return render_template("main/showPost.html", post=mdIn)
 
