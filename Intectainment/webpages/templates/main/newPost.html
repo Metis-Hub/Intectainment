@@ -1,0 +1,49 @@
+{#
+    URL: /showPost
+  #}
+  
+  {% extends "defaultLayout.html" %}
+  {% block title %}Post{%endblock%}
+  
+  {% block head %}
+    
+    <script src="https://cdn.rawgit.com/showdownjs/showdown/1.0.1/dist/showdown.min.js"></script>
+    {% endblock %}
+  
+  {% block content %}
+
+    <textarea id="sourceTA" rows="50">
+# Neuer Post
+
+Hier können Sie Posts erstellen.
+
+**Markdown-Syntax:** [www.markdownguide.org](https://www.markdownguide.org/basic-syntax).
+    </textarea>
+    <div id="targetDiv" display="flex"></div>
+  
+    <script>
+        runTime();
+        function run() {
+            var text = document.getElementById('sourceTA').value,
+            target = document.getElementById('targetDiv'),
+            converter = new showdown.Converter(),
+            html = converter.makeHtml(text);
+    
+            target.innerHTML = html;
+        }      
+        
+        // time used instead of keystroke due to missing of last character typed
+        function runTime() {
+            timer = setInterval(function() {
+                run();
+            }, 50);
+        }
+    </script>
+  {%endblock%}
+  
+
+
+
+
+    
+    
