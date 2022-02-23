@@ -149,6 +149,12 @@ class Post(db.Model):
 		"""returns the path to the related post file"""
 		return os.path.join(os.path.dirname(__file__), self.CONTENTDIRECTORY, f"{self.channel_id}-{self.id}.md")
 
+	@staticmethod
+	def cleanPosts():
+		"""deletes all post files that aren't referenced in the database"""
+		#TODO
+		pass
+
 @db.event.listens_for(Post, 'after_insert')
 def createPostFile(mapper, connection, target):
 	"""creates post file in content directory"""
@@ -170,7 +176,6 @@ class Category(db.Model):
 
 	def __repr__(self):
 		return self.name
-
 
 # init timeout check
 def checkUsers():
