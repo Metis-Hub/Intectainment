@@ -138,7 +138,7 @@ class Post(db.Model):
 	def getContent(self):
 		"""returns the content of post"""
 		with open(self.getFilePath(), "r") as file:
-			return file.readlines()
+			return file.read()
 
 	def setContent(self, content):
 		"""sets the content of the post"""
@@ -149,25 +149,29 @@ class Post(db.Model):
 		"""returns the path to the related post file"""
 		return os.path.join(os.path.dirname(__file__), self.CONTENTDIRECTORY, f"{self.channel_id}-{self.id}.md")
 
+	def createFile(self):
+		if not os.path.isfile(self.getFilePath()):
+			with open(self.getFilePath(), "x") as f:
+				f.write("# Hallo")
+
 	@staticmethod
-	def cleanPosts():
-		"""deletes all post files that aren't referenced in the database"""
-		#TODO
-		pass
+	def new(channel_id, content):
+		"""To create a basic Post"""
 
-@db.event.listens_for(Post, 'after_insert')
-def createPostFile(mapper, connection, target):
-	"""creates post file in content directory"""
-	if not os.path.isfile(target.getFilePath()):
-		with open(target.getFilePath(), "x") as f:
-			f.write("# Hallo")
+		post = Post(channel_id=channel_id)
+		db.session.add(post)
+		db.session.commit()
 
-#TODO only triggers if directly deleted from session, not via query -> fix
-@db.event.listens_for(Post, 'before_delete')
-def deletePostFile(mapper, connection, target):
-	"""removes post file from content directory"""
+		post.createFile()
+		post.setContent(content)
 
-	os.remove(target.getFilePath())
+		return post
+
+	def delete(self):
+		os.remove(self.getFilePath())
+		db.session.delete(self)
+
+
 
 class Category(db.Model):
 	__tablename__ = "categories"
