@@ -3,6 +3,8 @@ from Intectainment.datamodels import Channel, Category, Post
 from Intectainment.webpages.webpages import gui
 from flask import request, render_template, redirect, url_for
 
+import datetime
+
 ##### Kanäle #####
 @gui.route("/channels", methods=["GET"])
 def channelSearch():
@@ -39,14 +41,14 @@ def channelCreation():
 @gui.route("/c/<channel>")
 @gui.route("/channel/<channel>")
 def channelView(channel):
-    channel = Channel.query.filter_by(name=channel).first()
+    channel = Channel.query.filter_by(name=channel).first_or_404()
     return render_template("main/channel/channelView.html", channel=channel)
 
 
 @gui.route("/c/<channel>/settings", methods=["GET", "POST"])
 @gui.route("/channel/<channel>/settings", methods=["GET", "POST"])
 def channelSettings(channel):
-    channel = Channel.query.filter_by(name=channel).first()
+    channel = Channel.query.filter_by(name=channel).first_or_404()
 
     if request.method == "POST":
         if request.form.get("addCategory") and request.form.get("category"):
@@ -65,6 +67,44 @@ def channelSettings(channel):
 
     return render_template("main/channel/channelSettings.html", channel=channel, categories=Category.query.all())
 
+##### Posts #####
+@gui.route("/c/<channel>/new", methods=["GET", "POST"])
+@gui.route("/channel/<channel>/new", methods=["GET", "POST"])
+def createPost(channel):
+    channel = Channel.query.filter_by(name=channel).first_or_404()
+
+    if request.method == "POST":
+        post = Post.new(channel.id, request.form.get("content") or "")
+        return redirect(url_for("gui.postView", postid = post.id))
+
+    return render_template("main/post/newPost.html")
+
+@gui.route("/c/<channel>/posts", methods=["GET", "POST"])
+@gui.route("/channel/<channel>/posts", methods=["GET", "POST"])
+def channelPosts(channel):
+    channel = Channel.query.filter_by(name=channel).first_or_404()
+    """A view of all posts of a channel"""
+    #TODO
+    return "", 404
+
+@gui.route("/post/<postid>/edit", methods=["GET", "POST"])
+def postEdit(postid):
+    post = Post.query.filter_by(id = postid).first_or_404()
+
+    if request.method == "POST":
+        if request.form.get("update"):
+            post.setContent(request.form.get("content") or "")
+            post.modDate = datetime.datetime.now()
+            db.session.commit()
+        return redirect(url_for("gui.postView", postid=post.id))
+
+    return render_template("main/post/editPost.html", post=post)
+
+
+@gui.route("/post/<postid>")
+def postView(postid):
+    post = Post.query.filter_by(id = postid).first_or_404()
+    return render_template("main/post/showPost.html", post=post)
 
 ##### Kategorien #####
 @gui.route("/categories", methods=["GET"])
@@ -101,12 +141,3 @@ def createCategory():
         else:
             return render_template("main/category/categoryCreation.html", error="noargument",
                                    message="Name als Argument benötigt")
-
-@gui.route("/posttest")
-def posttest():
-    channel = Channel.query.filter_by(name="intectainment").first()
-    post = Post(channel_id = channel.id)
-
-    db.session.add(post)
-    db.session.commit()
-    return "jo"

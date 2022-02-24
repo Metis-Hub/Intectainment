@@ -11,12 +11,13 @@
 <html>
 	<head>
 		<title>{% block title %}{% endblock %} - Intectainment</title>
+
 		{% block head %}
 		<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 		{% endblock %}
-	   </head>
+
+	</head>
 	<body>
-		<header>{% block header %}{% endblock %}</header>
 		<div id="content">{% block content %}{% endblock %}</div>
 		<div id="footer"> {% block footer %} {% endblock %}</div>
 	</body>

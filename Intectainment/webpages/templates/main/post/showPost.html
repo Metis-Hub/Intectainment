@@ -1,0 +1,29 @@
+{#
+  URL: /showPost
+#}
+
+{% extends "defaultLayout.html" %}
+{% block title %}Post{%endblock%}
+
+{% block head %}
+  {{super()}}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/postStyle.css') }}">
+  <script src="https://cdn.rawgit.com/showdownjs/showdown/1.0.1/dist/showdown.min.js"></script>
+{% endblock %}
+
+{% block content %}
+  <p>Kanal: <a href="{{url_for('gui.channelView', channel=post.channel.name)}}"> {{post.channel.name}}</a> </p>
+  <p>Bearbeiten: <a href="{{url_for('gui.postEdit', postid=post.id)}}">Bearbeiten</a></p>
+  <hr/>
+
+  <div id="postConent">
+{{post.getContent()}}
+  </div>
+
+  <script>
+    target = document.getElementById('postConent');
+    converter = new showdown.Converter();
+
+    target.innerHTML = converter.makeHtml(target.innerHTML);
+  </script>
+{%endblock%}

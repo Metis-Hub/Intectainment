@@ -49,14 +49,6 @@ def profileSearch():
 
 	return render_template("main/user/profileSearch.html", users=query.all())
 
-@gui.route("/showPost/<fileName>")
-def md(fileName):
-	with open('Intectainment/webpages/posts/'+fileName+".txt", 'r') as f:
-		mdIn = f.read()
-		html = markdown.markdown(mdIn)
-	htmlOut = Markup(html)
-	return render_template("main/markdownTest.html", post=htmlOut)
-
 #TODO: remove
 @gui.route("/test")
 def test():
@@ -92,8 +84,6 @@ def logout():
 
 #Import other routing files
 from Intectainment.webpages import admin, channelsCategories, RestInterface
-
-
 
 
 app.register_blueprint(ap)
