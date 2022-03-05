@@ -21,8 +21,8 @@
   </div>
 
   <script>
-    target = document.getElementById('postConent');
-    converter = new showdown.Converter();
+    var target = document.getElementById('postConent');
+    var converter = new showdown.Converter();
 
     target.innerHTML = converter.makeHtml(target.innerHTML);
   </script>

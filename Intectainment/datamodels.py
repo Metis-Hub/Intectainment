@@ -120,7 +120,7 @@ class Channel(db.Model):
 	description =   db.Column( db.String(80), unique=True, nullable=True )
 
 	categories = db.relationship("Category", secondary=ChannelCategory, backref="channels")
-	post = db.relationship("Post", backref="channel")
+	posts = db.relationship("Post", backref="channel")
 
 	#TODO add utility
 	
