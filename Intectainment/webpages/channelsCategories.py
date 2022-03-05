@@ -8,16 +8,13 @@ import datetime
 ##### Kanäle #####
 @gui.route("/channels", methods=["GET"])
 def channelSearch():
-    name = request.args.get('channelname')
-
     page_num = 1
     try:
         page_num = int(request.args.get("page"))
     except (ValueError, TypeError):
         pass
 
-    channels = Channel.query.filter(Channel.name.like(f"%{name}%")).paginate(per_page=20, page=page_num,
-                                                                             error_out=False)
+    channels = Channel.query.filter(Channel.name.like(f"%{request.args.get('channelname', '')}%")).paginate(per_page=20, page=page_num, error_out=False)
     return render_template("main/channel/channelSearch.html", channels=channels)
 
 

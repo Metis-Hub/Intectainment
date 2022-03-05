@@ -11,10 +11,11 @@
     <h1>{{channel.name}}</h1>
 
     <table>
+        {% if channel.description %}
         <tr>
-            <td>Name</td>
-            <td>{{channel.name}}</td>
+            {{channel.description}}
         </tr>
+        {%endif%}
         <tr>
             <td>Kategorien</td>
             <td>
