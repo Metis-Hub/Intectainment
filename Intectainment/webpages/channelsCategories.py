@@ -38,8 +38,16 @@ def channelCreation():
 @gui.route("/c/<channel>")
 @gui.route("/channel/<channel>")
 def channelView(channel):
+    page_num = 1
+    try:
+        page_num = int(request.args.get("page"))
+    except (ValueError, TypeError):
+        pass
+
     channel = Channel.query.filter_by(name=channel).first_or_404()
-    return render_template("main/channel/channelView.html", channel=channel)
+    posts = Post.query.filter_by(channel_id=channel.id).paginate(per_page=20, page=page_num, error_out=False)
+
+    return render_template("main/channel/channelView.html", channel=channel, posts=posts)
 
 
 @gui.route("/c/<channel>/settings", methods=["GET", "POST"])
@@ -75,14 +83,6 @@ def createPost(channel):
         return redirect(url_for("gui.postView", postid = post.id))
 
     return render_template("main/post/newPost.html")
-
-@gui.route("/c/<channel>/posts", methods=["GET", "POST"])
-@gui.route("/channel/<channel>/posts", methods=["GET", "POST"])
-def channelPosts(channel):
-    channel = Channel.query.filter_by(name=channel).first_or_404()
-    """A view of all posts of a channel"""
-    #TODO
-    return "", 404
 
 @gui.route("/post/<postid>/edit", methods=["GET", "POST"])
 def postEdit(postid):
