@@ -15,22 +15,18 @@
 {% block content %}
     <h1>{{channel.name}}</h1>
 
-    <table>
-        {% if channel.description %}
-        <tr><td>{{channel.description}}<td/></tr>
-        {%endif%}
+    {% if channel.description %}
+    <p>{{channel.description}}</p>
+    {%endif%}
 
-        <tr>
-            <td>Kategorien</td>
-            <td>
+    <p>
+        Kategorien:
                 {% if channel.categories | length > 0 %}
                 {% for cat in channel.categories %}{{cat.name}}, {%endfor%}
                 {%else%}
                 keine
                 {%endif%}
-            </td>
-        </tr>
-    </table>
+    </p>
 
     <a href="{{url_for('gui.channelSettings', channel=channel.name)}}">Einstellungen</a>
 

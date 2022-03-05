@@ -29,7 +29,6 @@
                     {%endif%}
                 </table>
             </td>
-
             <td>
                 <form method="POST">
                     <input list="categories" placeholder="Kategorie" name="category"/>
@@ -37,6 +36,16 @@
                         {% for cat in categories %}<option value="{{cat.name}}">{% endfor %}
                     </datalist>
                     <input type="submit" name="addCategory" value="Hinzufügen"/>
+                </form>
+            </td>
+        </tr>
+
+        <tr>
+            <td>Beschreibung</td>
+            <td>
+                <form method="POST">
+                    <input type="text" name="description" placeholder="Beschreibung" value="{{channel.description or ''}}"/>
+                    <input type="submit" name="changeDescription" value="Bestätigen"/>
                 </form>
             </td>
         </tr>

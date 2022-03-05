@@ -69,6 +69,9 @@ def channelSettings(channel):
         elif request.form.get("deleteCategory") and request.form.get("category"):
             channel.categories.remove(Category.query.filter_by(name=request.form.get("category")).first())
             db.session.commit()
+        elif request.form.get("changeDescription"):
+            channel.description = request.form.get("description", "")
+            db.session.commit()
 
     return render_template("main/channel/channelSettings.html", channel=channel, categories=Category.query.all())
 
