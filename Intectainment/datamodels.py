@@ -117,7 +117,7 @@ class Channel(db.Model):
 
 	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 	name	=	db.Column( db.String(80), unique=True, nullable=False )
-	description =   db.Column( db.String(80), unique=True, nullable=True )
+	description =   db.Column( db.String(80), nullable=True )
 
 	categories = db.relationship("Category", secondary=ChannelCategory, backref="channels")
 	posts = db.relationship("Post", backref="channel")
