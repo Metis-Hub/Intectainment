@@ -12,10 +12,98 @@
 	<head>
 		<title>{% block title %}{% endblock %} - Intectainment</title>
 
-		{% block head %}
 		<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-		{% endblock %}
-
+		<link href="//cdn.muicss.com/mui-0.10.3/css/mui.min.css" rel="stylesheet" type="text/css" />
+    	<script src="//cdn.muicss.com/mui-0.10.3/js/mui.min.js"></script>
+    	<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+    	<script scr="https://unpkg.com/interactjs/dist/interact.min.js"></script>
+		<style type="text/css">
+        	.sidebar {
+            	height: 95vh;
+            	width: 12vw;
+            	border-right: 1px solid darkgray;
+        	}
+        	.container {
+            	display: flex;
+            	justify-content: center; 
+        	}
+        	#sidebar-block {
+            	height: 7vh;
+        	}
+        	#centered-button {
+            	margin-top: 0px;
+            	position: absolute;
+        	}
+        	.statusbar {
+            	border-top: 1px solid darkgray;
+            	height: 4vh;
+            	vertical-align: middle;
+            	text-align: center;
+        	}
+        	.master-container {
+            	margin: 0px;
+        	}
+        	#drag-1, #drag-2 {
+            	width: 25%;
+            	min-height: 6.5em;
+            	margin: 1rem 0 0 1rem;
+            	background-color: #29e;
+            	color: white;
+            	border-radius: 0.75em;
+            	padding: 4%;
+            	touch-action: none;
+            	user-select: none;
+            	transform: translate(0px, 0px);
+        	}
+        	.tabcontent {
+  				display: none;
+  				height: 95vh;
+  				border-top: none;
+  				width: 88vw;
+			}
+			.firsttab {
+    			display: block;
+			}
+			.tablinks {
+    			min-width: 12vw;
+    			max-width: 12vw;
+			}
+			.searchbar {
+    			height: 8vh;
+    			border-bottom: 1px solid darkgray;
+			}
+			.blog-entries {
+    			height: 87vh;
+    			width: 72%;
+    			overflow: auto;
+			}
+			.channels {
+    			height: 87vh;
+    			width: 28%;
+    			border-left:  1px solid darkgray;
+    			overflow: auto;
+			}
+			.content-container {
+    			display: flex;
+    			justify-content: center;
+    			height: 90vh;
+			}
+			.search {
+    			max-width: 150  px;
+    			vertical-align: middle;
+			}
+			.blog {    
+    			width: 60%;
+    			height: 20%;
+    			border: 1px solid darkgray;
+    			position: relative;
+    			text-align: center;
+    			display: block;
+    			margin-left: auto;
+    			margin-right: auto;
+    			margin-top: 2%;
+			}
+    	</style>
 	</head>
 	<body>
 		<div id="content">{% block content %}{% endblock %}</div>

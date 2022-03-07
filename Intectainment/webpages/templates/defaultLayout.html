@@ -1,17 +1,76 @@
 {% extends "baseLayout.html" %}
 
 
+
 {% block head %}
-    {{super()}}
-    <!-- Style sheets here -->
-    
+    {{ super() }}
 {% endblock %}
 
-{# Navbar #}
-{% block header %}
-  {% block navbar %}
-    <nav>
-        {% block navbar_content %}{% endblock %}
-    </nav>
-  {% endblock %}
+
+{% block content %}
+{{super()}}
+{% block navbar %}
+  <div class="master-container">
+    <div class="container">
+
+  <div class="sidebar">
+    <div id="sidebar-block" class="mui--divider-bottom">
+        <div id="centered-button tab">
+            <button class="mui-btn mui-btn--flat mui-btn--primary tablinks" onClick="openTab(event, '1')">
+                Übersicht
+            </button>
+        </div>
+    </div>
+    <div id="sidebar-block" class="mui--divider-bottom">
+        <div id="centered-button tab">
+            <button class="mui-btn mui-btn--flat mui-btn--primary tablinks" onClick="openTab(event, '2')">
+                Entdecken
+            </button>
+        </div>
+    </div>
+    <div id="sidebar-block" class="mui--divider-bottom">
+        <div id="centered-button tab">
+            <button class="mui-btn mui-btn--flat mui-btn--primary tablinks" onClick="openTab(event, '3')">
+                Mein Kanal
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- the three different pages accesable from the sidebar -->
+
+{% block navbar_content %}
+        
 {% endblock %}
+
+</div>
+<div class="statusbar">Keine Internetverbindung</div>
+</div>
+
+<script>
+tabcontent = document.getElementsByClassName("tabcontent");
+
+tabcontent[0].style.display="block"
+function openTab(evt, tabname) {
+var i, tabcontent, tablinks;
+tabcontent = document.getElementsByClassName("tabcontent");
+for (i = 0; i < tabcontent.length; i++) {
+tabcontent[i].style.display = "none";
+}
+tablinks = document.getElementsByClassName("tablinks");
+for (i = 0; i < tablinks.length; i++) {
+tablinks[i].className = tablinks[i].className.replace(" active", "");
+}
+document.getElementById(tabname).style.display = "block";
+evt.currentTarget.className += " active";
+}
+
+
+
+</script>
+
+      
+  
+  
+{% endblock %}
+{%endblock%}

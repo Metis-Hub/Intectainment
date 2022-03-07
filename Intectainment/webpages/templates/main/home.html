@@ -3,161 +3,46 @@
 #}
 
 {% extends "defaultLayout.html" %}
-{% block title %}Start{%endblock%}
 
-{% block content %}
+{% block title %}Home{%endblock%}
 
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="//cdn.muicss.com/mui-0.10.3/css/mui.min.css" rel="stylesheet" type="text/css" />
-        <script src="//cdn.muicss.com/mui-0.10.3/js/mui.min.js"></script>
-        <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
-        <script scr="https://unpkg.com/interactjs/dist/interact.min.js"></script>
-        <!-- body { background: blue; }
-        * { color: red; } -->
-        <style type="text/css">
-            .sidebar {
-                height: 95vh;
-                width: 12vw;
-                border-right: 1px solid darkgray;
-            }
-            .main {
-                width: 88vw;
-                padding-left: 20px;
-                padding-top: 20px;
-            }
-            .container {
-                display: flex;
-                justify-content: center;
-                height: 95vh;
-            }
-            #sidebar-block {
-                height: 7vh;
-                
-            }
-            #centered-button {
-                margin-top: 0px;
-                position: absolute;
-            }
-            .statusbar {
-                border-top: 1px solid darkgray;
-                height: 1vh;
-                vertical-align: middle;
-                text-align: center;
-            }
-            .master-container {
-                margin: 0px;
-            }
-            #drag-1, #drag-2 {
-  width: 25%;
-  min-height: 6.5em;
-  margin: 1rem 0 0 1rem;
-  background-color: #29e;
-  color: white;
-  border-radius: 0.75em;
-  padding: 4%;
-  touch-action: none;
-  user-select: none;
-  transform: translate(0px, 0px);
-}
-        </style>
-
-    </head>
-
-    <body>
-        <div class="master-container">
-        <div class="container">
-            <div class="sidebar">
-                <div id="sidebar-block" class="mui--divider-bottom">
-                    <div id="centered-button">
-                        <button class="mui-btn mui-btn--flat mui-btn--primary">
-                            Übersicht
-                        </button>
-                    </div>
-                </div>
-                <div id="sidebar-block" class="mui--divider-bottom">
-                    <div id="centered-button">
-                        <button class="mui-btn mui-btn--flat mui-btn--primary">
-                            Entdecken
-                        </button>
-                    </div>
-                </div>
-                <div id="sidebar-block" class="mui--divider-bottom">
-                    <div id="centered-button">
-                        <button class="mui-btn mui-btn--flat mui-btn--primary">
-                            Mein Kanal
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div class="main">Willkommen Nutzer
-                <div id="drag-1" class="draggable">wtf</div>
-            </div>
-            
-        </div>
-        <div class="statusbar">Keine Internetverbindung</div>
-        </div>
-
-        <script type="module">
-        import interact from 
-'https://cdn.interactjs.io/v1.10.11/interactjs/index.js'
-        interact('.draggable')
-            .draggable({
+{% block head %} 
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-
-
-              // enable inertial throwing
-              inertia: true,
-              // keep the element within the area of it's parent
-              modifiers: [
-                interact.modifiers.restrictRect({
-                  restriction: 'parent',
-                  endOnly: true
-                })
-              ],
-              // enable autoScroll
-              autoScroll: false,
-          
-              listeners: {
-                // call this function on every dragmove event
-                move: dragMoveListener,
-          
-                // call this function on every dragend event
-                end (event) {
-                  var textEl = event.target.querySelector('p')
-          
-                  textEl && (textEl.textContent =
-                    'moved a distance of ' +
-                    (Math.sqrt(Math.pow(event.pageX - event.x0, 2) +
-                               Math.pow(event.pageY - event.y0, 2) | 0))
-                      .toFixed(2) + 'px')
-                }
-              }
-            })
-          
-          function dragMoveListener (event) {
-            var target = event.target
-            // keep the dragged position in the data-x/data-y attributes
-            var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx
-            var y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy
-          
-            // translate the element
-            target.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
-          
-            // update the posiion attributes
-            target.setAttribute('data-x', x)
-            target.setAttribute('data-y', y)
-          }
-          console.log("hey du ficker")
-          // this function is used later in the resizing and gesture demos
-          window.dragMoveListener = dragMoveListener</script>
-    
-    </body>
-    </html>
-
+{%endblock%}
+        
+{% block navbar_content%}
+{{ super() }}
+<div id="1" class="tabcontent firsttab">Willkommen Nutzer
+  <div id="drag-1" class="draggable">wtf</div>
+  <button class="test" onClick="showTitle('https://twitter.com/PlayVALORANT?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor')">Titel holen</button>
+  <div class="title"></div>
+</div>
+<div id="2" class="tabcontent">
+      <div class="searchbar">
+          <div class="mui-textfield search">
+              <input type="text" placeholder="Search">
+          </div>
+      </div>
+      <div class="content-container">
+          <div class="blog-entries">Blogs
+              <div class="blog"></div>
+              <div class="blog"></div>
+              <div class="blog"></div>
+              <div class="blog"></div>
+              <div class="blog"></div>
+              <div class="blog"></div>
+          </div>
+          <div class="channels">Channels
+              <div class="blog"></div>
+              <div class="blog"></div>
+              <div class="blog"></div>
+          </div>
+      </div>
+</div>
+<div id="3" class="tabcontent">dein scheiss kanal</div>
 
 {%endblock%}
