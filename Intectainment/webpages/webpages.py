@@ -1,4 +1,3 @@
-import markdown
 import os
 from flask import render_template, send_from_directory, request, redirect, url_for, Blueprint, Markup
 
