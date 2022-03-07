@@ -1,7 +1,9 @@
-from email.headerregistry import SingleAddressHeader
+import os.path, datetime, pathlib
+
 from Intectainment.app import db
 from flask import session
 import bcrypt, threading, time, string, random
+
 
 ChannelCategory = db.Table('channelCategories',
     db.Column('category_id', db.Integer, db.ForeignKey('categories.id'), primary_key=True),
@@ -13,24 +15,13 @@ Subscription = db.Table('subscribedChannels',
     db.Column('user_id', db.Integer, db.ForeignKey('users.id'))
 )
 
-Favorites = db.Table('favoriteBlogs',
+Favorites = db.Table('favoritePost',
     db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
-	db.Column('blog_id', db.Integer, db.ForeignKey('blogentries.id'))
+	db.Column('post_id', db.Integer, db.ForeignKey('posts.id'))
 )
 class User(db.Model):
 	__tablename__ = "users"
-	TIMEOUT_TIME: int = 60*30
 
-	activeUsers:dict = dict()
-	lastActive = time.time()
-	
-	@staticmethod
-	def resetTimeout():
-		if "User" in session:
-			if session["User"] in User.activeUsers:
-				user = User.activeUsers[session["User"]]
-				user.lastActive = time.time()
-	
 	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
 	username	=	db.Column( db.String(80)	, unique=True	, nullable=False )
@@ -39,12 +30,26 @@ class User(db.Model):
 	email		=	db.Column( db.String(320)	, unique=True	, nullable=False )
 
 	subscriptions = db.relationship("Channel", secondary=Subscription, backref="subscibers")
-	favoriteBlogs = db.relationship("BlogEntry", secondary=Favorites, backref="favUsers")
+	favoritePosts = db.relationship("Post", secondary=Favorites, backref="favUsers")
 
+	def __init__(self, **kwargs):
+		super(User, self).__init__(**kwargs)
+		self.lastActive = time.time()
 
 	def __repr__(self):
 		return '<User %r>' % self.username
-	
+
+	# Timeout management
+	TIMEOUT_TIME: int = 60 * 30
+	activeUsers: dict = dict()
+	@staticmethod
+	def resetTimeout():
+		if "User" in session:
+			if session["User"] in User.activeUsers:
+				user = User.activeUsers[session["User"]]
+				user.lastActive = time.time()
+
+	# login/logout utility
 	@staticmethod
 	def logIn(username: str, password: str) -> bool:
 		if "User" in session:
@@ -90,18 +95,21 @@ class User(db.Model):
 	def changePassword(self, newPassword: str) -> None:
 		self.password = bcrypt.hashpw(newPassword.encode("utf-8"), bcrypt.gensalt())
 
+	#
 	def getName(self) -> str:
 		return self.displayname or self.username
 
+	#TODO
 	def getContent(self):
 		content = []
 		for sub in self.subscriptions:
 			content.append(sub.entries)
    
 		return content
-	
+
+	#TODO test
 	def getFavoritePosits(self):
-		pass
+		return self.favoritePosts
 
 
 class Channel(db.Model):
@@ -109,30 +117,69 @@ class Channel(db.Model):
 
 	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 	name	=	db.Column( db.String(80), unique=True, nullable=False )
-	description =   db.Column( db.String(80), unique=True, nullable=True )
+	description =   db.Column( db.String(80), nullable=True )
 
-	categories = db.relationship("Category", secondary=ChannelCategory)
-	entries = db.relationship("BlogEntry", backref="channel")
+	categories = db.relationship("Category", secondary=ChannelCategory, backref="channels")
+	posts = db.relationship("Post", backref="channel")
 
-	#TODO: remove (example code)
+	#TODO add utility
 	
 
 
-class BlogEntry(db.Model):
-	__tablename__ = "blogentries"
-	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-	contentPath = db.Column(db.String(60), nullable=False)
-	modDate = db.Column(db.DateTime, nullable=False)
+class Post(db.Model):
+	__tablename__ = "posts"
+	CONTENTDIRECTORY = "content/posts"
 
+	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+	creationDate = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
+	modDate = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
 	channel_id = db.Column(db.Integer, db.ForeignKey('channels.id'), nullable=False)
+
+	def getContent(self):
+		"""returns the content of post"""
+		with open(self.getFilePath(), "r") as file:
+			return file.read()
+
+	def setContent(self, content):
+		"""sets the content of the post"""
+		with open(self.getFilePath(), "w") as file:
+			file.write(content)
+
+	def getFilePath(self):
+		"""returns the path to the related post file"""
+		return os.path.join(os.path.dirname(__file__), self.CONTENTDIRECTORY, f"{self.channel_id}-{self.id}.md")
+
+	def createFile(self):
+		if not os.path.isfile(self.getFilePath()):
+			with open(self.getFilePath(), "x") as f:
+				f.write("# Hallo")
+
+	@staticmethod
+	def new(channel_id, content):
+		"""To create a basic Post"""
+
+		post = Post(channel_id=channel_id)
+		db.session.add(post)
+		db.session.commit()
+
+		post.createFile()
+		post.setContent(content)
+
+		return post
+
+	def delete(self):
+		os.remove(self.getFilePath())
+		db.session.delete(self)
 
 
 
 class Category(db.Model):
 	__tablename__ = "categories"
 	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-	name	=	db.Column( db.String(80)	, unique=True	, nullable=False )
+	name = db.Column( db.String(80), unique=True, nullable=False )
 
+	def __repr__(self):
+		return self.name
 
 # init timeout check
 def checkUsers():
@@ -143,5 +190,5 @@ def checkUsers():
 		
 	time.sleep(User.TIMEOUT_TIME)
 afkCheckThread = threading.Thread(name="afkChecker", target=checkUsers)
-afkCheckThread.setDaemon(True)
-afkCheckThread.start()	
+afkCheckThread.daemon = True
+afkCheckThread.start()

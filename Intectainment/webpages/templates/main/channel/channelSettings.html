@@ -1,0 +1,60 @@
+{#
+    URL: /channel/(channel)
+    Description: Displays channel details
+#}
+
+{% extends "defaultLayout.html" %}
+{% block title %}Kanalansicht{%endblock%}
+
+{% block content %}
+    {% if channel%}
+    <h1>{{channel.name}}</h1>
+
+    <table>
+        <tr>
+            <td>Kategorien</td>
+            <td>
+                <table>
+                    {% if channel.categories | length > 0 %}
+                    {%for cat in channel.categories %}
+                    <tr>
+                        <form method="POST">
+                            <td>{{cat.name}}</td>
+                            <td><input type="submit" value="Löschen" name="deleteCategory"/> <input type="hidden" name="category" value="{{cat.name}}"/></td>
+                        </form>
+                    </tr>
+                    {%endfor%}
+                    {%else%}
+                        <tr><td>keine</td></tr>
+                    {%endif%}
+                </table>
+            </td>
+            <td>
+                <form method="POST">
+                    <input list="categories" placeholder="Kategorie" name="category"/>
+                    <datalist id="categories">
+                        {% for cat in categories %}<option value="{{cat.name}}">{% endfor %}
+                    </datalist>
+                    <input type="submit" name="addCategory" value="Hinzufügen"/>
+                </form>
+            </td>
+        </tr>
+
+        <tr>
+            <td>Beschreibung</td>
+            <td>
+                <form method="POST">
+                    <input type="text" name="description" placeholder="Beschreibung" value="{{channel.description or ''}}"/>
+                    <input type="submit" name="changeDescription" value="Bestätigen"/>
+                </form>
+            </td>
+        </tr>
+    </table>
+
+    <a href="{{url_for('gui.channelView', channel=channel.name)}}">Ansicht</a>
+
+    {% else %}
+        <h1></h1>
+        <p> Dieser Kanal scheint nicht zu existieren </p>
+    {% endif %}
+{%endblock%}

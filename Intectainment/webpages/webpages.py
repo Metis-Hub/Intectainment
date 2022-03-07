@@ -1,8 +1,9 @@
+import markdown
 import os
-from flask import render_template, send_from_directory, request, redirect, url_for, session, Blueprint
+from flask import render_template, send_from_directory, request, redirect, url_for, Blueprint, Markup
 
 from Intectainment.app import app
-from Intectainment.database.models import User
+from Intectainment.datamodels import User
 
 gui: Blueprint = Blueprint("gui", __name__)
 ap: Blueprint = Blueprint("interface", __name__, url_prefix="/interface")
@@ -36,11 +37,13 @@ def dashboard():
 @gui.route("/profile/<search>")
 @gui.route("/p/<search>")
 def profile(search):
+	# TODO: paginate query result
+
 	user = User.query.filter_by(username=search).first()
 	return render_template("main/user/userProfile.html", searchUser=user)
 
 
-@gui.route("/profileSearch", methods=["GET"])
+@gui.route("/profiles", methods=["GET"])
 def profileSearch():
 	search = request.args.get('username')
 	query = User.query.filter(User.username.like(f"%{search}%"))
@@ -80,13 +83,12 @@ def logout():
 	User.logOut()
 	return redirect(url_for("gui.start"))
 
+#Import other routing files
+from Intectainment.webpages import admin, channelsCategories, RestInterface
+
 
 app.register_blueprint(ap)
 app.register_blueprint(gui)
-
-#Import Admin Interface
-import Intectainment.webpages.admin
-
 
 
 ##### Favicon #####

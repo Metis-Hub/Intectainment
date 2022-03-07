@@ -1,0 +1,35 @@
+{#
+    URL: /channels
+    Description:
+#}
+
+{% extends "defaultLayout.html" %}
+{% block title %}Kanalsuche{%endblock%}
+
+{% block content %}
+    <form method="get">
+        <label>Kanal-Suche</label>
+        <input type="text" placeholder="Kanalname" value="{{request.args.get('channelname', '')}}" name="channelname"/>
+        <input type="submit" value="Suchen"/>
+    </form>
+
+    {%if channels.total>0%}
+        <p> Gefundene Kanäle ({{channels.total}}): </p>
+        {%for channel in channels.items%}
+            <a href="c/{{channel.name}}"> {{channel.name}} </a><br/>
+        {%endfor%}
+    {%else%}
+        <p> Es wurden keine Kanäle gefunden </p>
+    {%endif%}
+
+    {%if channels.pages > 1 %}
+    <hr/>
+    {% for page in channels.iter_pages() %}
+        {%if page%}
+            <a href="?channelname={{request.args.get('channelname', '')}}&page={{page}}">{{page}}</a>
+        {%else%}
+            ...
+        {%endif%}
+    {% endfor %}
+    {%endif%}
+{%endblock%}
