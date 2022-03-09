@@ -2,7 +2,7 @@ import os
 from flask import render_template, send_from_directory, request, redirect, url_for, Blueprint, Markup
 
 from Intectainment.app import app
-from Intectainment.datamodels import User
+from Intectainment.datamodels import User, Channel
 
 gui: Blueprint = Blueprint("gui", __name__)
 ap: Blueprint = Blueprint("interface", __name__, url_prefix="/interface")
@@ -21,7 +21,7 @@ def start():
 
 @gui.route("/home")
 def home():
-	return render_template("main/home.html")
+	return render_template("main/home.html", channels=Channel.query.paginate(per_page=20, page=1, error_out=False))
 #	if not User.isLoggedIn():
 #		return redirect(url_for("interface.login"))
 #	else:

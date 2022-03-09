@@ -3,15 +3,22 @@
     Description:
 #}
 
-{% extends "defaultLayout.html" %}
+{% extends "baseLayout.html" %}
 {% block title %}Kanalsuche{%endblock%}
 
 {% block content %}
+
     <form method="get">
-        <label>Kanal-Suche</label>
-        <input type="text" placeholder="Kanalname" value="{{request.args.get('channelname', '')}}" name="channelname"/>
-        <input type="submit" value="Suchen"/>
+        <div class="mb-3">
+            <div class="left">
+                <label for="searchbar" class="form-label search"></label>
+                <input type="text" class="form-control search" name="channelname" placeholder="Kanalname" value="{{request.args.get('channelname', '')}}">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
     </form>
+
+    <div class="temp">
 
     {%if channels.total>0%}
         <p> Gefundene Kanäle ({{channels.total}}): </p>
@@ -32,4 +39,6 @@
         {%endif%}
     {% endfor %}
     {%endif%}
+
+    </div>
 {%endblock%}
