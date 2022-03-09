@@ -1,0 +1,42 @@
+{#
+    URL: /home/discover
+#}
+
+{% extends "defaultLayout.html" %}
+
+{% block maincontent%}
+<form method="get">
+    <div class="hey">
+        <div class="left">
+            <label for="searchbar" class="form-label search"></label>
+            <input type="text" class="form-control search bg-dark text-white" placeholder="Kanalname">
+            <button type="submit" class="btn btn-outline-primary search-button bg-dark">Submit</button>
+        </div>
+    </div>
+</form>
+
+
+<div class="content-container">
+    <div class="blog-entries">Blogs
+        <div class="blog"></div>
+        <div class="blog"></div>
+        <div class="blog"></div>
+        <div class="blog"></div>
+        <div class="blog"></div>
+        <div class="blog"></div>
+    
+    </div>
+    <div class="channels text-white">Channels<p></p>
+        {%if channels.total>0%}
+            {%for channel in channels.items%}
+                <div class="blog">
+                    <a href="/c/{{channel.name}}"> {{channel.name}} </a>
+                </div>
+            {%endfor%}
+        {%else%}
+            <p> Es wurden keine Kanäle gefunden </p>
+        {%endif%}
+</div>
+</div>
+
+{%endblock%}

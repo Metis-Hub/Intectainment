@@ -21,16 +21,26 @@ def start():
 
 @gui.route("/home")
 def home():
-	return render_template("main/home.html", channels=Channel.query.paginate(per_page=20, page=1, error_out=False))
+	return render_template("main/home.html")
 #	if not User.isLoggedIn():
 #		return redirect(url_for("interface.login"))
 #	else:
 #h		return render_template("main/home.html")
 
-@gui.route("/dashboard")
+@gui.route("/home/dashboard")
 def dashboard():
-	return render_template("main/dashboard.html")
-	pass
+	return render_template("main/home/dashboard.html")
+
+@gui.route("/home/discover")
+def discover():
+	return render_template("main/home/discover.html", channels=Channel.query.paginate(per_page=20, page=1, error_out=False))
+
+@gui.route("/home/userchannel")
+def userchannel():
+	return render_template("main/home/userchannel.html")
+
+
+
 
 ##### Profile #####
 @gui.route("/profile/<search>")

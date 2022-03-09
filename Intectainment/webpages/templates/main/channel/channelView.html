@@ -13,7 +13,13 @@
 {% endblock %}
 
 {% block content %}
-    <h1>{{channel.name}}</h1>
+{{super()}}
+    
+      
+{%endblock%}
+
+{% block maincontent%}
+<h1>{{channel.name}}</h1>
 
     {% if channel.description %}
     <p>{{channel.description}}</p>
@@ -53,13 +59,16 @@
     {%endif%}
 
 
-      <script>
-        var converter = new showdown.Converter();
-        var contents = document.getElementsByClassName('postContent');
+{%endblock%}
 
-        for (var i = 0; i < contents.length; i++) {
-            var target = contents.item(i);
-            target.innerHTML = converter.makeHtml(target.innerHTML);
-        }
-      </script>
+{% block js %}
+<script>
+    var converter = new showdown.Converter();
+    var contents = document.getElementsByClassName('postContent');
+
+    for (var i = 0; i < contents.length; i++) {
+        var target = contents.item(i);
+        target.innerHTML = converter.makeHtml(target.innerHTML);
+    }
+  </script>
 {%endblock%}
