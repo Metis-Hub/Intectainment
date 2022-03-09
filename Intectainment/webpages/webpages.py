@@ -49,6 +49,11 @@ def profileSearch():
 
 	return render_template("main/user/profileSearch.html", users=query.all())
 
+@gui.route("/newPost")
+def newPost():
+	return render_template("main/post/newPost.html")
+	
+
 #TODO: remove
 @gui.route("/test")
 def test():
