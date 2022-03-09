@@ -90,7 +90,7 @@ class User(db.Model):
 		return None
 			
 	def validatePassword(self, password: str) -> bool:
-		return bcrypt.checkpw(password.encode("utf-8"), self.password)
+		return bcrypt.checkpw(password.encode("utf-8"), self.password.encode("utf-8"))
 
 	def changePassword(self, newPassword: str) -> None:
 		self.password = bcrypt.hashpw(newPassword.encode("utf-8"), bcrypt.gensalt())
