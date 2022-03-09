@@ -4,6 +4,7 @@ from flask import render_template, send_from_directory, request, redirect, url_f
 
 from Intectainment.app import app
 from Intectainment.datamodels import User
+from Intectainment.imageuploder import upload_image, diplay_image
 
 gui: Blueprint = Blueprint("gui", __name__)
 ap: Blueprint = Blueprint("interface", __name__, url_prefix="/interface")
@@ -13,7 +14,6 @@ ap: Blueprint = Blueprint("interface", __name__, url_prefix="/interface")
 def before_request():
 	User.resetTimeout()
 	pass
-
 
 ##### Home/Start ######
 @gui.route("/")
@@ -81,6 +81,32 @@ def logout():
 	"""logout access point"""
 	User.logOut()
 	return redirect(url_for("gui.start"))
+
+##### Images #####
+@ap.route("/upload")
+def upload_form():
+	return render_template("img/upload.html")
+
+@ap.route("/upload/", methods=["POST"])
+def upload_image_r():
+	return upload_image()
+
+@ap.route("/img/<folder>/<filename>")
+def diplay_image_r(folder, filename):
+	return diplay_image(folder, filename)
+
+"""@ap.route("/img/c/<filename>")
+def foo(filename):
+	return diplay_image("c", filename)
+
+@ap.route("/img/p/<filename>")
+def foo(filename):
+	return diplay_image("p", filename)
+
+@ap.route("/img/usr/<filename>")
+def foo(filename):
+	return diplay_image("usr", filename)"""
+
 
 #Import other routing files
 from Intectainment.webpages import admin, channelsCategories, RestInterface
