@@ -137,8 +137,12 @@ class Post(db.Model):
 
 	def getContent(self):
 		"""returns the content of post"""
-		with open(self.getFilePath(), "r") as file:
-			return file.read()
+		try:
+			with open(self.getFilePath(), "r") as file:
+				return file.read()
+		except FileNotFoundError:
+			self.createFile()
+			return ""
 
 	def setContent(self, content):
 		"""sets the content of the post"""
@@ -152,7 +156,7 @@ class Post(db.Model):
 	def createFile(self):
 		if not os.path.isfile(self.getFilePath()):
 			with open(self.getFilePath(), "x") as f:
-				f.write("# Hallo")
+				pass
 
 	@staticmethod
 	def new(channel_id, content):

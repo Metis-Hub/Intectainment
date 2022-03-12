@@ -2,10 +2,28 @@ from Intectainment.app import db
 from Intectainment.webpages.webpages import gui
 from Intectainment.datamodels import User, Channel, Post, Category
 
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request, redirect, url_for, session
 
 
 admin: Blueprint = Blueprint("admin", __name__, url_prefix="/admin")
+
+@admin.before_request
+def before_request():
+    if not session.get("admin"):
+        return redirect(url_for("gui.adminLogin"))
+
+@gui.route("/admin/login", methods=["GET", "POST"])
+def adminLogin():
+    if request.method == "POST":
+        if "password" and "username" in request.form:
+
+            # TODO
+            print(request.form)
+            if request.form.get("password") == "günter":
+                session["admin"] = True
+                return redirect(url_for("gui.admin.main"))
+
+    return render_template("admin/adminLogin.html")
 
 @admin.route("/")
 def main():
