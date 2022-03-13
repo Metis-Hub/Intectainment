@@ -83,15 +83,15 @@ def logout():
 	return redirect(url_for("gui.start"))
 
 ##### Images #####
-@ap.route("/upload")
+@app.route("/upload/")
 def upload_form():
 	return render_template("img/upload.html")
 
-@ap.route("/upload/", methods=["POST"])
+@app.route("/upload/", methods=["POST"])
 def upload_image_r():
 	return upload_image()
 
-@ap.route("/img/<folder>/<filename>")
+@app.route("/img/<folder>/<filename>")
 def diplay_image_r(folder, filename):
 	return diplay_image(folder, filename)
 

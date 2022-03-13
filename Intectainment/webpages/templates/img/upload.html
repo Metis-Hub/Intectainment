@@ -1,5 +1,7 @@
 <!doctype html>
-<title>Python Flask File Upload Example</title>
+<html>
+<head>
+<title>Python Flask File Upload Example</title></head> <body>
 <h2>Select a file to upload</h2>
 <p>
 	{% with messages = get_flashed_messages() %}
@@ -14,7 +16,7 @@
 </p>
 {% if filename %}
 	<div>
-		<img src="{{ url_for('display_image', filename=filename) }}">
+		<img src="{{ url_for(path=path) }}">
 	</div>
 {% endif %}
 <form method="post" action="/upload/" enctype="multipart/form-data">
@@ -27,3 +29,5 @@
 		<input type="submit" value="Submit">
 	</p>
 </form>
+</body>
+</html>
