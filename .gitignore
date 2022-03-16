@@ -136,3 +136,4 @@ run.bat
 *.db
 config.conf
 .idea/*
+Intectainment/content/posts/*.md

@@ -1,0 +1,42 @@
+/* style specally for markdown renders */
+
+.postcontainer {
+    display: flex;
+    overflow-y: auto;
+    flex-flow: row wrap;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    align-content: row;
+    flex-direction: row;
+    height: 80vh;
+}
+
+.nopostcontainer {
+    height: 80vh;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-content: column;
+    flex-direction: column;
+}
+
+.postcontainer::-webkit-scrollbar { 
+    display: none;
+}
+
+.post-margin {
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.channelinfo {
+    height: 20vh;
+    text-align: center;
+    border-bottom: 1px solid darkgray;
+}
+
+.wtf {
+    max-height: 50vh;
+}

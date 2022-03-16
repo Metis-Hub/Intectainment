@@ -1,8 +1,8 @@
 import os
-from flask import render_template, send_from_directory, request, redirect, url_for, session, Blueprint
+from flask import render_template, send_from_directory, request, redirect, url_for, Blueprint, Markup
 
 from Intectainment.app import app
-from Intectainment.database.models import User
+from Intectainment.datamodels import User, Channel
 
 gui: Blueprint = Blueprint("gui", __name__)
 ap: Blueprint = Blueprint("interface", __name__, url_prefix="/interface")
@@ -27,15 +27,27 @@ def home():
 #	else:
 #h		return render_template("main/home.html")
 
-@gui.route("/dashboard")
+@gui.route("/home/dashboard")
 def dashboard():
-	return render_template("main/dashboard.html")
-	pass
+	return render_template("main/home/dashboard.html")
+
+@gui.route("/home/discover")
+def discover():
+	return render_template("main/home/discover.html", channels=Channel.query.paginate(per_page=20, page=1, error_out=False))
+
+@gui.route("/home/userchannel")
+def userchannel():
+	return render_template("main/home/userchannel.html")
+
+
+
 
 ##### Profile #####
 @gui.route("/profile/<search>")
 @gui.route("/p/<search>")
 def profile(search):
+	# TODO: paginate query result
+
 	user = User.query.filter_by(username=search).first()
 	return render_template("main/user/userProfile.html", searchUser=user)
 
@@ -80,13 +92,12 @@ def logout():
 	User.logOut()
 	return redirect(url_for("gui.start"))
 
+#Import other routing files
+from Intectainment.webpages import admin, channelsCategories, RestInterface
+
 
 app.register_blueprint(ap)
 app.register_blueprint(gui)
-
-#Import Admin Interface
-import Intectainment.webpages.admin
-
 
 
 ##### Favicon #####

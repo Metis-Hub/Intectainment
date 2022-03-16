@@ -1,0 +1,44 @@
+{#
+    URL: /showPost
+  #}
+  
+  {% extends "defaultLayout.html" %}
+  {% block title %}Post bearbeiten{%endblock%}
+  
+  {% block head %}
+    {{super()}}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/postStyle.css') }}">
+    <script src="https://cdn.rawgit.com/showdownjs/showdown/1.0.1/dist/showdown.min.js"></script>
+  {% endblock %}
+  
+  {% block content %}
+    <form method="POST">
+        <input type="submit" name="update" value="Updaten"/>
+        <input type="submit" name="exit" value="Abbrechen"/>
+        <br/>
+
+        <textarea name="content" id="conent" rows="50" cols="100" oninput="run()">
+{{post.getContent()}}
+        </textarea>
+        <div id="rendert" display="flex"></div>
+    </form>
+
+    <script>
+        function run() {
+            var text = document.getElementById('conent').value,
+            target = document.getElementById('rendert'),
+            converter = new showdown.Converter(),
+            html = converter.makeHtml(text);
+    
+            target.innerHTML = html;
+        }
+        run()
+    </script>
+  {%endblock%}
+  
+
+
+
+
+    
+    
