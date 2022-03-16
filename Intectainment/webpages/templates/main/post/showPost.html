@@ -12,6 +12,28 @@
 {% endblock %}
 
 {% block content %}
+<div class="offcanvas offcanvas-start" id="demo">
+  <div class="offcanvas-header">
+    <h1 class="offcanvas-title">Heading</h1>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+  </div>
+  <div class="offcanvas-body">
+    <p>Some text lorem ipsum.</p>
+    <p>Some text lorem ipsum.</p>
+    <p>Some text lorem ipsum.</p>
+    <button class="btn btn-secondary" type="button">A Button</button>
+  </div>
+</div>
+
+<div class="container-fluid mt-3">
+  <h3>Offcanvas Sidebar</h3>
+  <p>Offcanvas is similar to modals, except that it is often used as a sidebar.</p>
+  <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#demo">
+    Open Offcanvas Sidebar
+  </button>
+</div>
+
+
   <p>Kanal: <a href="{{url_for('gui.channelView', channel=post.channel.name)}}"> {{post.channel.name}}</a> </p>
   <p>Bearbeiten: <a href="{{url_for('gui.postEdit', postid=post.id)}}">Bearbeiten</a></p>
   <hr/>
@@ -26,4 +48,10 @@
 
     target.innerHTML = converter.makeHtml(target.innerHTML);
   </script>
+{%endblock%}
+
+{% block js %}
+<script>
+
+</script>
 {%endblock%}
