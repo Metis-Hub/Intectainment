@@ -19,7 +19,7 @@
 		<img src="{{ url_for(path=path) }}">
 	</div>
 {% endif %}
-<form method="post" action="/upload/" enctype="multipart/form-data">
+<form method="post" action="{{ this_url }}" enctype="multipart/form-data">
     <dl>
 		<p>
 			<input type="file" name="file" autocomplete="off" required>

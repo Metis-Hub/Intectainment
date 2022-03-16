@@ -4,7 +4,7 @@ from flask import render_template, send_from_directory, request, redirect, url_f
 
 from Intectainment.app import app
 from Intectainment.datamodels import User
-from Intectainment.imageuploder import upload_image, diplay_image
+from Intectainment.imageuploder import upload_image, display_image
 
 gui: Blueprint = Blueprint("gui", __name__)
 ap: Blueprint = Blueprint("interface", __name__, url_prefix="/interface")
@@ -83,30 +83,25 @@ def logout():
 	return redirect(url_for("gui.start"))
 
 ##### Images #####
-@app.route("/upload/")
-def upload_form():
-	return render_template("img/upload.html")
+@app.route("/upload/<type>/<id>/")
+def upload_form(type, id):
+	return render_template("img/upload.html")#, action_path=type + "/" + id)
 
-@app.route("/upload/", methods=["POST"])
-def upload_image_r():
-	return upload_image()
+@app.route("/upload/<type>/<id>/", methods=["POST"])
+def upload_image_r(type, id):
+	if type == "c" or type == "usr":
+		return upload_image(folder=type, name=id)
+	elif type == "p":
+		return upload_image(folder=type, subfolder=id)
+	return
 
-@app.route("/img/<folder>/<filename>")
-def diplay_image_r(folder, filename):
-	return diplay_image(folder, filename)
+@app.route("/img/<type>/<filename>")
+def display_image_r0(type, filename):
+	return display_image(type, filename)
 
-"""@ap.route("/img/c/<filename>")
-def foo(filename):
-	return diplay_image("c", filename)
-
-@ap.route("/img/p/<filename>")
-def foo(filename):
-	return diplay_image("p", filename)
-
-@ap.route("/img/usr/<filename>")
-def foo(filename):
-	return diplay_image("usr", filename)"""
-
+@app.route("/img/p/<post_id>/<filename>")
+def display_image_r1(post_id, filename):
+	return display_image("p/" + post_id, filename)
 
 #Import other routing files
 from Intectainment.webpages import admin, channelsCategories, RestInterface
