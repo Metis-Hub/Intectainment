@@ -1,6 +1,7 @@
 from Intectainment.app import db
 from Intectainment.webpages.webpages import gui
 from Intectainment.datamodels import User, Channel, Post, Category
+from Intectainment.util import admin_required
 
 from flask import Blueprint, render_template, request, redirect, url_for, session
 
@@ -8,22 +9,10 @@ from flask import Blueprint, render_template, request, redirect, url_for, sessio
 admin: Blueprint = Blueprint("admin", __name__, url_prefix="/admin")
 
 @admin.before_request
+@admin_required
 def before_request():
-    if not session.get("admin"):
-        return redirect(url_for("gui.adminLogin"))
+    pass
 
-@gui.route("/admin/login", methods=["GET", "POST"])
-def adminLogin():
-    if request.method == "POST":
-        if "password" and "username" in request.form:
-
-            # TODO
-            print(request.form)
-            if request.form.get("password") == "günter":
-                session["admin"] = True
-                return redirect(url_for("gui.admin.main"))
-
-    return render_template("admin/adminLogin.html")
 
 @admin.route("/")
 def main():
@@ -92,7 +81,7 @@ def setup():
                 channel = Channel(name=f"Kanal{i}", description="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.")
                 db.session.add(channel)
 
-            for userConfig in [("Admin", "Password"), ("Jakob", "1234"), ("Karl", "C++"), ("Tom", "MATERIALUI"), ("Bruno", "adenosintriphosphat")]:
+            for userConfig in [("Jakob", "1234"), ("Karl", "C++"), ("Tom", "MATERIALUI"), ("Bruno", "adenosintriphosphat")]:
                 user = User()
                 user.username = userConfig[0]
                 user.email = f"{userConfig[0]}@intectainment.de"
