@@ -85,7 +85,7 @@ def logout():
 ##### Images #####
 @app.route("/upload/<type>/<id>/")
 def upload_form(type, id):
-	return render_template("img/upload.html")#, action_path=type + "/" + id)
+	return render_template("img/upload.html")
 
 @app.route("/upload/<type>/<id>/", methods=["POST"])
 def upload_image_r(type, id):
