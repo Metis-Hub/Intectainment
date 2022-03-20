@@ -1,9 +1,8 @@
-import markdown
 import os
-from flask import render_template, send_from_directory, request, redirect, url_for, Blueprint, Markup
+from flask import render_template, send_from_directory, request, redirect, url_for, Blueprint
 
-from Intectainment.app import app
-from Intectainment.datamodels import User
+from Intectainment.app import app, db
+from Intectainment.datamodels import User, Post
 from Intectainment.util import login_required
 from Intectainment.imageuploder import upload_image, display_image
 

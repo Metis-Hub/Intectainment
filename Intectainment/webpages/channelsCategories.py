@@ -1,5 +1,5 @@
 from Intectainment.app import db
-from Intectainment.datamodels import Channel, Category, Post
+from Intectainment.datamodels import Channel, Category, Post, User
 from Intectainment.webpages.webpages import gui
 from Intectainment.util import login_required
 
@@ -109,8 +109,14 @@ def postEdit(postid):
 
 @gui.route("/post/<postid>")
 def postView(postid):
+    if request.method == "POST":
+        if User.isLoggedIn() and User.getCurrentUser().permission >= User.PERMISSION.MODERATOR:
+            if post := Post.query.filter_by(id=postid).first():
+                post.delete()
+                db.session.commit()
+
     post = Post.query.filter_by(id = postid).first_or_404()
-    return render_template("main/post/showPost.html", post=post)
+    return render_template("main/post/showPost.html", post=post, user=User.getCurrentUser())
 
 ##### Kategorien #####
 @gui.route("/categories", methods=["GET"])
