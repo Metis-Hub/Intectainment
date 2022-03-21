@@ -1,11 +1,18 @@
 from Intectainment.app import db
 from Intectainment.webpages.webpages import gui
-from Intectainment.datamodels import User
+from Intectainment.datamodels import User, Channel, Post, Category
+from Intectainment.util import admin_required
 
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request, redirect, url_for, session
 
 
 admin: Blueprint = Blueprint("admin", __name__, url_prefix="/admin")
+
+@admin.before_request
+@admin_required
+def before_request():
+    pass
+
 
 @admin.route("/")
 def main():
@@ -13,9 +20,9 @@ def main():
 
 @admin.route("/user", methods= ["GET", "POST"])
 def userconfig():
-    if(request.method == "GET"):
+    if request.method == "GET":
         return render_template("admin/userConfig.html")
-    elif(request.method == "POST"):
+    elif request.method == "POST":
         post = request.form
 
         if post.get("createUser"):
@@ -62,7 +69,34 @@ def userconfig():
         return redirect(url_for("gui.admin.userconfig"))
     pass
 
+@admin.route("/setuphelp", methods= ["GET", "POST"])
+def setup():
+    if request.method == "POST":
+        if request.form.get("createDefault"):
+            for channelConfig in [("Intectainment", "Intectainment ist ein Infotainmentsystem"), ("SRZ-III", "Algorithmierung"), ("SRZ-IV", "Was weiß denn ich")]:
+                channel = Channel(name=channelConfig[0], description=channelConfig[1])
+                db.session.add(channel)
 
+            for i in range(100):
+                channel = Channel(name=f"Kanal{i}", description="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.")
+                db.session.add(channel)
+
+            for userConfig in [("Jakob", "1234"), ("Karl", "C++"), ("Tom", "MATERIALUI"), ("Bruno", "adenosintriphosphat")]:
+                user = User()
+                user.username = userConfig[0]
+                user.email = f"{userConfig[0]}@intectainment.de"
+                user.changePassword(userConfig[1])
+                db.session.add(user)
+
+            for category in ["Python", "Flask", "Java", "Infotainment", "Informationsübertragung", "CSS", "JavaScript", "Markdown"]:
+                db.session.add(Category(name=category))
+
+            db.session.commit()
+
+
+            return render_template("admin/setup.html", success = True)
+
+    return render_template("admin/setup.html")
 
 
 gui.register_blueprint(admin)

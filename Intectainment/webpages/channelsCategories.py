@@ -1,6 +1,8 @@
 from Intectainment.app import db
-from Intectainment.datamodels import Channel, Category, Post
+from Intectainment.datamodels import Channel, Category, Post, User
 from Intectainment.webpages.webpages import gui
+from Intectainment.util import login_required
+
 from flask import request, render_template, redirect, url_for
 
 import datetime
@@ -8,20 +10,18 @@ import datetime
 ##### Kanäle #####
 @gui.route("/channels", methods=["GET"])
 def channelSearch():
-    name = request.args.get('channelname')
-
     page_num = 1
     try:
         page_num = int(request.args.get("page"))
     except (ValueError, TypeError):
         pass
 
-    channels = Channel.query.filter(Channel.name.like(f"%{name}%")).paginate(per_page=20, page=page_num,
-                                                                             error_out=False)
+    channels = Channel.query.filter(Channel.name.like(f"%{request.args.get('channelname', '')}%")).paginate(per_page=20, page=page_num, error_out=False)
     return render_template("main/channel/channelSearch.html", channels=channels)
 
 
 @gui.route("/channels/new", methods=["GET", "POST"])
+@login_required
 def channelCreation():
     if request.method == "POST":
         name = request.form.get("name")
@@ -41,12 +41,21 @@ def channelCreation():
 @gui.route("/c/<channel>")
 @gui.route("/channel/<channel>")
 def channelView(channel):
+    page_num = 1
+    try:
+        page_num = int(request.args.get("page"))
+    except (ValueError, TypeError):
+        pass
+
     channel = Channel.query.filter_by(name=channel).first_or_404()
-    return render_template("main/channel/channelView.html", channel=channel)
+    posts = Post.query.filter_by(channel_id=channel.id).paginate(per_page=20, page=page_num, error_out=False)
+
+    return render_template("main/channel/channelView.html", channel=channel, posts=posts)
 
 
 @gui.route("/c/<channel>/settings", methods=["GET", "POST"])
 @gui.route("/channel/<channel>/settings", methods=["GET", "POST"])
+@login_required
 def channelSettings(channel):
     channel = Channel.query.filter_by(name=channel).first_or_404()
 
@@ -64,12 +73,16 @@ def channelSettings(channel):
         elif request.form.get("deleteCategory") and request.form.get("category"):
             channel.categories.remove(Category.query.filter_by(name=request.form.get("category")).first())
             db.session.commit()
+        elif request.form.get("changeDescription"):
+            channel.description = request.form.get("description", "")
+            db.session.commit()
 
     return render_template("main/channel/channelSettings.html", channel=channel, categories=Category.query.all())
 
 ##### Posts #####
 @gui.route("/c/<channel>/new", methods=["GET", "POST"])
 @gui.route("/channel/<channel>/new", methods=["GET", "POST"])
+@login_required
 def createPost(channel):
     channel = Channel.query.filter_by(name=channel).first_or_404()
 
@@ -79,15 +92,8 @@ def createPost(channel):
 
     return render_template("main/post/newPost.html")
 
-@gui.route("/c/<channel>/posts", methods=["GET", "POST"])
-@gui.route("/channel/<channel>/posts", methods=["GET", "POST"])
-def channelPosts(channel):
-    channel = Channel.query.filter_by(name=channel).first_or_404()
-    """A view of all posts of a channel"""
-    #TODO
-    return "", 404
-
 @gui.route("/post/<postid>/edit", methods=["GET", "POST"])
+@login_required
 def postEdit(postid):
     post = Post.query.filter_by(id = postid).first_or_404()
 
@@ -103,8 +109,14 @@ def postEdit(postid):
 
 @gui.route("/post/<postid>")
 def postView(postid):
+    if request.method == "POST":
+        if User.isLoggedIn() and User.getCurrentUser().permission >= User.PERMISSION.MODERATOR:
+            if post := Post.query.filter_by(id=postid).first():
+                post.delete()
+                db.session.commit()
+
     post = Post.query.filter_by(id = postid).first_or_404()
-    return render_template("main/post/showPost.html", post=post)
+    return render_template("main/post/showPost.html", post=post, user=User.getCurrentUser())
 
 ##### Kategorien #####
 @gui.route("/categories", methods=["GET"])
@@ -120,6 +132,7 @@ def viewCategories():
 
 
 @gui.route("/categories/new", methods=["GET", "POST"])
+@login_required
 def createCategory():
     if request.method == "GET":
         return render_template("main/category/categoryCreation.html")

@@ -1,9 +1,9 @@
-import markdown
 import os
-from flask import render_template, send_from_directory, request, redirect, url_for, Blueprint, Markup
+from flask import render_template, send_from_directory, request, redirect, url_for, Blueprint
 
-from Intectainment.app import app
-from Intectainment.datamodels import User
+from Intectainment.app import app, db
+from Intectainment.datamodels import User, Post
+from Intectainment.util import login_required
 from Intectainment.imageuploder import upload_image, display_image
 
 gui: Blueprint = Blueprint("gui", __name__)
@@ -21,23 +21,18 @@ def start():
 	return render_template("main/start.html", user=User.getCurrentUser())
 
 @gui.route("/home")
+@login_required
 def home():
-	if not User.isLoggedIn():
-		return redirect(url_for("interface.login"))
-	else:
-		return render_template("main/home.html")
+	return render_template("main/home.html")
 
 @gui.route("/dashboard")
 def dashboard():
 	return render_template("main/dashboard.html")
-	pass
 
 ##### Profile #####
 @gui.route("/profile/<search>")
 @gui.route("/p/<search>")
 def profile(search):
-	# TODO: paginate query result
-
 	user = User.query.filter_by(username=search).first()
 	return render_template("main/user/userProfile.html", searchUser=user)
 
@@ -49,6 +44,11 @@ def profileSearch():
 
 	return render_template("main/user/profileSearch.html", users=query.all())
 
+
+@gui.route("/login", methods=["GET"])
+def login():
+	return render_template("main/login.html", redirect="gui.home")
+
 #TODO: remove
 @gui.route("/test")
 def test():
@@ -59,13 +59,13 @@ def test():
 def login():
 	"""login access point"""
 	if User.isLoggedIn():
-		return redirect(request.form.get("redirect") or url_for("gui.home"))
+		return redirect(request.form.get("redirect") or request.referrer)
 
 	if request.method == "POST":
 		if "username" and "password" in request.form:
 			if User.logIn(request.form["username"], request.form["password"]):
 				#success
-				return redirect(request.form.get("redirect") or url_for("gui.home"))
+				return redirect(request.form.get("redirect") or request.referrer)
 			else:
 				#failed login
 				url = request.referrer

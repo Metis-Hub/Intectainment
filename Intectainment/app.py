@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-import configparser, os
+import configparser, os, sys
 
 # init config
 config = configparser.ConfigParser()
@@ -19,14 +19,33 @@ app.config["UPLOAD_FOLDER"] = os.path.join(os.path.dirname(__file__), app.static
 
 ## init database
 app.config["SQLALCHEMY_DATABASE_URI"] = config['Database'].get("URI")
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = (config['Development'].get("deyMode")) == "yes" #dev state
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
+
 # load tables
 import Intectainment.datamodels
 
-#TODO only for dev
-if config['Development'].get("devMode"):
+#first initialisation
+from Intectainment.datamodels import User
+if "--init" in sys.argv[1:] or "-i" in sys.argv[1:]:
 	db.create_all()
+
+	# create default super user
+	if not User.query.filter_by(username = "Admin").first():
+		user = User()
+		user.permission = User.PERMISSION.ADMIN
+		user.username = "Admin"
+		user.changePassword("intectainment")
+		db.session.add(user)
+		db.session.commit()
+
+	for dir in ["content/posts"]:
+		path = os.path.join(os.path.dirname(__file__), dir)
+		if not os.path.exists(path):
+			os.makedirs(path)
+
+
+	print("Initialisation finished")
 
 # load webpages
 from Intectainment.webpages import webpages
