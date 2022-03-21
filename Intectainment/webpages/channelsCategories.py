@@ -107,13 +107,17 @@ def postEdit(postid):
     return render_template("main/post/editPost.html", post=post)
 
 
-@gui.route("/post/<postid>")
+@gui.route("/post/<postid>", methods=["GET", "POST"])
 def postView(postid):
     if request.method == "POST":
-        if User.isLoggedIn() and User.getCurrentUser().permission >= User.PERMISSION.MODERATOR:
-            if post := Post.query.filter_by(id=postid).first():
-                post.delete()
-                db.session.commit()
+        if "delete" in request.form:
+            channel = ""
+            if User.isLoggedIn() and User.getCurrentUser().permission >= User.PERMISSION.MODERATOR:
+                if post := Post.query.filter_by(id=postid).first():
+                    channel = post.channel.name;
+                    post.delete()
+                    db.session.commit()
+            return redirect(url_for("gui.channelView", channel = channel))
 
     post = Post.query.filter_by(id = postid).first_or_404()
     return render_template("main/post/showPost.html", post=post, user=User.getCurrentUser())
