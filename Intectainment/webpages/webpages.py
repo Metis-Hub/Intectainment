@@ -13,7 +13,6 @@ ap: Blueprint = Blueprint("interface", __name__, url_prefix="/interface")
 @gui.before_request
 def before_request():
 	User.resetTimeout()
-	pass
 
 
 ##### Home/Start ######
@@ -97,11 +96,11 @@ def upload_image_r(type, id):
 	return
 
 @app.route("/img/<type>/<filename>")
-def display_image_r0(type, filename):
+def display_image_(type, filename):
 	return display_image(type, filename)
 
 @app.route("/img/p/<post_id>/<filename>")
-def display_image_r1(post_id, filename):
+def display_image_posts(post_id, filename):
 	return display_image("p/" + post_id, filename)
 
 #Import other routing files
@@ -115,8 +114,8 @@ app.register_blueprint(gui)
 ##### Favicon #####
 @app.route("/favicon.ico")
 def getIcon():
-    return send_from_directory(os.path.join(app.root_path, 'webpages/static'),
-                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
+	return send_from_directory(os.path.join(app.root_path, 'webpages/static'),
+							   'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 ##### Errors #####
 @app.errorhandler(404)
