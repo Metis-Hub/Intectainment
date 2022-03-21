@@ -48,10 +48,6 @@ def profileSearch():
 	query = User.query.filter(User.username.like(f"%{search}%"))
 
 	return render_template("main/user/profileSearch.html", users=query.all())
-
-@gui.route("/newPost")
-def newPost():
-	return render_template("main/post/newPost.html")
 	
 
 #TODO: remove
