@@ -42,7 +42,7 @@ def profileSearch():
 	search = request.args.get('username')
 	query = User.query.filter(User.username.like(f"%{search}%"))
 
-	return render_template("main/user/profileSearch.html", users=query.all())
+	return render_template("main/user/profiles.html", users=query.all())
 
 
 @gui.route("/login", methods=["GET"])
