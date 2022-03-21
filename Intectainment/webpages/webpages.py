@@ -1,10 +1,8 @@
-from ast import dump
-from dbm import dumb
 import os
 from flask import render_template, send_from_directory, request, redirect, url_for, Blueprint, Markup
 
 from Intectainment.app import app
-from Intectainment.datamodels import Favorites, User, Channel
+from Intectainment.datamodels import User, Channel
 
 gui: Blueprint = Blueprint("gui", __name__)
 ap: Blueprint = Blueprint("interface", __name__, url_prefix="/interface")
@@ -41,11 +39,6 @@ def discover():
 def userchannel():
 	return render_template("main/home/userchannel.html")
 
-@gui.route("/home/favorites")
-def favorites():
-	dump(User.getCurrentUser())
-	favorites = User.getFavoritePosts(User.getCurrentUser())
-	return render_template("main/home/dashboard.html", favs=favorites)
 
 
 

@@ -5,24 +5,6 @@
 {% extends "defaultLayout.html" %}
 {% block title %}Dashboard{%endblock%}
 
-
-{%if favs%}
-    <p> Gefundene Posts ({{favs|length}}): </p>
-    {%for post in favs%}
-        <div class="card bg-dark text-white" style="width: 12rem;" id="touch">
-            <img src="..." class="card-img-top" alt="...">
-            <div class="card-body">
-            <h5 class="card-title">{{post.getContent()[0]}}</h5>
-            <p class="card-text">Beispieltext</p>
-            <a href="#" class="btn btn-outline-primary">Zum Post</a>
-            </div>
-        </div>
-    {%endfor%}
-    {%else%}
-        <p> Es gibt noch keine gemerkten Posts." </p>
-{%endif%}
-
-
 {% block content %}
 
 {%endblock%}
