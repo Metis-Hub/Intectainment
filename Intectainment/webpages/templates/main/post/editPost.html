@@ -8,7 +8,7 @@
   {% block head %}
     {{super()}}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/postStyle.css') }}">
-    <script src="https://cdn.rawgit.com/showdownjs/showdown/1.0.1/dist/showdown.min.js"></script>
+    <script src="https://cdn.rawgit.com/showdownjs/showdown/1.9.0/dist/showdown.min.js"></script>
   {% endblock %}
   
   {% block content %}
@@ -27,7 +27,7 @@
         function run() {
             var text = document.getElementById('conent').value,
             target = document.getElementById('rendert'),
-            converter = new showdown.Converter(),
+            converter = new showdown.Converter({tables: true, strikethrough: true, tasklists: true}),
             html = converter.makeHtml(text);
     
             target.innerHTML = html;
