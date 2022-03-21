@@ -14,6 +14,11 @@
 {% block content %}
   <p>Kanal: <a href="{{url_for('gui.channelView', channel=post.channel.name)}}"> {{post.channel.name}}</a> </p>
   <p>Bearbeiten: <a href="{{url_for('gui.postEdit', postid=post.id)}}">Bearbeiten</a></p>
+  {%if user and user.permission >= user.PERMISSION.MODERATOR%}
+    <form method="POST">
+      <input type="submit" name="delete" value="Löschen"/>
+    </form>
+  {%endif%}
   <hr/>
 
   <div id="postConent">
