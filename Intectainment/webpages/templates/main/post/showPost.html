@@ -45,6 +45,7 @@
   <script>
     var target = document.getElementById('postConent');
     var converter = new showdown.Converter();
+    var converter = new showdown.Converter({tables: true, strikethrough: true, tasklists: true});
 
     target.innerHTML = converter.makeHtml(target.innerHTML);
   </script>
