@@ -107,7 +107,7 @@ def postEdit(postid):
     return render_template("main/post/editPost.html", post=post)
 
 
-@gui.route("/post/<postid>")
+@gui.route("/post/<postid>", methods=["GET", "POST"])
 def postView(postid):
     if request.method == "POST":
         if User.isLoggedIn() and User.getCurrentUser().permission >= User.PERMISSION.MODERATOR:

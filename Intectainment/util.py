@@ -7,7 +7,7 @@ def login_required(f, permission=User.PERMISSION.USER):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if User.isLoggedIn():
-            if not permission or User.getCurrentUser().permission >= User.PERMISSION.ADMIN:
+            if not permission or User.getCurrentUser().permission >= permission:
                 return f(*args, **kwargs)
             else:
                 #TODO
