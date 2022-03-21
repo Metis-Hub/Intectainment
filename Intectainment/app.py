@@ -19,6 +19,9 @@ app.config["SECRET_KEY"] = config['Server'].get("secretKey", fallback="replaceWh
 app.config["SQLALCHEMY_DATABASE_URI"] = config['Database'].get("URI")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = (config['Development'].get("deyMode")) == "yes" #dev state
 db = SQLAlchemy(app)
+
+db.session.expire_on_commit = False
+
 # load tables
 import Intectainment.datamodels
 

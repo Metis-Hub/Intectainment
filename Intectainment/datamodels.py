@@ -19,6 +19,7 @@ Favorites = db.Table('favoritePost',
     db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
 	db.Column('post_id', db.Integer, db.ForeignKey('posts.id'))
 )
+
 class User(db.Model):
 	__tablename__ = "users"
 
@@ -110,7 +111,6 @@ class User(db.Model):
 	#TODO test
 	def getFavoritePosts(self):
 		return self.favoritePosts
-
 
 class Channel(db.Model):
 	__tablename__ = "channels"
