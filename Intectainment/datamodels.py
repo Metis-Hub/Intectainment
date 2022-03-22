@@ -37,6 +37,10 @@ class User(db.Model):
 	permission	=	db.Column( db.Integer, default=PERMISSION.USER)
 
 	subscriptions = db.relationship("Channel", secondary=Subscription, backref="subscibers")
+	# user = User.query.filter_by(id=User.getCurrentUser().id).first()
+	# subscr = 
+	# db.session.add()
+	# db.session.commit()
 	favoritePosts = db.relationship("Post", secondary=Favorites, backref="favUsers")
 
 	def __init__(self, **kwargs):
