@@ -117,7 +117,14 @@ def postView(postid):
                     channel = post.channel.name;
                     post.delete()
                     db.session.commit()
-            return redirect(url_for("gui.channelView", channel = channel))
+        if "favorize" in request.form:
+            pass
+            # TODO
+        if "defavorize" in request.form:
+            pass
+            # TODO
+            
+return redirect(url_for("gui.channelView", channel = channel))
 
     post = Post.query.filter_by(id = postid).first_or_404()
     return render_template("main/post/showPost.html", post=post, user=User.getCurrentUser())
