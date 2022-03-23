@@ -37,6 +37,57 @@
     border-bottom: 1px solid darkgray;
 }
 
-.wtf {
-    max-height: 50vh;
+.big-icon {
+    font-size:26px;
+    display: block;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.text {
+    display: inline;
+}
+
+.forms {
+    display: flex;
+    margin-top: 1vh;
+    margin-left: 1vw;
+    margin-right: 1vw;
+}
+
+.post-ta {
+    word-wrap: break-word;
+    max-height: 84vh;
+}
+
+.preview {
+    max-width: 48vw;
+    word-wrap: break-word;
+    margin-left: 10px;
+    overflow-y: auto;
+    max-height: 84vh;
+    min-height: 84vh;
+}
+.edit-post-header {
+    margin-left: 1vw;
+    margin-top: 1vh;
+}
+.edit-post-button {
+    margin-left: 1vw;
+    margin-top: 1vh;
+}
+
+.post-content {
+    max-width: 99vw;
+    max-height:90vh;
+    word-wrap: break-word;
+    overflow-y: auto;
+    margin-left: 1vw;
+}
+
+.menu-icon {
+    font-size: 26px;
+    position: absolute;
+    right: 2vw;
+    bottom: 1vh;
 }
