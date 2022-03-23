@@ -15,7 +15,7 @@
     <form method="POST">
         <input type="submit" name="update" value="Updaten"/>
         <input type="submit" name="exit" value="Abbrechen"/>
-        <a href="http://{{ server }}/upload/tmp/{{ postid }}/" onclick="open_wnd(this.href); return false">Bild hochladen</a>
+        <a href="http://{{ server }}/upload/p/{{ postid }}/" onclick="open_wnd(this.href); return false">Bild hochladen</a>
         <br />
         <textarea name="content" id="conent" rows="50" cols="100" oninput="run()">
 {{ post.getContent() }}
