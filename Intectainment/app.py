@@ -22,11 +22,6 @@ app.config["SQLALCHEMY_DATABASE_URI"] = config['Database'].get("URI")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
-<<<<<<< HEAD
-db.session.expire_on_commit = False
-
-=======
->>>>>>> main
 # load tables
 import Intectainment.datamodels
 

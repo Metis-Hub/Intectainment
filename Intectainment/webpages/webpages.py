@@ -1,17 +1,10 @@
 import os
-<<<<<<< HEAD
-from flask import render_template, send_from_directory, request, redirect, session, url_for, Blueprint, Markup
-
-from Intectainment.app import app, db
-from Intectainment.datamodels import User, Channel
-=======
 from flask import render_template, send_from_directory, request, redirect, url_for, Blueprint
 
 from Intectainment.app import app, db
-from Intectainment.datamodels import User, Post
+from Intectainment.datamodels import User, Post, Channel
 from Intectainment.util import login_required
 from Intectainment.imageuploder import upload_image, display_image
->>>>>>> main
 
 gui: Blueprint = Blueprint("gui", __name__)
 ap: Blueprint = Blueprint("interface", __name__, url_prefix="/interface")
@@ -31,17 +24,9 @@ def start():
 @login_required
 def home():
 	return render_template("main/home.html")
-<<<<<<< HEAD
-#	if not User.isLoggedIn():
-#		return redirect(url_for("interface.login"))
-#	else:
-#h		return render_template("main/home.html")
-=======
->>>>>>> main
 
 @gui.route("/home/dashboard")
 def dashboard():
-<<<<<<< HEAD
 	return render_template("main/home/dashboard.html")
 
 @gui.route("/home/discover")
@@ -54,11 +39,7 @@ def userchannel():
 
 @gui.route("/home/favorites")
 def favorites():
-	#db.session.expunge(User.getCurrentUser())
 	return render_template("main/home/favboard.html", favs=User.query.filter_by(id=User.getCurrentUser().id).first().getFavoritePosts())
-=======
-	return render_template("main/dashboard.html")
->>>>>>> main
 
 ##### Profile #####
 @gui.route("/profile/<search>")
@@ -74,14 +55,11 @@ def profileSearch():
 	query = User.query.filter(User.username.like(f"%{search}%"))
 
 	return render_template("main/user/profiles.html", users=query.all())
-<<<<<<< HEAD
-=======
 
 
 @gui.route("/login", methods=["GET"])
 def login():
 	return render_template("main/login.html", redirect="gui.home")
->>>>>>> main
 
 #TODO: remove
 @gui.route("/test")

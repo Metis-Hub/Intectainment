@@ -49,12 +49,7 @@
 
   <script>
     var target = document.getElementById('postConent');
-<<<<<<< HEAD
-    var converter = new showdown.Converter();
-    var converter = new showdown.Converter({tables: true, strikethrough: true, tasklists: true});
-=======
     converter = new showdown.Converter({tables: true, strikethrough: true, tasklists: true}),
->>>>>>> main
 
     target.innerHTML = converter.makeHtml(target.innerHTML);
   </script>
