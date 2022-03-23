@@ -1,31 +1,23 @@
 {#
-    URL: /dashboard
+    URL: /home/dashboard
 #}
 
 {% extends "defaultLayout.html" %}
-{% block title %}Dashboard{%endblock%}
 
-{% block content %}
-
-{%if favs%}
-    <p> Gefundene Posts ({{favs|length}}): </p>
-    {%for post in favs%}
-        <div class="card bg-dark text-white" style="width: 12rem;" id="touch">
-            <img src="..." class="card-img-top" alt="...">
-            <div class="card-body">
-            <h5 class="card-title">{{post.getContent()[0]}}</h5>
-            <p class="card-text">Beispieltext</p>
-            <a href="#" class="btn btn-outline-primary">Zum Post</a>
-            </div>
-        </div>
-    {%endfor%}
-    {%else%}
-        <p> Es gibt noch keine gemerkten Posts. </p>
-{%endif%}
-
+{% block maincontent %}
+<div class="card draggable bg-dark text-white" style="width: 12rem;" id="touch">
+    <img src="..." class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">Überschrift</h5>
+      <p class="card-text">Beispieltext der hier nur ausfüllen soll bla bla intectainment ist supergeil was weiß ich</p>
+      <a href="#" class="btn btn-outline-primary">Zum Post</a>
+    </div>
+  </div>
+{%endblock%}
+{% block js %}
 <script type="module">
-    import interact from 
-    'https://cdn.interactjs.io/v1.10.11/interactjs/index.js'
+  import interact from 
+  'https://cdn.interactjs.io/v1.10.11/interactjs/index.js'
 
 interact('.draggable')
   .draggable({
@@ -67,5 +59,4 @@ function dragMoveListener (event) {
 // this function is used later in the resizing and gesture demos
 window.dragMoveListener = dragMoveListener
 </script>
-
 {%endblock%}

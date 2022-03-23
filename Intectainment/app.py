@@ -14,6 +14,10 @@ app = Flask(__name__, template_folder="./webpages/templates", static_folder="./w
 # server configs
 app.config["SERVER_NAME"] = f"{(config['Server'].get('server', fallback='localhost'))}:{(config['Server'].get('port', fallback='3000'))}"
 app.config["SECRET_KEY"] = config['Server'].get("secretKey", fallback="replaceWhenDeployToDoThings")
+
+app.config["UPLOAD_FOLDER"] = os.path.join(os.path.dirname(__file__), app.static_folder, "img")
+
+## init database
 app.config["SQLALCHEMY_DATABASE_URI"] = config['Database'].get("URI")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)

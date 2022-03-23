@@ -13,53 +13,71 @@
 {% endblock %}
 
 {% block content %}
-    <h1>{{channel.name}}</h1>
+{{super()}}
+    
+      
+{%endblock%}
+
+{% block maincontent%}
+
+<div class="channelinfo bg-dark text-white">
+<h1>{{channel.name}}</h1>
 
     {% if channel.description %}
     <p>{{channel.description}}</p>
     {%endif%}
-
-    <p>
-        Kategorien:
-                {% if channel.categories | length > 0 %}
-                {% for cat in channel.categories %}{{cat.name}}, {%endfor%}
-                {%else%}
-                keine
-                {%endif%}
-    </p>
-
+    
     <a href="{{url_for('gui.channelSettings', channel=channel.name)}}">Einstellungen</a>
 
-
+</div>
+{%if posts.total > 0 %}
+<div class="postcontainer bg-dark">
     <hr/>
     <!-- Latest posts -->
     {% for post in posts.items %}
-        <div class="smallpost">
-            <a href="{{url_for('gui.postView', postid=post.id)}}">Post</a>
-
+        
+            <!--
+            <a href="{{url_for('gui.postView', postid=post.id)}}">
+                Post
+            </a>
             {%set content = post.getContent()%}
-            <div class="postContent">{{post.getContent()[:100]}}{%if content | length > 100%}...{%endif%}</div>
-        </div>
+            <div class="postContent">
+                {{post.getContent()[:100]}}{%if content | length > 100%}...{%endif%}
+            </div>
+            -->
+
+
+            <div class="card bg-black text-white post-margin" style="width: 12rem;" id="touch">
+                <img src="..." class="card-img-top" alt="...">
+                <div class="card-body">
+                  <h5 class="card-title">Überschrift</h5>
+                  <p class="card-text">{{post.getContent()[:100]}}{%if content | length > 100%}...{%endif%}</p>
+                  <a href="{{url_for('gui.postView', postid=post.id)}}" class="btn btn-outline-primary">Zum Post</a>
+                </div>
+            </div>
+        
+
+
+        
     {%endfor%}
-    {%if posts.pages > 1 %}
-    <hr/>
-    {% for page in posts.iter_pages() %}
-        {%if page%}
-            <a href="?page={{page}}">{{page}}</a>
-        {%else%}
-            ...
-        {%endif%}
-    {% endfor %}
-    {%endif%}
+    
+    
+</div>
 
+{%else%}
+    <div class="nopostcontainer text-white bg-dark">Kein Post auf diesem Kanal</div>
+{%endif%}
 
-      <script>
-        var converter = new showdown.Converter();
-        var contents = document.getElementsByClassName('postContent');
+{%endblock%}
 
-        for (var i = 0; i < contents.length; i++) {
-            var target = contents.item(i);
-            target.innerHTML = converter.makeHtml(target.innerHTML);
-        }
-      </script>
+{% block js %}
+<script>
+    var converter = new showdown.Converter();
+    var contents = document.getElementsByClassName('postContent');
+
+    for (var i = 0; i < contents.length; i++) {
+        var target = contents.item(i);
+        target.innerHTML = converter.makeHtml(target.innerHTML);
+    }
+  </script>
 {%endblock%}
