@@ -156,7 +156,7 @@ class Post(db.Model):
 
 	def setContent(self, content):
 		"""sets the content of the post"""
-		with open(self.getFilePath(), "w") as file:
+		with open(self.getFilePath(), "w", newline='\n') as file:
 			file.write(content)
 
 	def getFilePath(self):
