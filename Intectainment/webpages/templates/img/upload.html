@@ -1,8 +1,8 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
-<title>image-uploader</title></head> <body>
-<h2>Select a file to upload</h2>
+<title>Bild hochladen</title></head><body>
+<h2>Bitte wählen Sie die hochzuladene Bilddatei aus.</h2>
 <p>
 	{% with messages = get_flashed_messages() %}
 	  {% if messages %}
@@ -14,11 +14,6 @@
 	  {% endif %}
 	{% endwith %}
 </p>
-{% if filename %}
-	<div>
-		<img src="{{ url_for(path=path) }}">
-	</div>
-{% endif %}
 <form method="post" action="{{ this_url }}" enctype="multipart/form-data">
     <dl>
 		<p>
@@ -29,5 +24,18 @@
 		<input type="submit" value="Submit">
 	</p>
 </form>
+
+{% if path %}
+	<p>
+		<table border="0">
+			<tr> <td> <label>Pfad: </label> </td> <td> <input type="text" value="{{ path }}" size="100%"> </td> </tr>
+			<tr> <td> <label>Post: </label> </td> <td> <input type="text" value="![]({{ path }})" size="100%"> </td> </tr>
+		</table>
+	</p>
+	<div>
+		<img src="{{ path }}">
+	</div>
+{% endif %}
+
 </body>
 </html>

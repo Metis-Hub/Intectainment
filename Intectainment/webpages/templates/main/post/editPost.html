@@ -3,7 +3,7 @@
   #}
   
   {% extends "defaultLayout.html" %}
-  {% block title %}Post bearbeiten{%endblock%}
+  {% block title %}Post bearbeiten{% endblock %}
   
   {% block head %}
     {{super()}}
@@ -15,30 +15,28 @@
     <form method="POST">
         <input type="submit" name="update" value="Updaten"/>
         <input type="submit" name="exit" value="Abbrechen"/>
-        <br/>
-
+        <a href="http://{{ server }}/upload/tmp/{{ postid }}/" onclick="open_wnd(this.href); return false">Bild hochladen</a>
+        <br />
         <textarea name="content" id="conent" rows="50" cols="100" oninput="run()">
-{{post.getContent()}}
+{{ post.getContent() }}
         </textarea>
         <div id="rendert" display="flex"></div>
     </form>
 
     <script>
+        function open_wnd(url) {
+            wnd = window.open(url, "Bild hochladen", "width=600,height=400,status=yes,scrollbars=yes,resizable=yes");
+            wnd.focus();
+        }
+
         function run() {
             var text = document.getElementById('conent').value,
             target = document.getElementById('rendert'),
             converter = new showdown.Converter(),
             html = converter.makeHtml(text);
-    
+
             target.innerHTML = html;
         }
-        run()
+        run();
     </script>
-  {%endblock%}
-  
-
-
-
-
-    
-    
+  {% endblock %}
