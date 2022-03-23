@@ -29,7 +29,6 @@
   var targets = document.getElementsByClassName("card-content");
 
   for(i = 0; i < target.length; i++){
-    var converter = new showdown.Converter();
     var converter = new showdown.Converter({tables: true, strikethrough: true, tasklists: true});
 
     targets[i].innerHTML = converter.makeHtml(target[i].innerHTML);

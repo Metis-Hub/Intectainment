@@ -1,3 +1,5 @@
+from msilib import Table
+from turtle import pos
 from Intectainment.app import app, db
 from Intectainment.datamodels import Channel, Category, Post, User
 from Intectainment.webpages.webpages import gui
@@ -124,7 +126,12 @@ def postView(postid):
             return redirect(url_for("gui.channelView", channel = channel))
 
     post = Post.query.filter_by(id = postid).first_or_404()
-    return render_template("main/post/showPost.html", post=post, user=User.getCurrentUser())
+
+    fav = 0
+    if  User.query.filter_by(id=User.getCurrentUser().id).first().getFavoritePosts(): #check if postid is in it
+        fav = 1
+
+    return render_template("main/post/showPost.html", post=post, user=User.getCurrentUser(), faved = fav)
 
 ##### Kategorien #####
 @gui.route("/categories", methods=["GET"])
