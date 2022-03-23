@@ -14,8 +14,8 @@
         <div class="card bg-dark text-white" style="width: 12rem;" id="touch">
             <img src="..." class="card-img-top" alt="...">
             <div class="card-body">
-              <p class="card-content">{{post.getContent()[0]}}</p>
-              <a href="{{post.getFilePath}}" class="btn btn-outline-primary">Zum Post</a>
+              <p class="card-content">{{post.getContent()}}</p>
+              <a href="../post/{{post.id}}" class="btn btn-outline-primary">Zum Post</a>
             </div>
         </div>
     {%endfor%}

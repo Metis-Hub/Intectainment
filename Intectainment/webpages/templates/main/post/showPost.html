@@ -44,12 +44,12 @@
   <hr/>
 
   {% if faved == 0%}
-  <form action="{{ post.id }}/fav">
-    <input type="submit" value="Merken ✅">
+  <form method="post">
+    <input type="submit" name="fav" value="Merken ✅">
   </form>
   {%else%}
-  <form action="{{ post.id }}/unfav">
-    <input type="submit" value="Unmerken ❌">
+  <form method="post">
+    <input type="submit" name="defav" value="Unmerken ❌">
   </form>
   {%endif%}
 
