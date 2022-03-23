@@ -1,7 +1,8 @@
-from Intectainment.app import db
+from Intectainment.app import app, db
 from Intectainment.datamodels import Channel, Category, Post, User
 from Intectainment.webpages.webpages import gui
 from Intectainment.util import login_required
+from Intectainment.imageuploder import move_images
 
 from flask import request, render_template, redirect, url_for
 
@@ -88,9 +89,12 @@ def createPost(channel):
 
     if request.method == "POST":
         post = Post.new(channel.id, request.form.get("content") or "")
+        content = post.getContent().replace("tmp/" + str(User.getCurrentUser().id), "p/" + str(post.id))
+        post.setContent(content)
+        move_images(User.getCurrentUser().id, post.id)
         return redirect(url_for("gui.postView", postid = post.id))
 
-    return render_template("main/post/newPost.html")
+    return render_template("main/post/newPost.html", server=app.config["SERVER_NAME"], usrid=User.getCurrentUser().id)
 
 @gui.route("/post/<postid>/edit", methods=["GET", "POST"])
 @login_required
@@ -104,7 +108,7 @@ def postEdit(postid):
             db.session.commit()
         return redirect(url_for("gui.postView", postid=post.id))
 
-    return render_template("main/post/editPost.html", post=post)
+    return render_template("main/post/editPost.html", server=app.config["SERVER_NAME"], post=post, postid=post.id)
 
 
 @gui.route("/post/<postid>", methods=["GET", "POST"])
