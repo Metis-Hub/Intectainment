@@ -115,29 +115,29 @@ def postEdit(postid):
 
 @gui.route("/post/<postid>", methods=["GET", "POST"])
 def postView(postid):
+    post = Post.query.filter_by(id = postid).first_or_404()
+
     if request.method == "POST":
         if "delete" in request.form:
             channel = ""
             if User.isLoggedIn() and User.getCurrentUser().permission >= User.PERMISSION.MODERATOR:
-                if post := Post.query.filter_by(id=postid).first():
-                    channel = post.channel.name;
-                    post.delete()
-                    db.session.commit()
-        if "favorize" in request.form:
-            pass
-            # TODO
-        if "defavorize" in request.form:
-            pass
-            # TODO
+                channel = post.channel.name
+                post.delete()
+                db.session.commit()
+            return redirect(url_for("gui.channelView", channel = channel))
+        elif "fav" in request.form:
+            user = User.query.filter_by(id=User.getCurrentUser().id).first()
+            user.favoritePosts.append(post)
+            db.session.commit()
+        elif "defav" in request.form:
             
-return redirect(url_for("gui.channelView", channel = channel))
-
-    post = Post.query.filter_by(id = postid).first_or_404()
+            user = User.query.filter_by(id=User.getCurrentUser().id).first()
+            user.favoritePosts.remove(post)
+            db.session.commit()         
 
     fav = 0
-    if  User.query.filter_by(id=User.getCurrentUser().id).first().getFavoritePosts(): #check if postid is in it
+    if post in User.query.filter_by(id=User.getCurrentUser().id).first().getFavoritePosts():
         fav = 1
-
     return render_template("main/post/showPost.html", post=post, user=User.getCurrentUser(), faved = fav)
 
 ##### Kategorien #####

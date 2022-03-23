@@ -41,14 +41,6 @@ def userchannel():
 def favorites():
 	return render_template("main/home/favboard.html", favs=User.query.filter_by(id=User.getCurrentUser().id).first().getFavoritePosts())
 
-#### favit! ####
-@gui.route("/post/<postid>/fav")
-@login_required
-def favoritise(postid):
-	User.query.filter_by(id=User.getCurrentUser().id).first().favoritePosts.add(postid)
-
-	return render_template("main/home/dashboard.html")
-
 ##### Profile #####
 @gui.route("/profile/<search>")
 @gui.route("/p/<search>")
