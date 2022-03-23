@@ -2,39 +2,51 @@
     URL: /showPost
   #}
   
+<<<<<<< HEAD
   {% extends "baseLayout.html" %}
   {% block title %}Neuer Post{%endblock%}
+=======
+  {% extends "defaultLayout.html" %}
+  {% block title %}Neuer Post{% endblock %}
+>>>>>>> main
   
   {% block head %}
-    {{super()}}
+    {{ super() }}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/postStyle.css') }}">
-    <script src="https://cdn.rawgit.com/showdownjs/showdown/1.0.1/dist/showdown.min.js"></script>
+    <script src="https://cdn.rawgit.com/showdownjs/showdown/1.9.0/dist/showdown.min.js"></script>
   {% endblock %}
   
   {% block content %}
     <form method="POST">
         <input type="submit" value="Erstellen"/>
-        <br/>
+        <a href="http://{{ server }}/upload/tmp/{{ usrid }}/" onclick="open_wnd(this.href); return false">Bild hochladen</a>
+        <br />
         <textarea name="content" id="conent" rows="50" cols="100" oninput="run()">
 # Neuer Post
 
 Hier können Sie Posts erstellen.
 
-**Markdown-Syntax:** [www.markdownguide.org](https://www.markdownguide.org/basic-syntax).</textarea>
+**Markdown-Syntax:** [www.markdownguide.org](https://www.markdownguide.org/basic-syntax).
+        </textarea>
         <div id="rendert" display="flex"></div>
     </form>
     <script>
+        function open_wnd(url) {
+            wnd = window.open(url, "Bild hochladen", "width=600,height=400,status=yes,scrollbars=yes,resizable=yes");
+            wnd.focus();
+        }
+
         function run() {
             var text = document.getElementById('conent').value,
             target = document.getElementById('rendert'),
-            converter = new showdown.Converter(),
+            converter = new showdown.Converter({tables: true, strikethrough: true, tasklists: true}),
             html = converter.makeHtml(text);
     
             target.innerHTML = html;
         }
-        run()
+        run();
     </script>
-  {%endblock%}
+  {% endblock %}
   
 
 
