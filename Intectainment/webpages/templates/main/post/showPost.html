@@ -8,7 +8,7 @@
 {% block head %}
   {{super()}}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/postStyle.css') }}">
-  <script src="https://cdn.rawgit.com/showdownjs/showdown/1.0.1/dist/showdown.min.js"></script>
+  <script src="https://cdn.rawgit.com/showdownjs/showdown/1.9.0/dist/showdown.min.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -18,6 +18,11 @@
     <a href=""><i class="bi bi-star big-icon"></i></a>
     <a href="{{url_for('gui.channelView', channel=post.channel.name)}}"><i class="bi bi-person-circle big-icon"></i></a>
     <a href="{{url_for('gui.postEdit', postid=post.id)}}"><i class="bi bi-pencil-square big-icon"></i></a>
+	{%if user and user.permission >= user.PERMISSION.MODERATOR%}
+    <form method="POST">
+      <input type="submit" name="delete" value="Löschen"/>
+    </form>
+	{%endif%}
   </div>
 </div>
 
@@ -27,13 +32,14 @@
   </button>
 </div>
 
+
   <div class="post-content" id="postConent">
 {{post.getContent()}}
   </div>
 
   <script>
     var target = document.getElementById('postConent');
-    var converter = new showdown.Converter();
+    converter = new showdown.Converter({tables: true, strikethrough: true, tasklists: true}),
 
     target.innerHTML = converter.makeHtml(target.innerHTML);
   </script>

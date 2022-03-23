@@ -1,6 +1,9 @@
-from Intectainment.app import db
-from Intectainment.datamodels import Channel, Category, Post
+from Intectainment.app import app, db
+from Intectainment.datamodels import Channel, Category, Post, User
 from Intectainment.webpages.webpages import gui
+from Intectainment.util import login_required
+from Intectainment.imageuploder import move_images
+
 from flask import request, render_template, redirect, url_for
 
 import datetime
@@ -19,6 +22,7 @@ def channelSearch():
 
 
 @gui.route("/channels/new", methods=["GET", "POST"])
+@login_required
 def channelCreation():
     if request.method == "POST":
         name = request.form.get("name")
@@ -52,6 +56,7 @@ def channelView(channel):
 
 @gui.route("/c/<channel>/settings", methods=["GET", "POST"])
 @gui.route("/channel/<channel>/settings", methods=["GET", "POST"])
+@login_required
 def channelSettings(channel):
     channel = Channel.query.filter_by(name=channel).first_or_404()
 
@@ -78,16 +83,21 @@ def channelSettings(channel):
 ##### Posts #####
 @gui.route("/c/<channel>/new", methods=["GET", "POST"])
 @gui.route("/channel/<channel>/new", methods=["GET", "POST"])
+@login_required
 def createPost(channel):
     channel = Channel.query.filter_by(name=channel).first_or_404()
 
     if request.method == "POST":
         post = Post.new(channel.id, request.form.get("content") or "")
+        content = post.getContent().replace("tmp/" + str(User.getCurrentUser().id), "p/" + str(post.id))
+        post.setContent(content)
+        move_images(User.getCurrentUser().id, post.id)
         return redirect(url_for("gui.postView", postid = post.id))
 
-    return render_template("main/post/newPost.html")
+    return render_template("main/post/newPost.html", server=app.config["SERVER_NAME"], usrid=User.getCurrentUser().id)
 
 @gui.route("/post/<postid>/edit", methods=["GET", "POST"])
+@login_required
 def postEdit(postid):
     post = Post.query.filter_by(id = postid).first_or_404()
 
@@ -98,13 +108,23 @@ def postEdit(postid):
             db.session.commit()
         return redirect(url_for("gui.postView", postid=post.id))
 
-    return render_template("main/post/editPost.html", post=post)
+    return render_template("main/post/editPost.html", server=app.config["SERVER_NAME"], post=post, postid=post.id)
 
 
-@gui.route("/post/<postid>")
+@gui.route("/post/<postid>", methods=["GET", "POST"])
 def postView(postid):
+    if request.method == "POST":
+        if "delete" in request.form:
+            channel = ""
+            if User.isLoggedIn() and User.getCurrentUser().permission >= User.PERMISSION.MODERATOR:
+                if post := Post.query.filter_by(id=postid).first():
+                    channel = post.channel.name;
+                    post.delete()
+                    db.session.commit()
+            return redirect(url_for("gui.channelView", channel = channel))
+
     post = Post.query.filter_by(id = postid).first_or_404()
-    return render_template("main/post/showPost.html", post=post)
+    return render_template("main/post/showPost.html", post=post, user=User.getCurrentUser())
 
 ##### Kategorien #####
 @gui.route("/categories", methods=["GET"])
@@ -120,6 +140,7 @@ def viewCategories():
 
 
 @gui.route("/categories/new", methods=["GET", "POST"])
+@login_required
 def createCategory():
     if request.method == "GET":
         return render_template("main/category/categoryCreation.html")

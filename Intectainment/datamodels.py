@@ -22,12 +22,19 @@ Favorites = db.Table('favoritePost',
 class User(db.Model):
 	__tablename__ = "users"
 
+	class PERMISSION:
+		GUEST = 0
+		USER = 10
+		MODERATOR = 100
+		ADMIN = 255
+
+
 	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
-	username	=	db.Column( db.String(80)	, unique=True	, nullable=False )
-	displayname =   db.Column( db.String(80)	, unique=True	, nullable=True )
-	password	=	db.Column( db.String(80)	, unique=False	, nullable=False )
-	email		=	db.Column( db.String(320)	, unique=True	, nullable=False )
+	username	=	db.Column( db.String(80), unique=True, nullable=False)
+	displayname =   db.Column( db.String(80), unique=True)
+	password	=	db.Column( db.String(80), nullable=False)
+	permission	=	db.Column( db.Integer, default=PERMISSION.USER)
 
 	subscriptions = db.relationship("Channel", secondary=Subscription, backref="subscibers")
 	favoritePosts = db.relationship("Post", secondary=Favorites, backref="favUsers")
@@ -52,7 +59,7 @@ class User(db.Model):
 	# login/logout utility
 	@staticmethod
 	def logIn(username: str, password: str) -> bool:
-		if "User" in session:
+		if "User" in session and session["User"] in User.activeUsers.keys():
 			#already logged in
 			return True
 		else:
@@ -61,15 +68,19 @@ class User(db.Model):
 				return False
 
 			if user.validatePassword(password):
-				#cant save object in session
+				if not user in User.activeUsers.values():
+					#cant save object in session
 
-				key: str = None
-				while not key or key in User.activeUsers:
-					key = ''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase + string.digits, k=40))
+					key: str = None
+					while not key or key in User.activeUsers:
+						key = ''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase + string.digits, k=40))
 
-				User.activeUsers[key] = user
-				session["User"] = key
-				return True
+					User.activeUsers[key] = user
+					session["User"] = key
+					return True
+				else:
+					#TODO user allready logged in
+					pass
 		return False
 
 	@staticmethod
@@ -80,7 +91,7 @@ class User(db.Model):
 
 	@staticmethod
 	def isLoggedIn() -> bool:
-		return "User" in session
+		return "User" in session and session["User"] in User.activeUsers.keys()
 
 	@staticmethod
 	def getCurrentUser():
@@ -90,12 +101,11 @@ class User(db.Model):
 		return None
 			
 	def validatePassword(self, password: str) -> bool:
-		return bcrypt.checkpw(password.encode("utf-8"), self.password)
+		return bcrypt.checkpw(password.encode("utf-8"), self.password.encode("utf-8"))
 
 	def changePassword(self, newPassword: str) -> None:
 		self.password = bcrypt.hashpw(newPassword.encode("utf-8"), bcrypt.gensalt())
 
-	#
 	def getName(self) -> str:
 		return self.displayname or self.username
 
@@ -137,8 +147,12 @@ class Post(db.Model):
 
 	def getContent(self):
 		"""returns the content of post"""
-		with open(self.getFilePath(), "r") as file:
-			return file.read()
+		try:
+			with open(self.getFilePath(), "r") as file:
+				return file.read()
+		except FileNotFoundError:
+			self.createFile()
+			return ""
 
 	def setContent(self, content):
 		"""sets the content of the post"""
@@ -152,7 +166,7 @@ class Post(db.Model):
 	def createFile(self):
 		if not os.path.isfile(self.getFilePath()):
 			with open(self.getFilePath(), "x") as f:
-				f.write("# Hallo")
+				pass
 
 	@staticmethod
 	def new(channel_id, content):
