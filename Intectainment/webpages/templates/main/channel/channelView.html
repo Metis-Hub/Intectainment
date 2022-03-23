@@ -28,7 +28,7 @@
     {%endif%}
     
     <a href="{{url_for('gui.channelSettings', channel=channel.name)}}"><i class="bi bi-gear"></i></a>
-    <a href=""><i class="bi bi-plus-square"></i></a>
+    <a href="{{url_for('gui.createPost', channel=channel.name)}}"><i class="bi bi-plus-square"></i></a>
 
 </div>
 {%if posts.total > 0 %}

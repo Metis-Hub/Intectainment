@@ -82,6 +82,19 @@
                             <span class="mx-2">Mein Kanal</span>
                         </li>
                     </a>
+
+
+                    <form method="post" action="{{url_for('interface.login')}}">
+                        <label>Login</label>
+                        <input type="text" placeholder="Nutzername" name="username" required/>
+                        <input type="password" placeholder="Passwort" name="password" required/>
+                        <input type="submit"/>
+                    </form>
+
+                    <form method="post" action="{{url_for('interface.logout')}}">
+                        <label>Logout</label>
+                        <input type="submit" value="Logout"/>
+                    </form>
                 </ul>
               </div>
                 

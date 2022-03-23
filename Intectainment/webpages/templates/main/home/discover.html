@@ -24,19 +24,28 @@
         <div class="blog"></div>
         <div class="blog"></div>
         <div class="blog"></div>
-    
+
     </div>
-    <div class="channels text-white">Channels<p></p>
-        {%if channels.total>0%}
+        <div class="channels text-white">Channels<p></p>
+            {%if channels.total>0%}
             {%for channel in channels.items%}
-                <div class="blog">
-                    <a href="/c/{{channel.name}}"> {{channel.name}} </a>
-                </div>
+                <a href="{{url_for('gui.channelView', channel=channel.name)}}"> {{channel.name}} </a><br/>
             {%endfor%}
         {%else%}
             <p> Es wurden keine Kanäle gefunden </p>
         {%endif%}
-</div>
+
+        {%if channels.pages > 1 %}
+        <hr/>
+        {% for page in channels.iter_pages() %}
+            {%if page%}
+                <a href="?channelname={{request.args.get('channelname', '')}}&page={{page}}">{{page}}</a>
+            {%else%}
+                ...
+            {%endif%}
+        {% endfor %}
+        {%endif%}
+    </div>
 </div>
 
 {%endblock%}
