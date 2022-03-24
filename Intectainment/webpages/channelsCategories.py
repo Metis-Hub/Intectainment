@@ -80,7 +80,7 @@ def channelSettings(channel):
             channel.description = request.form.get("description", "")
             db.session.commit()
 
-    return render_template("main/channel/channelSettings.html", channel=channel, categories=Category.query.all())
+    return render_template("main/channel/channelSettings.html", channel=channel, categories=Category.query.all(), server=app.config["SERVER_NAME"])
 
 ##### Posts #####
 @gui.route("/c/<channel>/new", methods=["GET", "POST"])

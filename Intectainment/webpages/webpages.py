@@ -122,6 +122,28 @@ def display_image_posts(type, post_id, filename):
 	if type == "p" or type == "usr":
 		return display_image(type + "/" + post_id, filename)
 
+#### User-Config ####
+@app.route("/userconfig/", methods=["POST"])
+@login_required
+def handel_changes():
+	if request.method == "POST":
+		if "pw" and "old" and "new" and "ver_new" in request.form:
+			if request.form["new"] != request.form["ver_new"]:
+				flash("Neues Passwort stimmt nicht mit der Bestätigung des Neuens überein!")
+			elif not User.getCurrentUser().validatePassword(request.form["old"]):
+				flash("Altes Passwort ist falsch!")
+			else:
+				User.getCurrentUser().changePassword(request.form["new"])
+				flash("Passwort geändert!")
+		elif "txtname" and "name" in request.form:
+			# TODO
+			pass
+		elif "txtemail" and "email" in request.form:
+			# TODO
+			pass
+
+	return render_template("main/user/userconfig", user=User.getCurrentUser())
+
 #Import other routing files
 from Intectainment.webpages import admin, channelsCategories, RestInterface
 
