@@ -8,20 +8,33 @@
 {% block content %}
 
 {%if favs%}
-    <p> Gefundene Posts ({{favs|length}}): </p>
+    <p> Gefundene Posts: </p>
+
     {%for post in favs%}
         <div class="card bg-dark text-white" style="width: 12rem;" id="touch">
             <img src="..." class="card-img-top" alt="...">
             <div class="card-body">
-            <h5 class="card-title">{{post.getContent()[0]}}</h5>
-            <p class="card-text">Beispieltext</p>
-            <a href="#" class="btn btn-outline-primary">Zum Post</a>
+              <p class="card-content">{{post.getContent()}}</p>
+              <a href="../post/{{post.id}}" class="btn btn-outline-primary">Zum Post</a>
             </div>
         </div>
     {%endfor%}
-    {%else%}
-        <p> Es gibt noch keine gemerkten Posts. </p>
+    
+
+{%else%}
+  <p>Sie haben noch keine gemerkten Posts.</p>
 {%endif%}
+
+<script>
+  var targets = document.getElementsByClassName("card-content");
+
+  for(i = 0; i < target.length; i++){
+    var converter = new showdown.Converter({tables: true, strikethrough: true, tasklists: true});
+
+    targets[i].innerHTML = converter.makeHtml(target[i].innerHTML);
+  }
+  
+</script>
 
 <script type="module">
     import interact from 

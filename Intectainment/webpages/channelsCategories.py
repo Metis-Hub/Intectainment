@@ -1,3 +1,5 @@
+from msilib import Table
+from turtle import pos
 from Intectainment.app import app, db
 from Intectainment.datamodels import Channel, Category, Post, User
 from Intectainment.webpages.webpages import gui
@@ -51,7 +53,7 @@ def channelView(channel):
     channel = Channel.query.filter_by(name=channel).first_or_404()
     posts = Post.query.filter_by(channel_id=channel.id).paginate(per_page=20, page=page_num, error_out=False)
 
-    return render_template("main/channel/channelView.html", channel=channel, posts=posts)
+    return render_template("main/channel/channelView.html", channel=channel, posts=posts, canModify=channel.canModify(User.getCurrentUser()))
 
 
 @gui.route("/c/<channel>/settings", methods=["GET", "POST"])
@@ -59,6 +61,9 @@ def channelView(channel):
 @login_required
 def channelSettings(channel):
     channel = Channel.query.filter_by(name=channel).first_or_404()
+
+    if not channel.canModify(User.getCurrentUser()):
+        return redirect(url_for("gui.channelView", channel=channel))
 
     if request.method == "POST":
         if request.form.get("addCategory") and request.form.get("category"):
@@ -81,6 +86,34 @@ def channelSettings(channel):
     return render_template("main/channel/channelSettings.html", channel=channel, categories=Category.query.all())
 
 ##### Posts #####
+@gui.route("/post/<postid>", methods=["GET", "POST"])
+def postView(postid):
+    post = Post.query.filter_by(id=postid).first_or_404()
+
+    if request.method == "POST":
+        if "delete" in request.form:
+            channel = ""
+            if post.canModify(User.getCurrentUser()):
+                channel = post.channel.name
+                post.delete()
+                db.session.commit()
+            return redirect(url_for("gui.channelView", channel=channel))
+        elif "fav" in request.form:
+            user = User.query.filter_by(id=User.getCurrentUser().id).first()
+            user.favoritePosts.append(post)
+            db.session.commit()
+        elif "defav" in request.form:
+            user = User.query.filter_by(id=User.getCurrentUser().id).first()
+            user.favoritePosts.remove(post)
+            db.session.commit()
+
+    return render_template("main/post/showPost.html",
+                           post=post,
+                           user=User.getCurrentUser(),
+                           faved=User.isLoggedIn() and (post in User.query.filter_by(id=User.getCurrentUser().id).first().getFavoritePosts()),
+                           canModify=post.canModify(User.getCurrentUser()))
+
+
 @gui.route("/c/<channel>/new", methods=["GET", "POST"])
 @gui.route("/channel/<channel>/new", methods=["GET", "POST"])
 @login_required
@@ -100,6 +133,8 @@ def createPost(channel):
 @login_required
 def postEdit(postid):
     post = Post.query.filter_by(id = postid).first_or_404()
+    if not post.canModify(User.getCurrentUser()):
+        return redirect(url_for("gui.postView", postid=postid))
 
     if request.method == "POST":
         if request.form.get("update"):
@@ -108,23 +143,9 @@ def postEdit(postid):
             db.session.commit()
         return redirect(url_for("gui.postView", postid=post.id))
 
-    return render_template("main/post/editPost.html", server=app.config["SERVER_NAME"], post=post, postid=post.id)
+    return render_template("main/post/editPost.html", server=app.config["SERVER_NAME"], post=post, canModify=post.canModify(User.getCurrentUser()))
 
 
-@gui.route("/post/<postid>", methods=["GET", "POST"])
-def postView(postid):
-    if request.method == "POST":
-        if "delete" in request.form:
-            channel = ""
-            if User.isLoggedIn() and User.getCurrentUser().permission >= User.PERMISSION.MODERATOR:
-                if post := Post.query.filter_by(id=postid).first():
-                    channel = post.channel.name;
-                    post.delete()
-                    db.session.commit()
-            return redirect(url_for("gui.channelView", channel = channel))
-
-    post = Post.query.filter_by(id = postid).first_or_404()
-    return render_template("main/post/showPost.html", post=post, user=User.getCurrentUser())
 
 ##### Kategorien #####
 @gui.route("/categories", methods=["GET"])

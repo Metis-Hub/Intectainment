@@ -1,3 +1,4 @@
+
 {#
     URL: /
 #}
@@ -6,12 +7,22 @@
 {% block title %}Start{%endblock%}
 
 {% block content %}
-    <p>Hallihallo, das ist der Anfang</p>
-    {%if session.get('User')%}
-        <p>Du bist angemeldet</p>
-    {%else%}
-        <p> Du bist nicht angemeldet</p>
-    {%endif%}
+<p>Hallihallo, das ist der Anfang</p>
+{%if session.get('User')%}
+    <p>Du bist angemeldet</p>
+{%else%}
+    <p> Du bist nicht angemeldet</p>
+{%endif%}
 
-    <p> Test für Login: <a href="{{url_for('gui.test')}}"> Test </a></p>
+<p> Test für Login: <a href="{{url_for('gui.test')}}"> Test </a></p>
+
+wtf
+<i class="fa fa-search"></i>
+    iosingosdn
 {%endblock%}
+
+
+
+
+
+

@@ -2,7 +2,7 @@ import os
 from flask import render_template, send_from_directory, request, redirect, url_for, Blueprint
 
 from Intectainment.app import app, db
-from Intectainment.datamodels import User, Post
+from Intectainment.datamodels import User, Post, Channel
 from Intectainment.util import login_required
 from Intectainment.imageuploder import upload_image, display_image
 
@@ -25,9 +25,21 @@ def start():
 def home():
 	return render_template("main/home.html")
 
-@gui.route("/dashboard")
+@gui.route("/home/dashboard")
 def dashboard():
-	return render_template("main/dashboard.html")
+	return render_template("main/home/dashboard.html")
+
+@gui.route("/home/discover")
+def discover():
+	return render_template("main/home/discover.html", channels=Channel.query.paginate(per_page=20, page=1, error_out=False))
+
+@gui.route("/home/userchannel")
+def userchannel():
+	return render_template("main/home/userchannel.html")
+
+@gui.route("/home/favorites")
+def favorites():
+	return render_template("main/home/favboard.html", favs=User.query.filter_by(id=User.getCurrentUser().id).first().getFavoritePosts())
 
 ##### Profile #####
 @gui.route("/profile/<search>")
