@@ -21,8 +21,6 @@ Favorites = db.Table('favoritePost',
 )
 
 class User(db.Model):
-	__tablename__ = "users"
-
 	class PERMISSION:
 		GUEST = 0
 		USER = 10
@@ -115,19 +113,21 @@ class User(db.Model):
 	def getFavoritePosts(self):
 		return self.favoritePosts
 
+	def getSubscriptions(self):
+		return self.subscriptions
+
 class Channel(db.Model):
 	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
-	name			= db.Column( db.String(80), unique=True, nullable=False )
-	description		= db.Column( db.String(80), nullable=True )
-	icon_extension	= db.Column(db.String(4))
+	name = db.Column(db.String(80), unique=True, nullable=False)
+	description = db.Column(db.String(80), nullable=True)
+	icon_extension = db.Column(db.String(4))
 	owner_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
-	categories	= db.relationship("Category", secondary=ChannelCategory, backref="channels")
-	posts		= db.relationship("Post", backref="channel")
+	categories = db.relationship("Category", secondary=ChannelCategory, backref="channels")
+	posts = db.relationship("Post", backref="channel")
 
 	canModify = lambda self, user: user and (user.permission >= User.PERMISSION.MODERATOR or user.id == self.owner.id)
-	
 
 
 class Post(db.Model):
@@ -139,7 +139,6 @@ class Post(db.Model):
 
 	channel_id = db.Column(db.Integer, db.ForeignKey('channel.id'), nullable=False)
 	owner_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-
 
 	def getContent(self):
 		"""returns the content of post"""

@@ -11,7 +11,7 @@ from flask import request, render_template, redirect, url_for
 import datetime
 
 ##### Kanäle #####
-@gui.route("/channels", methods=["GET"])
+@gui.route("/channels/", methods=["GET"])
 def channelSearch():
     page_num = 1
     try:
@@ -40,9 +40,8 @@ def channelCreation():
     return render_template("main/channel/channelCreation.html")
 
 
-
-@gui.route("/c/<channel>")
-@gui.route("/channel/<channel>")
+@gui.route("/c/<channel>/", methods=["POST", "GET"])
+@gui.route("/channel/<channel>/", methods=["POST", "GET"])
 def channelView(channel):
     page_num = 1
     try:
@@ -50,14 +49,29 @@ def channelView(channel):
     except (ValueError, TypeError):
         pass
 
+    if request.method == "POST":
+        if "subscr" in request.form:
+            user = User.query.filter_by(id=User.getCurrentUser().id).first()
+            user.subscriptions.append(channel)
+            db.session.commit()
+        elif "desubscr" in request.form:
+            user = User.query.filter_by(id=User.getCurrentUser().id).first()
+            user.subscriptions.remove(channel)
+            db.session.commit()
+
     channel = Channel.query.filter_by(name=channel).first_or_404()
     posts = Post.query.filter_by(channel_id=channel.id).paginate(per_page=20, page=page_num, error_out=False)
 
-    return render_template("main/channel/channelView.html", channel=channel, posts=posts, canModify=channel.canModify(User.getCurrentUser()))
+    return render_template("main/channel/channelView.html",
+                           channel=channel,
+                           posts=posts,
+                           canModify=channel.canModify(User.getCurrentUser()),
+                           user=User.getCurrentUser(),
+                           subscribed=User.isLoggedIn() and (channel in User.query.filter_by(id=User.getCurrentUser().id).first().getSubscriptions()))
 
 
-@gui.route("/c/<channel>/settings", methods=["GET", "POST"])
-@gui.route("/channel/<channel>/settings", methods=["GET", "POST"])
+@gui.route("/c/<channel>/settings/", methods=["GET", "POST"])
+@gui.route("/channel/<channel>/settings/", methods=["GET", "POST"])
 @login_required
 def channelSettings(channel):
     channel = Channel.query.filter_by(name=channel).first_or_404()
@@ -86,7 +100,7 @@ def channelSettings(channel):
     return render_template("main/channel/channelSettings.html", channel=channel, categories=Category.query.all())
 
 ##### Posts #####
-@gui.route("/post/<postid>", methods=["GET", "POST"])
+@gui.route("/post/<postid>/", methods=["GET", "POST"])
 def postView(postid):
     post = Post.query.filter_by(id=postid).first_or_404()
 
@@ -114,8 +128,8 @@ def postView(postid):
                            canModify=post.canModify(User.getCurrentUser()))
 
 
-@gui.route("/c/<channel>/new", methods=["GET", "POST"])
-@gui.route("/channel/<channel>/new", methods=["GET", "POST"])
+@gui.route("/c/<channel>/new/", methods=["GET", "POST"])
+@gui.route("/channel/<channel>/new/", methods=["GET", "POST"])
 @login_required
 def createPost(channel):
     channel = Channel.query.filter_by(name=channel).first_or_404()
@@ -129,7 +143,7 @@ def createPost(channel):
 
     return render_template("main/post/newPost.html", server=app.config["SERVER_NAME"], usrid=User.getCurrentUser().id)
 
-@gui.route("/post/<postid>/edit", methods=["GET", "POST"])
+@gui.route("/post/<postid>/edit/", methods=["GET", "POST"])
 @login_required
 def postEdit(postid):
     post = Post.query.filter_by(id = postid).first_or_404()
@@ -148,7 +162,7 @@ def postEdit(postid):
 
 
 ##### Kategorien #####
-@gui.route("/categories", methods=["GET"])
+@gui.route("/categories/", methods=["GET"])
 def viewCategories():
     page_num = 1
     try:
@@ -160,7 +174,7 @@ def viewCategories():
     return render_template("main/category/categoryList.html", categories=categories)
 
 
-@gui.route("/categories/new", methods=["GET", "POST"])
+@gui.route("/categories/new/", methods=["GET", "POST"])
 @login_required
 def createCategory():
     if request.method == "GET":

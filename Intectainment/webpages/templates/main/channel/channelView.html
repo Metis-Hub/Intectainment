@@ -28,14 +28,14 @@
     {% if canModify %}
     <a href="{{url_for('gui.channelSettings', channel=channel.name)}}">Einstellungen</a>
     {% endif %}
+
     {% if user %}
         <form method="post">
-            <input type="submit" name="subscr" value="Abbonieren">
-            <input type="submit" name="desubscr" value="Deabbonieren">
+            {% if subscribed %}<input type="submit" name="desubscr" value="Deabbonieren">
+            {% else %}<input type="submit" name="subscr" value="Abbonieren">
+            {% endif %}
         </form>
     {% endif %}
-
-    <a href="{{url_for('gui.channelSettings', channel=channel.name)}}">Einstellungen</a>
 
 </div>
 {%if posts.total > 0 %}
