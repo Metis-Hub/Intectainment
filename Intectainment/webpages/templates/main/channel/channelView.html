@@ -14,8 +14,6 @@
 
 {% block content %}
 {{super()}}
-    
-      
 {%endblock%}
 
 {% block maincontent%}
@@ -26,8 +24,10 @@
     {% if channel.description %}
     <p>{{channel.description}}</p>
     {%endif%}
-    
+
+    {% if canModify %}
     <a href="{{url_for('gui.channelSettings', channel=channel.name)}}">Einstellungen</a>
+    {% endif %}
 
 </div>
 {%if posts.total > 0 %}

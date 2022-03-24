@@ -17,12 +17,13 @@ def create_subfolder(path):
 
 def move_images(userid, postid):
     source_path = os.path.join(app.config["UPLOAD_FOLDER"], "usr/tmp", str(userid))
-    destination_path = app.config["UPLOAD_FOLDER"]
-    shutil.move(source_path, destination_path)
-    os.rename(os.path.join(app.config["UPLOAD_FOLDER"], str(userid)), os.path.join(app.config["UPLOAD_FOLDER"], str(postid)))
-    source_path = os.path.join(app.config["UPLOAD_FOLDER"], str(postid))
-    destination_path = os.path.join(app.config["UPLOAD_FOLDER"], "p", str(postid))
-    shutil.move(source_path, destination_path)
+    if os.path.exists(source_path):
+        destination_path = app.config["UPLOAD_FOLDER"]
+        shutil.move(source_path, destination_path)
+        os.rename(os.path.join(app.config["UPLOAD_FOLDER"], str(userid)), os.path.join(app.config["UPLOAD_FOLDER"], str(postid)))
+        source_path = os.path.join(app.config["UPLOAD_FOLDER"], str(postid))
+        destination_path = os.path.join(app.config["UPLOAD_FOLDER"], "p", str(postid))
+        shutil.move(source_path, destination_path)
 
 def upload_image(name="", folder="c", subfolder="", type=""):
     if "file" not in request.files:

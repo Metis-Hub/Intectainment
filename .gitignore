@@ -137,3 +137,4 @@ run.bat
 config.conf
 .idea/*
 Intectainment/content/posts/*.md
+Intectainment/webpages/static/img/*
