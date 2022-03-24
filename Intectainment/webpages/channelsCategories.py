@@ -1,5 +1,3 @@
-from msilib import Table
-from turtle import pos
 from Intectainment.app import app, db
 from Intectainment.datamodels import Channel, Category, Post, User
 from Intectainment.webpages.webpages import gui
@@ -107,9 +105,16 @@ def postView(postid):
             user.favoritePosts.remove(post)
             db.session.commit()
 
+    timeMessage = f"Erstellt am {post.creationDate.strftime('%d.%m.%Y %H:%M')}"
+    if post.creationDate != post.modDate:
+        timeMessage = f"Modifiziert am {post.modDate.strftime('%d.%m.%Y %H:%M')}"
+
+
+
     return render_template("main/post/showPost.html",
                            post=post,
                            user=User.getCurrentUser(),
+                           timeMessage = timeMessage,
                            faved=User.isLoggedIn() and (post in User.query.filter_by(id=User.getCurrentUser().id).first().getFavoritePosts()),
                            canModify=post.canModify(User.getCurrentUser()))
 
