@@ -2,10 +2,25 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 import configparser, os, sys
 
+
+if "--init" in sys.argv[1:] or "-i" in sys.argv[1:]:
+	if not os.path.isfile(os.path.join(os.path.dirname(__file__), 'config.conf')):
+		with open(os.path.join(os.path.dirname(__file__), 'config.conf'), "x") as file:
+			file.writelines(["[Server]\n",
+							 "server = localhost\n"
+							 "port = 3000\n"
+							 "secretKey = replaceWhenDeployToDoThings\n"
+							 "\n"
+							 "\n"
+							 "[Database]\n",
+							 "URI = YOURDATABASEURI"])
+		print("The File config.conf has been created in the directory Intectainment/\nPlease edit the config to your fitting and press any key to continue")
+		input()
+
 # init config
 config = configparser.ConfigParser()
 config.read(os.path.join(os.path.dirname(__file__), 'config.conf'))
-for section in ["Server", "Database", "Development"]:
+for section in ["Server", "Database"]:
 	if section not in config:
 		config.add_section(section)
 

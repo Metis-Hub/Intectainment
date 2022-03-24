@@ -1,8 +1,9 @@
 import os
 from flask import render_template, send_from_directory, request, redirect, url_for, Blueprint
+from sqlalchemy import desc
 
 from Intectainment.app import app, db
-from Intectainment.datamodels import User, Channel
+from Intectainment.datamodels import User, Post, Channel
 from Intectainment.util import login_required
 from Intectainment.imageuploder import upload_image, display_image
 
@@ -26,16 +27,37 @@ def home():
 	return render_template("main/home.html")
 
 @gui.route("/home/dashboard")
+@login_required
 def dashboard():
-	return render_template("main/home/dashboard.html")
+	page_num = 1
+	try:
+		page_num = int(request.args.get("page"))
+	except (ValueError, TypeError):
+		pass
+
+	favs = Post.query.filter(Post.channel_id.in_([channel.id for channel in User.query.filter_by(id=User.getCurrentUser().id).first().subscriptions])).order_by(desc(Post.creationDate)).paginate(page_num, 10, error_out=False)
+	return render_template("main/home/dashboard.html", favs=favs)
 
 @gui.route("/home/discover")
 def discover():
-	return render_template("main/home/discover.html", channels=Channel.query.paginate(per_page=20, page=1, error_out=False))
+	page_num = 1
+	try:
+		page_num = int(request.args.get("page"))
+	except (ValueError, TypeError):
+		pass
+
+	channels = Channel.query.filter(Channel.name.like(f"%{request.args.get('channel', '')}%")).paginate(per_page=20,
+																											page=page_num,
+																											error_out=False)
+	return render_template("main/home/discover.html", channels=channels)
 
 @gui.route("/home/userchannel")
 def userchannel():
 	return render_template("main/home/userchannel.html")
+
+@gui.route("/home/favorites")
+def favorites():
+	return render_template("main/home/favboard.html", favs=User.query.filter_by(id=User.getCurrentUser().id).first().getFavoritePosts())
 
 ##### Profile #####
 @gui.route("/profile/<search>")

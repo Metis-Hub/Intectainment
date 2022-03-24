@@ -14,8 +14,6 @@
 
 {% block content %}
 {{super()}}
-    
-      
 {%endblock%}
 
 {% block maincontent%}
@@ -30,41 +28,39 @@
     <a href="{{url_for('gui.channelSettings', channel=channel.name)}}"><i class="bi bi-gear"></i></a>
     <a href="{{url_for('gui.createPost', channel=channel.name)}}"><i class="bi bi-plus-square"></i></a>
 
+    {% if canModify %}
+    <a href="{{url_for('gui.channelSettings', channel=channel.name)}}">Einstellungen</a>
+    {% endif %}
+
 </div>
 {%if posts.total > 0 %}
 <div class="postcontainer bg-dark">
     <hr/>
     <!-- Latest posts -->
     {% for post in posts.items %}
-        
-            <!--
-            <a href="{{url_for('gui.postView', postid=post.id)}}">
-                Post
-            </a>
-            {%set content = post.getContent()%}
-            <div class="postContent">
-                {{post.getContent()[:100]}}{%if content | length > 100%}...{%endif%}
-            </div>
-            -->
-
-
-            <div class="card bg-black text-white post-margin" style="width: 20rem;" id="touch">
-                <p class="card-text">{{post.getContent()[:100]}}{%if content | length > 100%}...{%endif%}</p>
+            <div class="card bg-black text-white post-margin" style="width: 12rem;" id="touch">
+                <div class="card-text postContent">
+{% for line in post.getContentLines()[:5]%}{{line}}{%endfor%}
+                </div>
                 <a href="{{url_for('gui.postView', postid=post.id)}}" class="btn btn-outline-primary">Zum Post</a>
             </div>
-        
-
-
-        
     {%endfor%}
     
     
 </div>
-
+{%if posts.pages > 1 %}
+    <hr/>
+    {% for page in posts.iter_pages() %}
+        {%if page%}
+            <a href="?page={{page}}">{{page}}</a>
+        {%else%}
+            ...
+        {%endif%}
+    {% endfor %}
+    {%endif%}
 {%else%}
     <div class="nopostcontainer text-white bg-dark">Kein Post auf diesem Kanal</div>
 {%endif%}
-
 {%endblock%}
 
 {% block js %}

@@ -1,7 +1,7 @@
 {#
     URL: /showPost
   #}
-  
+
   {% extends "defaultLayout.html" %}
   {% block title %}Neuer Post{%endblock%}
   
@@ -14,7 +14,8 @@
   {% block content %}
     <form method="POST">
         <input type="submit" value="Erstellen"/>
-        <br/>
+        <a href="{{url_for('upload_form', type='tmp', id=usrid)}}" onclick="open_wnd(this.href); return false">Bild hochladen</a>
+        <br />
         <textarea name="content" id="conent" rows="50" cols="100" oninput="run()">
 # Neuer Post
 

@@ -73,12 +73,16 @@ def userconfig():
 def setup():
     if request.method == "POST":
         if request.form.get("createDefault"):
+            user = User.query.one()
+
             for channelConfig in [("Intectainment", "Intectainment ist ein Infotainmentsystem"), ("SRZ-III", "Algorithmierung"), ("SRZ-IV", "Was weiß denn ich")]:
                 channel = Channel(name=channelConfig[0], description=channelConfig[1])
+                channel.owner = user
                 db.session.add(channel)
 
             for i in range(100):
                 channel = Channel(name=f"Kanal{i}", description="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.")
+                channel.owner = user
                 db.session.add(channel)
 
             for userConfig in [("Jakob", "1234"), ("Karl", "C++"), ("Tom", "MATERIALUI"), ("Bruno", "adenosintriphosphat")]:
