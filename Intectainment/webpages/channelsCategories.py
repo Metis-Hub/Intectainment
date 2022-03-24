@@ -1,5 +1,3 @@
-from msilib import Table
-from turtle import pos
 from Intectainment.app import app, db
 from Intectainment.datamodels import Channel, Category, Post, User
 from Intectainment.webpages.webpages import gui
@@ -30,7 +28,7 @@ def channelCreation():
         name = request.form.get("name")
         if name:
             if not Channel.query.filter_by(name=name).first():
-                channel = Channel(name=name)
+                channel = Channel(name=name, owner=User.getCurrentUser())
                 db.session.add(channel)
                 db.session.commit()
 
@@ -114,16 +112,27 @@ def postView(postid):
             return redirect(url_for("gui.channelView", channel=channel))
         elif "fav" in request.form:
             user = User.query.filter_by(id=User.getCurrentUser().id).first()
-            user.favoritePosts.append(post)
-            db.session.commit()
+            if user:
+                if not post in user.favoritePosts:
+                    user.favoritePosts.append(post)
+                    db.session.commit()
         elif "defav" in request.form:
             user = User.query.filter_by(id=User.getCurrentUser().id).first()
-            user.favoritePosts.remove(post)
-            db.session.commit()
+            if user:
+                if not post in user.favoritePosts:
+                    user.favoritePosts.remove(post)
+                    db.session.commit()
+
+    timeMessage = f"Erstellt am {post.creationDate.strftime('%d.%m.%Y %H:%M')}"
+    if post.creationDate != post.modDate:
+        timeMessage = f"Modifiziert am {post.modDate.strftime('%d.%m.%Y %H:%M')}"
+
+
 
     return render_template("main/post/showPost.html",
                            post=post,
                            user=User.getCurrentUser(),
+                           timeMessage = timeMessage,
                            faved=User.isLoggedIn() and (post in User.query.filter_by(id=User.getCurrentUser().id).first().getFavoritePosts()),
                            canModify=post.canModify(User.getCurrentUser()))
 

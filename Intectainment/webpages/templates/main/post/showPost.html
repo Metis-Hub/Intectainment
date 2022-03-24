@@ -36,6 +36,7 @@
 
   <p>Kanal: <a href="{{url_for('gui.channelView', channel=post.channel.name)}}"> {{post.channel.name}}</a> </p>
 
+  <p>{{timeMessage}}</p>
 
   {# utility to modify the post #}
   {%if canModify %}
