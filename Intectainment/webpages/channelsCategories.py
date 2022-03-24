@@ -53,7 +53,7 @@ def channelView(channel):
     channel = Channel.query.filter_by(name=channel).first_or_404()
     posts = Post.query.filter_by(channel_id=channel.id).paginate(per_page=20, page=page_num, error_out=False)
 
-    return render_template("main/channel/channelView.html", channel=channel, posts=posts)
+    return render_template("main/channel/channelView.html", channel=channel, posts=posts, user=User.getCurrentUser())
 
 
 @gui.route("/c/<channel>/settings", methods=["GET", "POST"])
