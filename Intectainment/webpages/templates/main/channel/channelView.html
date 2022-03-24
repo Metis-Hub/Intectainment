@@ -24,13 +24,15 @@
     {% if channel.description %}
     <p>{{channel.description}}</p>
     {%endif%}
-    
-    <a href="{{url_for('gui.channelSettings', channel=channel.name)}}"><i class="bi bi-gear"></i></a>
-    <a href="{{url_for('gui.createPost', channel=channel.name)}}"><i class="bi bi-plus-square"></i></a>
 
     {% if canModify %}
-    <a href="{{url_for('gui.channelSettings', channel=channel.name)}}">Einstellungen</a>
+    <a href="{{url_for('gui.channelSettings', channel=channel.name)}}"><i class="bi bi-gear"></i></a>
     {% endif %}
+
+    {% if user %}
+    <a href="{{url_for('gui.createPost', channel=channel.name)}}"><i class="bi bi-plus-square"></i></a>
+    {% endif %}
+
 
 </div>
 {%if posts.total > 0 %}
