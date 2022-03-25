@@ -12,7 +12,7 @@ import datetime
 @gui.route("/home/subscriptions", methods=["POST", "GET"])
 @login_required
 def handle_subscriptions():
-    return render_template("main/home/subscriptions.html", channels=User.query.filter_by(id=User.getCurrentUser().id).first().getSubscriptions())
+    return render_template("main/home/subscriptions.html", channels=User.query.filter_by(id=User.getCurrentUser().id).first().getSubscriptions(), user=User.getCurrentUser())
 
 @gui.route("/channels/new", methods=["GET", "POST"])
 @login_required

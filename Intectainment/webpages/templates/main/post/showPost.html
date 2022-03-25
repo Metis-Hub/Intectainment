@@ -45,17 +45,6 @@
   </form>
   {%endif%}
 
-  {# mark post as favorite #}
-  {% if user %}
-  <form method="post">
-  {% if faved %}
-    <input type="submit" name="fav" value="Merken ✅">
-  {%else%}
-    <input type="submit" name="defav" value="Unmerken ❌">
-  {%endif%}
-  </form>
-  {%endif%}
-
   <div id="postConent">{{post.getContent()}}</div>
 
   <script>

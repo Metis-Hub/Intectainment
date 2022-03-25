@@ -2,7 +2,7 @@
     URL: /home/subscriptions
 #}
 
-{% extends "defaultLayout.html" %}
+{% extends "sidebarLayout.html" %}
 {% block title %}Abonnierte Kanäle{% endblock %}
 
 {% block head %}
@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/postStyle.css') }}">
 {% endblock %}
 
-{% block maincontent%}
+{% block content%}
 <h1>Abonnierte Kanäle</h1>
 <table>
 {% for channel in channels %}
