@@ -3,7 +3,7 @@
     Description: Displays channel details
 #}
 
-{% extends "defaultLayout.html" %}
+{% extends "sidebarLayout.html" %}
 {% block title %}Kanalansicht{%endblock%}
 
 {% block head %}
@@ -12,12 +12,8 @@
   <script src="https://cdn.rawgit.com/showdownjs/showdown/1.0.1/dist/showdown.min.js"></script>
 {% endblock %}
 
-{% block content %}
+{% block content%}
 {{super()}}
-{%endblock%}
-
-{% block maincontent%}
-
 <div class="channelinfo bg-dark text-white">
 <h1>{{channel.name}}</h1>
 
