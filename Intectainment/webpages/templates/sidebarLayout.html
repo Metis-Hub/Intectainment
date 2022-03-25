@@ -10,37 +10,37 @@
 
                     {%if user%}
                     <a href="{{url_for('gui.dashboard')}}">
-                        <li class="nav-link tablinks" onClick="openTab(event, '1')">
+                        <li class="nav-link tablinks">
                             <span class="mx-2">Übersicht</span>
                         </li>
                     </a>
                     {%endif%}
                     <a href="{{url_for('gui.discover')}}">
-                        <li class="nav-link tablinks" onClick="openTab(event, '2')">
+                        <li class="nav-link tablinks">
                             <span class="mx-2">Entdecken</span>
                         </li>
                     </a>
                     {%if user%}
                     <a href="{{url_for('gui.userchannel')}}">
-                        <li class="nav-link tablinks" onClick="openTab(event, '3')">
+                        <li class="nav-link tablinks">
                             <span class="mx-2">Abonierte Kanäle</span>
                         </li>
                     </a>
                     <a href="{{url_for('gui.home')}}">
-                        <li class="nav-link tablinks" onClick="openTab(event, '3')">
+                        <li class="nav-link tablinks">
                             <span class="mx-2">Favoriten</span>
                         </li>
                     </a>
                     {%endif%}
                     <a href="{{url_for('gui.home')}}">
-                        <li class="nav-link tablinks" onClick="openTab(event, '3')">
+                        <li class="nav-link tablinks">
                             <span class="mx-2">Benutzer</span>
                         </li>
                     </a>
 
                     {%if user and user.permission >= user.PERMISSION.ADMIN%}
                     <a href="{{url_for('gui.admin.main')}}">
-                        <li class="nav-link tablinks" onClick="openTab(event, '3')">
+                        <li class="nav-link tablinks">
                             <span class="mx-2">Admin</span>
                         </li>
                     </a>

@@ -22,7 +22,6 @@ def start():
 	return render_template("main/start.html", user=User.getCurrentUser())
 
 @gui.route("/home")
-@login_required
 def home():
 	return render_template("main/home.html", user=User.getCurrentUser())
 
@@ -56,6 +55,7 @@ def userchannel():
 	return render_template("main/home/userchannel.html")
 
 @gui.route("/home/favorites")
+@login_required
 def favorites():
 	return render_template("main/home/favboard.html", user=User.getCurrentUser(), favs=User.query.filter_by(id=User.getCurrentUser().id).first().getFavoritePosts())
 
