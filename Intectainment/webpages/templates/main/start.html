@@ -7,18 +7,18 @@
 {% block title %}Start{%endblock%}
 
 {% block content %}
-<p>Hallihallo, das ist der Anfang</p>
-{%if session.get('User')%}
-    <p>Du bist angemeldet</p>
-{%else%}
-    <p> Du bist nicht angemeldet</p>
-{%endif%}
+<div>
+    <h1> Intectainment ist cool und so </h1>
 
-<p> Test für Login: <a href="{{url_for('gui.test')}}"> Test </a></p>
-
-wtf
-<i class="fa fa-search"></i>
-    iosingosdn
+    <p>Melde dich an um kuhle Sachen zu machen</p>
+    <form method="post" action="{{url_for('interface.login')}}">
+        <label>Login</label>
+        <input type="text" placeholder="Nutzername" name="username" required/>
+        <input type="password" placeholder="Passwort" name="password" required/>
+        <input type="hidden" name="redirect" value="{{url_for('gui.home')}}"/>
+        <input type="submit"/>
+    </form>
+</div>
 {%endblock%}
 
 

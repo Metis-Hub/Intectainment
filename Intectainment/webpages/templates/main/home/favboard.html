@@ -1,11 +1,14 @@
-{#
-    URL: /dashboard
-#}
+{%extends "sidebarLayout.html"%}
+{%block title %}Dashboard{%endblock%}
 
-{% extends "defaultLayout.html" %}
-{% block title %}Dashboard{%endblock%}
 
-{% block content %}
+{%block head%}
+    {{super()}}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/postStyle.css') }}">
+    <script src="https://cdn.rawgit.com/showdownjs/showdown/1.0.1/dist/showdown.min.js"></script>
+{%endblock%}
+
+{%block content%}
 
 {%if favs%}
     <p> Gefundene Posts: </p>

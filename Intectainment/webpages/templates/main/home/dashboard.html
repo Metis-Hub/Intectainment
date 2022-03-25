@@ -2,11 +2,18 @@
     URL: /home/dashboard
 #}
 
-{% extends "defaultLayout.html" %}
+{% extends "sidebarLayout.html" %}
 
-{% block title %}Dashboard{%endblock%}
+{%block title%}Dashboard{%endblock%}
 
-{% block maincontent %}
+{%block head%}
+    {{super()}}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/postStyle.css') }}">
+    <script src="https://cdn.rawgit.com/showdownjs/showdown/1.0.1/dist/showdown.min.js"></script>
+{%endblock%}
+
+
+{%block content%}
 {%if favs.total > 0%}
     {%for post in favs.items%}
         <div class="card bg-dark text-white" id="touch">
@@ -20,6 +27,8 @@
         <p> Es gibt noch keine gemerkten Posts. </p>
 {%endif%}
 {%endblock%}
+
+
 {% block js %}
 <script>
     var converter = new showdown.Converter();

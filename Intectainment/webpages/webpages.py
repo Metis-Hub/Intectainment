@@ -24,7 +24,7 @@ def start():
 @gui.route("/home")
 @login_required
 def home():
-	return render_template("main/home.html")
+	return render_template("main/home.html", user=User.getCurrentUser())
 
 @gui.route("/home/dashboard")
 @login_required
@@ -36,7 +36,7 @@ def dashboard():
 		pass
 
 	favs = Post.query.filter(Post.channel_id.in_([channel.id for channel in User.query.filter_by(id=User.getCurrentUser().id).first().subscriptions])).order_by(desc(Post.creationDate)).paginate(page_num, 10, error_out=False)
-	return render_template("main/home/dashboard.html", favs=favs)
+	return render_template("main/home/dashboard.html", user=User.getCurrentUser(), favs=favs)
 
 @gui.route("/home/discover")
 def discover():
@@ -49,7 +49,7 @@ def discover():
 	channels = Channel.query.filter(Channel.name.like(f"%{request.args.get('channel', '')}%")).paginate(per_page=20,
 																											page=page_num,
 																											error_out=False)
-	return render_template("main/home/discover.html", channels=channels)
+	return render_template("main/home/discover.html", user=User.getCurrentUser(), channels=channels)
 
 @gui.route("/home/userchannel")
 def userchannel():
@@ -57,7 +57,7 @@ def userchannel():
 
 @gui.route("/home/favorites")
 def favorites():
-	return render_template("main/home/favboard.html", favs=User.query.filter_by(id=User.getCurrentUser().id).first().getFavoritePosts())
+	return render_template("main/home/favboard.html", user=User.getCurrentUser(), favs=User.query.filter_by(id=User.getCurrentUser().id).first().getFavoritePosts())
 
 ##### Profile #####
 @gui.route("/profile/<search>")
@@ -73,15 +73,6 @@ def profileSearch():
 	query = User.query.filter(User.username.like(f"%{search}%"))
 
 	return render_template("main/user/profiles.html", users=query.all())
-
-@gui.route("/login", methods=["GET"])
-def login():
-	return render_template("main/login.html", redirect="gui.home")
-
-#TODO: remove
-@gui.route("/test")
-def test():
-	return render_template("main/LoginLogoutTest.html", user=User.getCurrentUser())
 
 ##### Access Points #####
 @ap.route("/user/login", methods = ["POST"])
