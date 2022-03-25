@@ -10,34 +10,36 @@
 
 {%block content%}
 
-{%if favs%}
-    <p> Gefundene Posts: </p>
+{%if favs %}
 
-    {%for post in favs%}
-        <div class="card bg-dark text-white" style="width: 12rem;" id="touch">
-            <img src="..." class="card-img-top" alt="...">
-            <div class="card-body">
-              <p class="card-content">{{post.getContent()}}</p>
-              <a href="../post/{{post.id}}" class="btn btn-outline-primary">Zum Post</a>
+    <hr/>
+    <!-- Marked posts -->
+    {% for post in favs %}
+            <div class="card bg-black text-white post-margin" style="width: 12rem;" id="touch">
+                <div class="card-text post-preview">
+                  {% for line in post.getContentLines()[:5] %}{{line}}{%endfor%}
+                </div>
+                <a href="{{url_for('gui.postView', postid=post.id)}}" class="btn btn-outline-primary">Zum Post</a>
             </div>
-        </div>
-    {%endfor%}
-    
+    {%endfor%}   
 
 {%else%}
   <p>Sie haben noch keine gemerkten Posts.</p>
 {%endif%}
 
+{% block js %}
 <script>
-  var targets = document.getElementsByClassName("card-content");
+    var converter = new showdown.Converter();
+    var convertPosts = document.getElementsByClassName('post-preview');
 
-  for(i = 0; i < target.length; i++){
-    var converter = new showdown.Converter({tables: true, strikethrough: true, tasklists: true});
-
-    targets[i].innerHTML = converter.makeHtml(target[i].innerHTML);
-  }
-  
-</script>
+    for (var i = 0; i < convertPosts.length; i++) {
+      
+        var target = convertPosts[i];
+        console.log(target.innerHTML);
+        target.innerHTML = converter.makeHtml(target.innerHTML);
+    }
+  </script>
+{%endblock%}
 
 <script type="module">
     import interact from 
