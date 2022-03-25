@@ -14,7 +14,6 @@
   {% block content %}
     <form method="POST">
         <input type="submit" value="Erstellen"/>
-
         <a href="{{url_for('upload_form', type='tmp', id=usrid)}}" onclick="open_wnd(this.href); return false">Bild hochladen</a>
         <br />
         <textarea name="content" id="conent" rows="50" cols="100" oninput="run()">
@@ -22,8 +21,7 @@
 
 Hier können Sie Posts erstellen.
 
-**Markdown-Syntax:** [www.markdownguide.org](https://www.markdownguide.org/basic-syntax).
-        </textarea>
+**Markdown-Syntax:** [www.markdownguide.org](https://www.markdownguide.org/basic-syntax).</textarea>
         <div id="rendert" display="flex"></div>
     </form>
     <script>

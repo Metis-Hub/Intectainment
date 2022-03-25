@@ -29,9 +29,9 @@
     {%if users!=None%}
         {%if users|length > 0%}
         <table>
-            <tr><th>Name</th><th>E-Mail</th></tr>
+            <tr><th>Name</th></tr>
         {%for user in users%}
-            <tr><td>{{user.getName()}}</td><td>{{user.email}}</td></tr>
+            <tr><td>{{user.getName()}}</td></tr>
         {%endfor%}
         </table>
         {%else%}

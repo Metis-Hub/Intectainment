@@ -2,16 +2,16 @@
     URL: /home/discover
 #}
 
-{% extends "defaultLayout.html" %}
-
-{% block maincontent%}
+{% extends "sidebarLayout.html" %}
+{% block title %}Entdecken{%endblock%}
+{% block content%}
 <form method="get">
     <div class="hey">
-        <div class="left">
+        <form method="POST" class="left">
             <label for="searchbar" class="form-label search"></label>
-            <input type="text" class="form-control search bg-dark text-white" placeholder="Kanalname">
-            <button type="submit" class="btn btn-outline-primary search-button bg-dark">Submit</button>
-        </div>
+            <input type="text" class="form-control search bg-dark text-white" name="channel" placeholder="Kanalname">
+            <input type="submit" class="btn btn-outline-primary search-button bg-dark">Submit</input>
+        </form>
     </div>
 </form>
 
@@ -24,19 +24,27 @@
         <div class="blog"></div>
         <div class="blog"></div>
         <div class="blog"></div>
-    
     </div>
     <div class="channels text-white">Channels<p></p>
         {%if channels.total>0%}
             {%for channel in channels.items%}
                 <div class="blog">
-                    <a href="/c/{{channel.name}}"> {{channel.name}} </a>
+                    <a href="{{url_for('gui.channelView', channel=channel.name)}}"> {{channel.name}} </a>
                 </div>
             {%endfor%}
+            {%if channels.pages > 1 %}
+                <hr/>
+                {% for page in channels.iter_pages() %}
+                    {%if page%}
+                        <a href="?page={{page}}">{{page}}</a>
+                    {%else%}
+                        ...
+                    {%endif%}
+                {% endfor %}
+            {%endif%}
         {%else%}
             <p> Es wurden keine Kanäle gefunden </p>
         {%endif%}
+    </div>
 </div>
-</div>
-
 {%endblock%}

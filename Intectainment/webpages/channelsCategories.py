@@ -14,18 +14,6 @@ import datetime
 def handle_subscriptions():
     return render_template("main/home/subscriptions.html", channels=User.query.filter_by(id=User.getCurrentUser().id).first().getSubscriptions())
 
-@gui.route("/channels", methods=["GET"])
-def channelSearch():
-    page_num = 1
-    try:
-        page_num = int(request.args.get("page"))
-    except (ValueError, TypeError):
-        pass
-
-    channels = Channel.query.filter(Channel.name.like(f"%{request.args.get('channelname', '')}%")).paginate(per_page=20, page=page_num, error_out=False)
-    return render_template("main/channel/channelSearch.html", channels=channels)
-
-
 @gui.route("/channels/new", methods=["GET", "POST"])
 @login_required
 def channelCreation():

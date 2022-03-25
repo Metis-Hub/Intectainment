@@ -1,0 +1,67 @@
+{% extends "baseLayout.html" %}
+
+{%block body%}
+    <div class="sidebar">
+        <div class="side-navbar active-nav d-flex justify-content-between flex-wrap flex-column width">
+                <ul class="nav flex-column text-white w-100">
+                    <a class="nav-link h3 text-white my-2">
+                        Navigation
+                    </a>
+
+                    {%if user%}
+                    <a href="{{url_for('gui.dashboard')}}">
+                        <li class="nav-link tablinks">
+                            <span class="mx-2">Übersicht</span>
+                        </li>
+                    </a>
+                    {%endif%}
+                    <a href="{{url_for('gui.discover')}}">
+                        <li class="nav-link tablinks">
+                            <span class="mx-2">Entdecken</span>
+                        </li>
+                    </a>
+                    {%if user%}
+                    <a href="{{url_for('gui.userchannel')}}">
+                        <li class="nav-link tablinks">
+                            <span class="mx-2">Abonierte Kanäle</span>
+                        </li>
+                    </a>
+                    <a href="{{url_for('gui.home')}}">
+                        <li class="nav-link tablinks">
+                            <span class="mx-2">Favoriten</span>
+                        </li>
+                    </a>
+                    {%endif%}
+                    <a href="{{url_for('gui.home')}}">
+                        <li class="nav-link tablinks">
+                            <span class="mx-2">Benutzer</span>
+                        </li>
+                    </a>
+
+                    {%if user and user.permission >= user.PERMISSION.ADMIN%}
+                    <a href="{{url_for('gui.admin.main')}}">
+                        <li class="nav-link tablinks">
+                            <span class="mx-2">Admin</span>
+                        </li>
+                    </a>
+                    {%endif%}
+
+                    {%if user%}
+                    <form method="post" action="{{url_for('interface.logout')}}">
+                        <label>Logout</label>
+                        <input type="submit" value="Logout"/>
+                    </form>
+                    {%else%}
+                    <form method="post" action="{{url_for('interface.login')}}">
+                        <label>Login</label>
+                        <input type="text" placeholder="Nutzername" name="username" required/>
+                        <input type="password" placeholder="Passwort" name="password" required/>
+                        <input type="submit"/>
+                    </form>
+                    {%endif%}
+                </ul>
+        </div>
+    </div>
+
+    <div id="content" class="sidebar-content">{% block content %}{% endblock %}</div>
+{%endblock%}
