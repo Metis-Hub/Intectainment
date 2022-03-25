@@ -113,6 +113,9 @@ class User(db.Model):
 	def getFavoritePosts(self):
 		return self.favoritePosts
 
+	def getSubscriptions(self):
+		return self.subscriptions
+
 class Channel(db.Model):
 	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
@@ -147,6 +150,14 @@ class Post(db.Model):
 		except FileNotFoundError:
 			self.createFile()
 			return ""
+
+	def getContentLines(self):
+		try:
+			with open(self.getFilePath(), "r") as file:
+				return file.readlines()
+		except FileNotFoundError:
+			self.createFile()
+			return []
 
 	def setContent(self, content):
 		"""sets the content of the post"""

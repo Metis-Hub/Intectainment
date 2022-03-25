@@ -12,47 +12,35 @@
 {% endblock %}
 
 {% block content %}
-<div class="offcanvas offcanvas-start" id="demo">
-  <div class="offcanvas-header">
-    <h1 class="offcanvas-title">Heading</h1>
-    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
-  </div>
+<div class="offcanvas offcanvas-start w-auto p-3 bg-black" id="demo">
   <div class="offcanvas-body">
-    <p>Some text lorem ipsum.</p>
-    <p>Some text lorem ipsum.</p>
-    <p>Some text lorem ipsum.</p>
-    <button class="btn btn-secondary" type="button">A Button</button>
+    <a href="#" onClick="history.back()"><i class="bi bi-arrow-left big-icon"></i></a>
+    <a href=""><i class="bi bi-star big-icon"></i></a>
+    <a href="{{url_for('gui.channelView', channel=post.channel.name)}}"><i class="bi bi-person-circle big-icon"></i></a>
+    {%if canModify %}
+    <a href="{{url_for('gui.postEdit', postid=post.id)}}"><i class="bi bi-pencil-square big-icon"></i></a>
+    <form method="POST">
+      <input type="submit" name="delete" value="Löschen"/>
+    </form>
+	{%endif%}
   </div>
 </div>
 
 <div class="container-fluid mt-3">
-  <h3>Offcanvas Sidebar</h3>
-  <p>Offcanvas is similar to modals, except that it is often used as a sidebar.</p>
   <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#demo">
-    Open Offcanvas Sidebar
+    <i class="bi bi-list"></i>
   </button>
 </div>
 
-
-  <p>Kanal: <a href="{{url_for('gui.channelView', channel=post.channel.name)}}"> {{post.channel.name}}</a> </p>
-
-
-  {# utility to modify the post #}
-  {%if canModify %}
-  <p>Bearbeiten: <a href="{{url_for('gui.postEdit', postid=post.id)}}">Bearbeiten</a></p>
-  <form method="POST">
-      <input type="submit" name="delete" value="Löschen"/>
-  </form>
-  {%endif%}
-  <hr/>
+  <p>{{timeMessage}}</p>
 
   {# mark post as favorite #}
   {% if user %}
   <form method="post">
   {% if faved %}
-    <input type="submit" name="fav" value="Merken ✅">
-  {%else%}
     <input type="submit" name="defav" value="Unmerken ❌">
+  {%else%}
+    <input type="submit" name="fav" value="Merken ✅">
   {%endif%}
   </form>
   {%endif%}

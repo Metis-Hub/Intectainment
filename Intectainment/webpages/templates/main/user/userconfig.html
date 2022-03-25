@@ -1,0 +1,26 @@
+{#
+    URL: /userconfig/
+    Description: Allows the user to config his profile
+#}
+
+{% extends "defaultLayout.html" %}
+{% block title %}Eigenes Profil{%endblock%}
+
+{% block content %}
+
+<h1>Eigenes Nutzerprofil</h1>
+
+<form method="post" action="{{ this_url }}">
+    <p>
+        <label>Name:</label> <input type="text" value="{{ user.getName() }}" name="txtname"> <input type="submit" name="name" value="Namen ändern!">
+        <label>E-Mail:</label> <input type="text" value="{{ user.email }}" name="txtemail"> <input type="submit" name="email" value="E-Mail ändern!">
+    </p>
+    <p>
+        <label>altes Passwort:</label> <input type="password" name="old" required>
+        <label>neues Passwort:</label> <input type="password" name="new" required>
+        <label>Bestätigung des neuen Passworts:</label> <input type="password" name="ver_new" required>
+        <input type="submit" name="pw" value="Passwort ändern!">
+    </p>
+</form>
+
+{%endblock%}

@@ -1,5 +1,3 @@
-from msilib import Table
-from turtle import pos
 from Intectainment.app import app, db
 from Intectainment.datamodels import Channel, Category, Post, User
 from Intectainment.webpages.webpages import gui
@@ -11,17 +9,10 @@ from flask import request, render_template, redirect, url_for
 import datetime
 
 ##### Kanäle #####
-@gui.route("/channels", methods=["GET"])
-def channelSearch():
-    page_num = 1
-    try:
-        page_num = int(request.args.get("page"))
-    except (ValueError, TypeError):
-        pass
-
-    channels = Channel.query.filter(Channel.name.like(f"%{request.args.get('channelname', '')}%")).paginate(per_page=20, page=page_num, error_out=False)
-    return render_template("main/channel/channelSearch.html", channels=channels)
-
+@gui.route("/home/subscriptions", methods=["POST", "GET"])
+@login_required
+def handle_subscriptions():
+    return render_template("main/home/subscriptions.html", channels=User.query.filter_by(id=User.getCurrentUser().id).first().getSubscriptions(), user=User.getCurrentUser())
 
 @gui.route("/channels/new", methods=["GET", "POST"])
 @login_required
@@ -30,7 +21,7 @@ def channelCreation():
         name = request.form.get("name")
         if name:
             if not Channel.query.filter_by(name=name).first():
-                channel = Channel(name=name)
+                channel = Channel(name=name, owner=User.getCurrentUser())
                 db.session.add(channel)
                 db.session.commit()
 
@@ -40,9 +31,8 @@ def channelCreation():
     return render_template("main/channel/channelCreation.html")
 
 
-
-@gui.route("/c/<channel>")
-@gui.route("/channel/<channel>")
+@gui.route("/c/<channel>", methods=["POST", "GET"])
+@gui.route("/channel/<channel>", methods=["POST", "GET"])
 def channelView(channel):
     page_num = 1
     try:
@@ -51,9 +41,25 @@ def channelView(channel):
         pass
 
     channel = Channel.query.filter_by(name=channel).first_or_404()
+
+    if request.method == "POST":
+        if "subscr" in request.form:
+            user = User.query.filter_by(id=User.getCurrentUser().id).first()
+            user.subscriptions.append(channel)
+            db.session.commit()
+        elif "desubscr" in request.form:
+            user = User.query.filter_by(id=User.getCurrentUser().id).first()
+            user.subscriptions.remove(channel)
+            db.session.commit()
+
     posts = Post.query.filter_by(channel_id=channel.id).paginate(per_page=20, page=page_num, error_out=False)
 
-    return render_template("main/channel/channelView.html", channel=channel, posts=posts, canModify=channel.canModify(User.getCurrentUser()))
+    return render_template("main/channel/channelView.html",
+                           channel=channel,
+                           posts=posts,
+                           canModify=channel.canModify(User.getCurrentUser()),
+                           user=User.getCurrentUser(),
+                           subscribed=User.isLoggedIn() and (channel in User.query.filter_by(id=User.getCurrentUser().id).first().getSubscriptions()))
 
 
 @gui.route("/c/<channel>/settings", methods=["GET", "POST"])
@@ -100,16 +106,27 @@ def postView(postid):
             return redirect(url_for("gui.channelView", channel=channel))
         elif "fav" in request.form:
             user = User.query.filter_by(id=User.getCurrentUser().id).first()
-            user.favoritePosts.append(post)
-            db.session.commit()
+            if user:
+                if not post in user.favoritePosts:
+                    user.favoritePosts.append(post)
+                    db.session.commit()
         elif "defav" in request.form:
             user = User.query.filter_by(id=User.getCurrentUser().id).first()
-            user.favoritePosts.remove(post)
-            db.session.commit()
+            if user:
+                if post in user.favoritePosts:
+                    user.favoritePosts.remove(post)
+                    db.session.commit()
+
+    timeMessage = f"Erstellt am {post.creationDate.strftime('%d.%m.%Y %H:%M')}"
+    if post.creationDate != post.modDate:
+        timeMessage = f"Modifiziert am {post.modDate.strftime('%d.%m.%Y %H:%M')}"
+
+
 
     return render_template("main/post/showPost.html",
                            post=post,
                            user=User.getCurrentUser(),
+                           timeMessage = timeMessage,
                            faved=User.isLoggedIn() and (post in User.query.filter_by(id=User.getCurrentUser().id).first().getFavoritePosts()),
                            canModify=post.canModify(User.getCurrentUser()))
 

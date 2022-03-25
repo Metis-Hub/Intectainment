@@ -39,6 +39,11 @@ def upload_image(name="", folder="c", subfolder="", type=""):
             filename = name + "." + get_extension(file.filename)
         create_subfolder(os.path.join(app.config["UPLOAD_FOLDER"], folder, subfolder))
         file.save(os.path.join(app.config["UPLOAD_FOLDER"], folder, subfolder, filename))
+
+        if folder == "c":
+            # TODO: write extension into database
+            pass
+
         if type != "":
             return render_template("img/upload.html", path="http://" + app.config["SERVER_NAME"] + "/img/" + type + "/" + subfolder + "/" + filename)
         else:
