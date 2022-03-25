@@ -1,0 +1,23 @@
+{#
+    URL: /home/subscriptions
+#}
+
+{% extends "defaultLayout.html" %}
+{% block title %}Abonnierte Kanäle{% endblock %}
+
+{% block head %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/postStyle.css') }}">
+{% endblock %}
+
+{% block maincontent%}
+<h1>Abonnierte Kanäle</h1>
+<table>
+{% for channel in channels %}
+    <tr>
+        <td>{{ channel.name }}</td>
+        <td><a href="{{ url_for('gui.channelView', channel=channel.name) }}">Besuchen</a></td>
+    </tr>
+{% endfor %}
+</table>
+{% endblock %}

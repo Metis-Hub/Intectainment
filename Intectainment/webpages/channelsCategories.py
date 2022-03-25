@@ -9,6 +9,11 @@ from flask import request, render_template, redirect, url_for
 import datetime
 
 ##### Kanäle #####
+@gui.route("/home/subscriptions", methods=["POST", "GET"])
+@login_required
+def handle_subscriptions():
+    return render_template("main/home/subscriptions.html", channels=User.query.filter_by(id=User.getCurrentUser().id).first().getSubscriptions())
+
 @gui.route("/channels", methods=["GET"])
 def channelSearch():
     page_num = 1
