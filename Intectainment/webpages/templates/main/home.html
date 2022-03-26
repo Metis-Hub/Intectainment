@@ -6,5 +6,37 @@
 {% block title %}Home{%endblock%}
 
 {%block content%}
-Willkommen
+<div>
+    <center>
+        <img src="../../static/logo.png" style="width: 50%; height: auto;">
+        <h1 style="font-size: 400%;">Herzlich Willkommen bei Intectainment!</h1>
+
+        <div style="font-size: 200%">
+            {%if user%}
+            <a href="{{url_for('gui.dashboard')}}">Übersicht</a>: Dein indivdueller Feed
+            <br>
+            {%endif%}
+
+            <a href="{{url_for('gui.discover')}}">Entdecken</a>: Neue Kanäle und Posts finden
+            <br>
+
+            {%if user%}
+            <a href="{{url_for('gui.handle_subscriptions')}}">Abonnierte Kanäle</a>: Deine Lieblingskanäle
+            <br>
+
+            <a href="{{url_for('gui.favorites')}}">Favoriten</a>: Die Posts, die du dir merken wolltest
+            <br>
+            {%endif%}
+
+            <a href="{{url_for('gui.home')}}">Benutzer</a>
+            <br>
+
+            {%if user and user.permission >= user.PERMISSION.ADMIN%}
+            <a href="{{url_for('gui.admin.main')}}">Admin</a>
+            <br>
+            {%endif%}
+        </div>
+        
+    </center>
+</div>
 {%endblock%}
