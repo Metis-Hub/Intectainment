@@ -7,17 +7,21 @@
 {% block title %}Start{%endblock%}
 
 {% block content %}
-<div>
-    <h1> Intectainment ist cool und so </h1>
 
-    <p>Melde dich an um kuhle Sachen zu machen</p>
-    <form method="post" action="{{url_for('interface.login')}}">
-        <label>Login</label>
+<div>
+    <center>
+    <img src="../../static/logo.png" style="width: 80%; height: auto; padding: 5%;">
+    <h1 style="font-size: 500%;"> Entdecke dein <span style="color:#007572;">Unternehmen</span> neu. </h1>
+    <p style="font-size: 200%; padding-right: 17%;">Dies ist ein Ort für neuen <span style="color:#00706c;">Austausch</span>.</p>
+    <p style="font-size: 210%;">Für neues <span style="color:#005a56;">Entdecken</span>.</p>
+    <p style="font-size: 220%;">Für mehr <span style="color:#004743;">Intectainment</span>.</p>
+    <form method="post" action="{{url_for('interface.login')}}" style="font-size: 110%;">
         <input type="text" placeholder="Nutzername" name="username" required/>
         <input type="password" placeholder="Passwort" name="password" required/>
         <input type="hidden" name="redirect" value="{{url_for('gui.home')}}"/>
-        <input type="submit"/>
+        <input type="submit" value="Anmelden"/>
     </form>
+    </center>
 </div>
 {%endblock%}
 
