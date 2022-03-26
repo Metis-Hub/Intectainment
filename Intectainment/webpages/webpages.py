@@ -1,5 +1,5 @@
 import os
-from flask import render_template, send_from_directory, request, redirect, url_for, Blueprint
+from flask import render_template, send_from_directory, request, redirect, url_for, Blueprint, flash
 from sqlalchemy import desc
 
 from Intectainment.app import app, db
@@ -131,26 +131,41 @@ def display_image_posts(type, post_id, filename):
 		return display_image(type + "/" + post_id, filename)
 
 #### User-Config ####
-@app.route("/userconfig/", methods=["POST"])
+@gui.route("/home/userconfig", methods=["POST", "GET"])
 @login_required
-def handel_changes():
+def userconfig():
 	if request.method == "POST":
+		user = User.getCurrentUser()
 		if "pw" and "old" and "new" and "ver_new" in request.form:
 			if request.form["new"] != request.form["ver_new"]:
 				flash("Neues Passwort stimmt nicht mit der Bestätigung des Neuens überein!")
 			elif not User.getCurrentUser().validatePassword(request.form["old"]):
 				flash("Altes Passwort ist falsch!")
 			else:
-				User.getCurrentUser().changePassword(request.form["new"])
-				flash("Passwort geändert!")
+				user.changePassword(request.form["new"])
+				db.session.add(user)
+				db.session.commit()
+				flash("Passwort wurde erfolgreich  geändert!")
 		elif "txtname" and "name" in request.form:
-			# TODO
-			pass
-		elif "txtemail" and "email" in request.form:
-			# TODO
-			pass
+			check_usr = User.query.filter_by(username=request.form["txtname"]).first()
+			if check_usr and check_usr.name == request.form["txtname"]:
+				flash("Benutzername ist bereits schon vergeben, wollen Sie aber dennoch einen anderen Namen angezeigt haben, so ändern Sie bitte Ihren Anzeignamen!")
+			else:
+				user.username = request.form["txtname"]
+				db.session.add(user)
+				db.session.commit()
+				flash("Benutzername wurde erfolgreich geändert!")
+		elif "txtdispl_name" and "displ_name" in request.form:
+			if request.form["txtdispl_name"] != user.username:
+				user.displayname = request.form["txtdispl_name"]
+			else:
+				user.displayname = None
+			db.session.add(user)
+			db.session.commit()
+			flash("Anzuzeigender Name wurde erfolgreich geändert!")
 
-	return render_template("main/user/userconfig", user=User.getCurrentUser())
+
+	return render_template("main/user/userconfig.html", user=User.getCurrentUser())
 
 #Import other routing files
 from Intectainment.webpages import admin, channelsCategories, RestInterface

@@ -16,7 +16,7 @@
     <form method="POST">
         <input type="text" name="username" placeholder="Username" required/>
         <input type="password" name="password" placeholder="Passwort" required/>
-        <input type="email" name="email" placeholder="E-Mail" required/>
+        <!--input type="email" name="email" placeholder="E-Mail" required/-->
         <input type="submit" name="createUser" value="Erstellen"/>
     </form>
 
@@ -31,7 +31,7 @@
         <table>
             <tr><th>Name</th></tr>
         {%for user in users%}
-            <tr><td>{{user.getName()}}</td></tr>
+            <tr><td><a href="{{url_for('gui.admin.edit_user', usrid=user.id)}}">{{user.getName()}}</a></td></tr>
         {%endfor%}
         </table>
         {%else%}
