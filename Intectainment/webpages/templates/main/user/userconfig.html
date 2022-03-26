@@ -21,6 +21,16 @@
 	{% endwith %}
 </p>
 
+<p>
+    <lable>Profilbild: </lable>
+    {% if imgurl %}
+    <img href="{{ imgurl }}" />
+    <a href="{{ url_for('upload_form', type='usr', id=user.id) }}" onclick="open_wnd(this.href); return false">Ändern</a>
+    {% else %}
+    <a href="{{ url_for('upload_form', type='usr', id=user.id) }}" onclick="open_wnd(this.href); return false">Bild hochladen</a>
+    {% endif %}
+</p>
+
 <form method="post" action="{{ this_url }}">
     <p> <label>Benutzername:</label> <input type="text" value="{{ user.username }}" name="txtname" required> <input type="submit" name="name" value="Namen ändern!"> </p>
 </form>
@@ -39,5 +49,12 @@
         </table>
     </p>
 </form>
+
+<script>
+    function open_wnd(url) {
+            wnd = window.open(url, "Bild hochladen", "width=600,height=400,status=yes,scrollbars=yes,resizable=yes");
+            wnd.focus();
+        }
+</script>
 
 {%endblock%}

@@ -28,7 +28,6 @@ def edit_user(usrid):
             else:
                 user.changePassword(request.form["new"])
                 db.session.add(user)
-                db.session.commit()
                 flash("Passwort wurde erfolgreich  geändert!")
         elif "txtname" and "name" in request.form:
             check_usr = User.query.filter_by(username=request.form["txtname"]).first()
@@ -37,7 +36,6 @@ def edit_user(usrid):
             else:
                 user.username = request.form["txtname"]
                 db.session.add(user)
-                db.session.commit()
                 flash("Benutzername wurde erfolgreich geändert!")
         elif "txtdispl_name" and "displ_name" in request.form:
             if request.form["txtdispl_name"] != user.username:
@@ -45,8 +43,13 @@ def edit_user(usrid):
             else:
                 user.displayname = None
             db.session.add(user)
-            db.session.commit()
             flash("Anzuzeigender Name wurde erfolgreich geändert!")
+        elif "submit_level" and "level" in request.form:
+            user.permission = int(request.form["level"])
+            db.session.add(user)
+            flash("Zugriffslevel wurde erfolgreich geändert!")
+
+        db.session.commit
     return render_template("admin/singleUserConfig.html", edit_user=user)
 
 @admin.route("/user", methods=["GET","POST"])

@@ -1,5 +1,6 @@
 import os, urllib.request, shutil
 from Intectainment.app import app
+from Intectainment.datamodels import Channel, User, db
 from flask import Flask, flash, request, redirect, url_for, render_template
 from werkzeug.utils import secure_filename
 
@@ -41,15 +42,26 @@ def upload_image(name="", folder="c", subfolder="", type=""):
         file.save(os.path.join(app.config["UPLOAD_FOLDER"], folder, subfolder, filename))
 
         if folder == "c":
-            # TODO: write extension into database
-            pass
+            channel = Channel.query.filter_by(id=int(name)).first()
+            channel.icon_extension = get_extension(file.filename)
+            db.session.add(channel)
+            db.session.commit()
+        elif folder == "usr":
+            user = User.query.filter_by(id=int(name)).first()
+            user.icon_extension = get_extension(file.filename)
+            db.session.add(user)
+            db.session.commit()
 
-        if type != "":
-            return render_template("img/upload.html", path="http://" + app.config["SERVER_NAME"] + "/img/" + type + "/" + subfolder + "/" + filename)
+        path = None
+        if type:
+            path = url_for("display_image_posts", type=type, post_id=subfolder, filename=filename)
         else:
-            return render_template("img/upload.html")
+            path = url_for("display_image_", type=type, filename=filename)
+
+        return render_template("img/upload.html", path=path, type=type)
+
     else:
-        flash("Allowed image types are -> png, jpg, jpeg, gif, bmp, svg, ico")
+        flash("Zulässige Dateiendungen sind: png, jpg, jpeg, gif, bmp, svg, ico")
         return redirect(request.url)
 
 def display_image(folder, filename):

@@ -75,7 +75,7 @@ def profileSearch():
 	return render_template("main/user/profiles.html", users=query.all())
 
 ##### Access Points #####
-@ap.route("/user/login", methods = ["POST"])
+@ap.route("/user/login", methods=["POST"])
 def login():
 	"""login access point"""
 	if User.isLoggedIn():
@@ -134,8 +134,8 @@ def display_image_posts(type, post_id, filename):
 @gui.route("/home/userconfig", methods=["POST", "GET"])
 @login_required
 def userconfig():
+	user = User.getCurrentUser()
 	if request.method == "POST":
-		user = User.getCurrentUser()
 		if "pw" and "old" and "new" and "ver_new" in request.form:
 			if request.form["new"] != request.form["ver_new"]:
 				flash("Neues Passwort stimmt nicht mit der Bestätigung des Neuens überein!")
@@ -164,8 +164,10 @@ def userconfig():
 			db.session.commit()
 			flash("Anzuzeigender Name wurde erfolgreich geändert!")
 
-
-	return render_template("main/user/userconfig.html", user=User.getCurrentUser())
+	imgurl = None
+	if user.icone_extension:
+		imgurl=url_for("display_image_", type="usr", filename=str(user.id) + "." + user.icone_extension)
+	return render_template("main/user/userconfig.html", user=user, imgurl=imgurl)
 
 #Import other routing files
 from Intectainment.webpages import admin, channelsCategories, RestInterface

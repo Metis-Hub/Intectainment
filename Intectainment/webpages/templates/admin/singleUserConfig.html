@@ -34,4 +34,44 @@
     </p>
 </form>
 
+<form method="post" action="{{ this_url }}">
+    <p>
+        <lable>Zugriffslevel: </lable>
+        <lable id="level_name"></lable>
+    </p>
+    <p>
+        <input type="number" min="0" max="255" value="10" id="level" name="level">
+        <input type="range" min="0" max="255" step="1" value="{{ edit_user.permission }}" id="level_slider">
+        <input type="submit" name="submit_level">Ändern</input>
+    </p>
+</form>
+
+<script type="text/JavaScript">
+    var slider = document.getElementById("level_slider");
+    var output = document.getElementById("level");
+
+    output.value = slider.value;
+
+    function write_lable() {
+        var txt = "Gast";
+        if (output.value >= 10 && output.value < 100) txt = "Benutzer";
+        else if (output.value >= 100 && output.value < 255) txt = "Moderator";
+        else if (output.value >= 255) txt = "Administrator";
+        document.getElementById("level_name").innerHTML = txt;
+    }
+
+    write_lable();
+
+    slider.oninput = function() {
+      output.value = this.value;
+      write_lable();
+    }
+
+    output.oninput = function() {
+      slider.value = this.value;
+      write_lable();
+    }
+
+</script>
+
 {%endblock%}
