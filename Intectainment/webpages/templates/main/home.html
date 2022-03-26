@@ -28,14 +28,6 @@
             <br>
             {%endif%}
 
-            <a href="{{url_for('gui.home')}}">Benutzer</a>: Benutzersuche
-            <br>
-
-            {%if user and user.permission >= user.PERMISSION.ADMIN%}
-            <a href="{{url_for('gui.admin.main')}}">Admin</a>: Administrationsinterface
-            <br>
-            {%endif%}
-
             <a href="{{url_for('gui.start')}}">Start</a>: zurück zum Start
         </div>
         
