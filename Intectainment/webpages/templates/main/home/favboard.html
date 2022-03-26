@@ -9,9 +9,9 @@
 {%endblock%}
 
 {%block content%}
+{{super()}}
 
-{%if favs %}
-
+{%if favs and favs|length > 0 %}
     <hr/>
     <!-- Marked posts -->
     {% for post in favs %}
@@ -27,63 +27,17 @@
   <p>Sie haben noch keine gemerkten Posts.</p>
 {%endif%}
 
+{%endblock%}
+
 {% block js %}
 <script>
     var converter = new showdown.Converter();
     var convertPosts = document.getElementsByClassName('post-preview');
 
     for (var i = 0; i < convertPosts.length; i++) {
-      
         var target = convertPosts[i];
         console.log(target.innerHTML);
         target.innerHTML = converter.makeHtml(target.innerHTML);
     }
   </script>
-{%endblock%}
-
-<script type="module">
-    import interact from 
-    'https://cdn.interactjs.io/v1.10.11/interactjs/index.js'
-
-interact('.draggable')
-  .draggable({
-    // 
-    inertia: true,
-    // keep the element within the area of it's parent
-    modifiers: [
-      interact.modifiers.restrictRect({
-        restriction: 'parent',
-        endOnly: true
-      })
-    ],
-    // enable autoScroll
-    autoScroll: true,
-
-    listeners: {
-      // call this function on every dragmove event
-      move: dragMoveListener,
-
-      // call this function on every dragend event
-      
-    }
-  })
-
-function dragMoveListener (event) {
-  var target = event.target
-  // keep the dragged position in the data-x/data-y attributes
-  var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx
-  var y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy
-
-  // translate the element
-  target.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
-
-  // update the posiion attributes
-  target.setAttribute('data-x', x)
-  target.setAttribute('data-y', y)
-}
-
-// this function is used later in the resizing and gesture demos
-window.dragMoveListener = dragMoveListener
-</script>
-
 {%endblock%}
