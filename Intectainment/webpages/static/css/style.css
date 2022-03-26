@@ -1,5 +1,10 @@
 @import url('//cdn.jsdelivr.net/npm/bootstrap-icons@1.6.1/font/bootstrap-icons.css');
 
+img.profile_image {
+    max-width: 250px;
+    max-height: 300px;
+}
+
 .sidebar {
 	height: 95vh;
 	width: 12	vw;

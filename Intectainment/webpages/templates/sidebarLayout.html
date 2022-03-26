@@ -28,7 +28,7 @@
                     {{ nav_link('gui.favorites', 'Favoriten')}}
                     {%endif%}
 
-                    {{ nav_link('gui.home', 'Benutzer')}}
+                    {{ nav_link('gui.userconfig', 'Benutzer')}}
 
                     {%if user and user.permission >= user.PERMISSION.ADMIN%}
                     {{ nav_link('gui.admin.main', 'Admin')}}

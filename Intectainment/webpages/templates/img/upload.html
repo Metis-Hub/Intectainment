@@ -1,18 +1,18 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Bild hochladen</title></head><body>
+{% extends "defaultLayout.html" %}
+{% block title %}Bild hochladen{%endblock%}
+
+{% block content %}
 <h2>Bitte wählen Sie die hochzuladene Bilddatei aus.</h2>
 <p>
-	{% with messages = get_flashed_messages() %}
-	  {% if messages %}
-		<ul>
-		{% for message in messages %}
-		  <li>{{ message }}</li>
-		{% endfor %}
-		</ul>
-	  {% endif %}
-	{% endwith %}
+{% with messages = get_flashed_messages() %}
+	{% if messages %}
+	<ul>
+	{% for message in messages %}
+		<li>{{ message }}</li>
+	{% endfor %}
+	</ul>
+	{% endif %}
+{% endwith %}
 </p>
 <form method="post" action="{{ this_url }}" enctype="multipart/form-data">
     <dl>
@@ -25,17 +25,18 @@
 	</p>
 </form>
 
-{% if path %}
-	<p>
-		<table border="0">
-			<tr> <td> <label>Pfad: </label> </td> <td> <input type="text" value="{{ path }}" size="100%"> </td> </tr>
-			<tr> <td> <label>Post: </label> </td> <td> <input type="text" value="![]({{ path }})" size="100%"> </td> </tr>
-		</table>
-	</p>
-	<div>
-		<img src="{{ path }}">
-	</div>
+{% if type %}
+<p>
+	<table border="0">
+		<tr> <td> <label>Pfad: </label> </td> <td> <input type="text" value="{{ path }}" size="100%"> </td> </tr>
+		<tr> <td> <label>Post: </label> </td> <td> <input type="text" value="![]({{ path }})" size="100%"> </td> </tr>
+	</table>
+</p>
 {% endif %}
 
-</body>
-</html>
+{% if path %}
+<div>
+	<img src="{{ path }}"{% if profile %} class="profile_image"{% endif %} />
+</div>
+{% endif %}
+{% endblock %}

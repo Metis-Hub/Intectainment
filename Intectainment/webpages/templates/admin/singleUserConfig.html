@@ -1,0 +1,83 @@
+{% extends "admin/adminLayout.html" %}
+{% block title %}Nutzerprofilbearbeitung{%endblock%}
+
+{% block content %}
+<a href="{{ url_for('gui.admin.userconfig') }}">Zurück zur Benutzerübersicht</a>
+<h1>Nutzerprofil von {{ edit_user.getName() }}</h1>
+
+<p>
+	{% with messages = get_flashed_messages() %}
+	  {% if messages %}
+		<ul>
+		{% for message in messages %}
+		  <li>{{ message }}</li>
+		{% endfor %}
+		</ul>
+	  {% endif %}
+	{% endwith %}
+</p>
+
+<img src="{{ edit_user.getProfileImagePath() }}" class="profile_image" />
+<form method="post" action="{{ this_url }}">
+    <p> <input type="submit" name="del_image" value="Profilbild löschen"> </p>
+</form>
+
+<form method="post" action="{{ this_url }}">
+    <p> <label>Benutzername:</label> <input type="text" value="{{ edit_user.username }}" name="txtname" required> <input type="submit" name="name" value="Namen ändern"> </p>
+</form>
+
+<form method="post" action="{{ this_url }}">
+    <p> <label>angezeigter Name:</label> <input type="text" value="{{ edit_user.getName() }}" name="txtdispl_name" required> <input type="submit" name="displ_name" value="Namen ändern"> </p>
+</form>
+
+<form method="post" action="{{ this_url }}">
+    <p>
+        <table border="0">
+            <tr><td width="40%"><label>neues Passwort:</label></td><td><input type="password" name="new" required></td></tr>
+            <tr><td width="40%"><label>Bestätigung des Neuen:</label></td><td><input type="password" name="ver_new" required></td></tr>
+            <tr><td><input type="submit" name="pw" value="Passwort ändern"></td></tr>
+        </table>
+    </p>
+</form>
+
+<form method="post" action="{{ this_url }}">
+    <p>
+        <lable>Zugriffslevel: </lable>
+        <lable id="level_name"></lable>
+    </p>
+    <p>
+        <input type="number" min="0" max="255" value="10" id="level" name="level">
+        <input type="range" min="0" max="255" step="1" value="{{ edit_user.permission }}" id="level_slider">
+        <input type="submit" name="submit_level" value="Ändern">
+    </p>
+</form>
+
+<script type="text/JavaScript">
+    var slider = document.getElementById("level_slider");
+    var output = document.getElementById("level");
+
+    output.value = slider.value;
+
+    function write_lable() {
+        var txt = "Gast";
+        if (output.value >= 10 && output.value < 100) txt = "Benutzer";
+        else if (output.value >= 100 && output.value < 255) txt = "Moderator";
+        else if (output.value >= 255) txt = "Administrator";
+        document.getElementById("level_name").innerHTML = txt;
+    }
+
+    write_lable();
+
+    slider.oninput = function() {
+      output.value = this.value;
+      write_lable();
+    }
+
+    output.oninput = function() {
+      slider.value = this.value;
+      write_lable();
+    }
+
+</script>
+
+{%endblock%}

@@ -24,12 +24,7 @@ Hier können Sie Posts erstellen.
 **Markdown-Syntax:** [www.markdownguide.org](https://www.markdownguide.org/basic-syntax).</textarea>
         <div id="rendert" display="flex"></div>
     </form>
-    <script>
-        function open_wnd(url) {
-            wnd = window.open(url, "Bild hochladen", "width=600,height=400,status=yes,scrollbars=yes,resizable=yes");
-            wnd.focus();
-        }
-
+    <script type="text/JavaScript">
         function run() {
             var text = document.getElementById('conent').value,
             target = document.getElementById('rendert'),
