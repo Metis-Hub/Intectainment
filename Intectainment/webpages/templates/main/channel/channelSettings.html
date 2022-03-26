@@ -10,6 +10,9 @@
     {% if channel%}
     <h1>{{channel.name}}</h1>
 
+    <img src="{{ channel.getProfileImagePath() }}" class="profile_image" />
+    <a href="{{ url_for('upload_form', type='c', id=channel.id) }}" onclick="open_wnd(this.href); return false">Kanalbild ändern</a>
+
     <table>
         <tr>
             <td>Kategorien</td>
@@ -52,14 +55,6 @@
     </table>
 
     <a href="{{url_for('gui.channelView', channel=channel.name)}}">Ansicht</a>
-    <a href="http://{{ server }}/upload/c/{{ channel.id }}/" onclick="open_wnd(this.href); return false">Channelbild hochladen</a>
-
-    <script type="text/JavaScript">
-        function open_wnd(url) {
-            wnd = window.open(url, "Bild hochladen", "width=600,height=400,status=yes,scrollbars=yes,resizable=yes");
-            wnd.focus();
-        }
-    </script>
 
     {% else %}
         <h1></h1>

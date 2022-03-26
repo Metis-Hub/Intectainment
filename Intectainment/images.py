@@ -26,7 +26,13 @@ def deleteImage(user: User):
     user.reload()
 
 def softImageDelete(user: User):
-    source_path = os.path.join(app.config["UPLOAD_FOLDER"], "usr/", str(user.id) + user.icon_extension)
+    source_path = os.path.join(app.config["UPLOAD_FOLDER"], "usr/", str(user.id) + "." + user.icon_extension)
+    if os.path.exists(source_path):
+        os.remove(source_path)
+
+def softImageDelete(channel: Channel):
+    source_path = os.path.join(app.config["UPLOAD_FOLDER"], "c/", str(channel.id) + "." + channel.icon_extension)
+    print(source_path)
     if os.path.exists(source_path):
         os.remove(source_path)
 
@@ -59,6 +65,7 @@ def upload_image(name="", folder="c", subfolder="", type=""):
 
         if folder == "c":
             channel = Channel.query.filter_by(id=int(name)).first()
+            softImageDelete(channel)
             channel.icon_extension = get_extension(file.filename)
             db.session.add(channel)
             db.session.commit()

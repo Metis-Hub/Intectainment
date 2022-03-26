@@ -164,7 +164,7 @@ def userconfig():
 			db.session.commit()
 			flash("Anzuzeigender Name wurde erfolgreich geändert!")
 
-	return render_template("main/user/userconfig.html", user=user, imgurl=user.getProfileImagePath())
+	return render_template("main/user/userconfig.html", user=user)
 
 #Import other routing files
 from Intectainment.webpages import admin, channelsCategories, RestInterface

@@ -139,7 +139,10 @@ class Channel(db.Model):
 
 	canModify = lambda self, user: user and (user.permission >= User.PERMISSION.MODERATOR or user.id == self.owner.id)
 	
-
+	def getProfileImagePath(self):
+		if self.icon_extension:
+			return url_for("display_image_", type="c", filename=str(self.id) + "." + self.icon_extension)
+		return url_for("static", filename="default_chimg.png")
 
 class Post(db.Model):
 	CONTENTDIRECTORY = "content/posts"
