@@ -4,6 +4,7 @@
 {% block content %}
 <a href="{{ url_for('gui.admin.userconfig') }}">Zurück zur Benutzerübersicht</a>
 <h1>Nutzerprofil von {{ edit_user.getName() }}</h1>
+
 <p>
 	{% with messages = get_flashed_messages() %}
 	  {% if messages %}
@@ -16,12 +17,17 @@
 	{% endwith %}
 </p>
 
+<img src="{{ edit_user.getProfileImagePath() }}" class="profile_image" />
 <form method="post" action="{{ this_url }}">
-    <p> <label>Benutzername:</label> <input type="text" value="{{ edit_user.username }}" name="txtname" required> <input type="submit" name="name" value="Namen ändern!"> </p>
+    <p> <input type="submit" name="del_image" value="Profilbild löschen"> </p>
 </form>
 
 <form method="post" action="{{ this_url }}">
-    <p> <label>angezeigter Name:</label> <input type="text" value="{{ edit_user.getName() }}" name="txtdispl_name" required> <input type="submit" name="displ_name" value="Namen ändern!"> </p>
+    <p> <label>Benutzername:</label> <input type="text" value="{{ edit_user.username }}" name="txtname" required> <input type="submit" name="name" value="Namen ändern"> </p>
+</form>
+
+<form method="post" action="{{ this_url }}">
+    <p> <label>angezeigter Name:</label> <input type="text" value="{{ edit_user.getName() }}" name="txtdispl_name" required> <input type="submit" name="displ_name" value="Namen ändern"> </p>
 </form>
 
 <form method="post" action="{{ this_url }}">
@@ -29,7 +35,7 @@
         <table border="0">
             <tr><td width="40%"><label>neues Passwort:</label></td><td><input type="password" name="new" required></td></tr>
             <tr><td width="40%"><label>Bestätigung des Neuen:</label></td><td><input type="password" name="ver_new" required></td></tr>
-            <tr><td><input type="submit" name="pw" value="Passwort ändern!"></td></tr>
+            <tr><td><input type="submit" name="pw" value="Passwort ändern"></td></tr>
         </table>
     </p>
 </form>

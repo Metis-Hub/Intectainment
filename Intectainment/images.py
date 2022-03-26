@@ -17,24 +17,26 @@ def create_subfolder(path):
         os.makedirs(path)
 
 def deleteImage(user: User):
-    source_path = os.path.join(app.config["UPLOAD_FOLDER"], "usr/", str(user.id) + user.icon_extension)
-    user.icon_extension = None
-    if os.path.exists(source_path):
-        os.remove(source_path)
-    db.session.add(user)
-    db.session.commit()
-    user.reload()
+    if user.icon_extension:
+        source_path = os.path.join(app.config["UPLOAD_FOLDER"], "usr/", str(user.id) + user.icon_extension)
+        user.icon_extension = None
+        if os.path.exists(source_path):
+            os.remove(source_path)
+        db.session.add(user)
+        db.session.commit()
+        user.reload()
 
 def softImageDelete(user: User):
-    source_path = os.path.join(app.config["UPLOAD_FOLDER"], "usr/", str(user.id) + "." + user.icon_extension)
-    if os.path.exists(source_path):
-        os.remove(source_path)
+    if user.icon_extension:
+        source_path = os.path.join(app.config["UPLOAD_FOLDER"], "usr/", str(user.id) + "." + user.icon_extension)
+        if os.path.exists(source_path):
+            os.remove(source_path)
 
 def softImageDelete(channel: Channel):
-    source_path = os.path.join(app.config["UPLOAD_FOLDER"], "c/", str(channel.id) + "." + channel.icon_extension)
-    print(source_path)
-    if os.path.exists(source_path):
-        os.remove(source_path)
+    if channel.icon_extension:
+        source_path = os.path.join(app.config["UPLOAD_FOLDER"], "c/", str(channel.id) + "." + channel.icon_extension)
+        if os.path.exists(source_path):
+            os.remove(source_path)
 
 def move_images(userid, postid):
     source_path = os.path.join(app.config["UPLOAD_FOLDER"], "usr/tmp", str(userid))

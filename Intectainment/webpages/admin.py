@@ -1,3 +1,4 @@
+import Intectainment.images
 from Intectainment.app import db
 from Intectainment.webpages.webpages import gui
 from Intectainment.datamodels import User, Channel, Post, Category
@@ -48,6 +49,9 @@ def edit_user(usrid):
             user.permission = int(request.form["level"])
             db.session.add(user)
             flash("Zugriffslevel wurde erfolgreich geändert!")
+        elif "del_image" in request.form:
+            Intectainment.images.deleteImage(user)
+            flash("Profilbild gelöscht!")
 
         db.session.commit()
     return render_template("admin/singleUserConfig.html", edit_user=user)
