@@ -17,7 +17,7 @@
     {% for post in favs %}
             <div class="card bg-black text-white post-margin" style="width: 12rem;" id="touch">
                 <div class="card-text post-preview">
-                  {% for line in post.getContentLines()[:5] %}{{line}}{%endfor%}
+{% for line in post.getContentLines()[:5] %}{{line}}{%endfor%}
                 </div>
                 <a href="{{url_for('gui.postView', postid=post.id)}}" class="btn btn-outline-primary">Zum Post</a>
             </div>
