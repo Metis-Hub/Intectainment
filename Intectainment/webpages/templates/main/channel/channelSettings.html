@@ -10,50 +10,51 @@
     {% if channel%}
     <h1>{{channel.name}}</h1>
 
-    <table>
-        <tr>
-            <td>Kategorien</td>
-            <td>
-                <table>
-                    {% if channel.categories | length > 0 %}
-                    {%for cat in channel.categories %}
-                    <tr>
-                        <form method="POST">
-                            <td>{{cat.name}}</td>
-                            <td><input type="submit" value="Löschen" name="deleteCategory"/> <input type="hidden" name="category" value="{{cat.name}}"/></td>
-                        </form>
-                    </tr>
-                    {%endfor%}
-                    {%else%}
-                        <tr><td>keine</td></tr>
-                    {%endif%}
-                </table>
-            </td>
-            <td>
+    <div class="settings-categories">
+        <div class="categories">
+            Kategorien:
+        </div>
+        <div class="text-right">{% if channel.categories | length > 0 %}
+             {%for cat in channel.categories %}
                 <form method="POST">
-                    <input list="categories" placeholder="Kategorie" name="category"/>
-                    <datalist id="categories">
-                        {% for cat in categories %}<option value="{{cat.name}}">{% endfor %}
-                    </datalist>
-                    <input type="submit" name="addCategory" value="Hinzufügen"/>
+                    {{cat.name}}
+                    <button class="btn btn-outline-danger btn-sm list-margin" type="submit" name="deleteCategory"><i class="bi bi-trash"></i></button>
+
+                    <input type="hidden" name="category" value="{{cat.name}}"/>
                 </form>
-            </td>
-        </tr>
-
-        <tr>
-            <td>Beschreibung</td>
-            <td>
-                <form method="POST">
-                    <input type="text" name="description" placeholder="Beschreibung" value="{{channel.description or ''}}"/>
-                    <input type="submit" name="changeDescription" value="Bestätigen"/>
+            {%endfor%}
+            {%else%}
+                keine
+            {%endif%}
+        </div>
+        <div class="add-categories">
+            <form method="POST" class="input-group mb-3">
+                
+                <input class="form-control w-auto" list="categories" placeholder="Kategorie" name="category"/>
+                <datalist id="categories">
+                {% for cat in categories %}<option class="dropdown-item" value="{{cat.name}}">{% endfor %}
+                </datalist>
+                <input class="btn btn-outline-primary" type="submit" name="addCategory" value="Hinzufügen"/>
+            
+            </form>
+        </div>
+    </div>
+    <div class="settings-description">
+            
+                <form method="POST" class="input-group mb-3">
+                    <div class="input-group-text">
+                        Beschreibung: 
+                    </div>
+                    <input class="form-control description-ta" type="text" name="description" placeholder="Beschreibung" value="{{channel.description or ''}}"/>
+                    <input class="btn btn-outline-primary" type="submit" name="changeDescription" value="Bestätigen"/>
                 </form>
-            </td>
-        </tr>
-    </table>
+    </div>
+    <div class="settings-picture">
+        <a href="{{url_for('gui.channelView', channel=channel.name)}}">Ansicht</a>
+        <a href="http://{{ server }}/upload/c/{{ channel.id }}/" onclick="open_wnd(this.href); return false">Channelbild hochladen</a>
+    </div>
 
-    <a href="{{url_for('gui.channelView', channel=channel.name)}}">Ansicht</a>
-    <a href="http://{{ server }}/upload/c/{{ channel.id }}/" onclick="open_wnd(this.href); return false">Channelbild hochladen</a>
-
+    
     <script type="text/JavaScript">
         function open_wnd(url) {
             wnd = window.open(url, "Bild hochladen", "width=600,height=400,status=yes,scrollbars=yes,resizable=yes");

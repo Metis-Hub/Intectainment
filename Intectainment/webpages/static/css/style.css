@@ -66,17 +66,15 @@ a {
 	border-top: 1px solid darkgray;
 }
 .channels {
-	height: 87vh;
-	width: 28%;
-	border-left:  1px solid darkgray;
+	height: 85vh;
+	width: 100%;
 	border-top: 1px solid darkgray;
 	overflow: auto;
 }
 .content-container {
 	display: flex;
 	justify-content: center;
-	height: 90vh;
-	background: rgb(37, 37, 37);
+	height: 95vh;
 }
 .search {
 	max-width: 150  px;
@@ -101,7 +99,6 @@ a {
 	left:0px;
 }
 .left {
-	width: 50px;
 	display: flex;
 	padding-top: 20px;
 	padding-left: 20px;
@@ -109,9 +106,7 @@ a {
 }
 .search-button {
 	margin-bottom: 20px;
-}
-.hey {
-	background: rgb(37, 37, 37);
+	vertical-align: middle;
 }
 .temp {
 	margin-left: 20px;
