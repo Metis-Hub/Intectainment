@@ -31,7 +31,7 @@ Hier können Sie Posts erstellen.
     <div id="rendert" class="preview bg-dark text-white form-control"></div>
   </div>
   <div>
-    <input class="btn btn-primary edit-post-button" type="submit" value="Erstellen"></input>
+    <input class="btn btn-primary edit-post-button" type="submit" name="create" value="Erstellen"></input>
     <input class="btn btn-primary edit-post-button" type="submit" name="exit" value="Abbrechen"/>
     <a class="btn btn-primary align-correct" href="{{url_for('upload_form', type='tmp', id=usrid)}}" onclick="open_wnd(this.href); return false">Bild hochladen</a>
   </div>

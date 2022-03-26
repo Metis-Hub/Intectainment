@@ -16,7 +16,7 @@
               {%for cat in channel.categories %}
               <form method="POST">
                 {{cat.name}}
-                <button class="btn btn-outline-danger btn-sm list-margin" type="submit" name="deleteCategory"><i class="bi bi-trash"></i></button>
+                <input class="btn btn-outline-danger btn-sm list-margin bi bi-trash" type="submit" name="deleteCategory"/>
                 <input type="hidden" name="category" value="{{cat.name}}"/>
               </form>
               {%endfor%}

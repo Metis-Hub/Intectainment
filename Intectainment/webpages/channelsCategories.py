@@ -69,7 +69,7 @@ def channelSettings(channel):
     channel = Channel.query.filter_by(name=channel).first_or_404()
 
     if not channel.canModify(User.getCurrentUser()):
-        return redirect(url_for("gui.channelView", channel=channel))
+        return redirect(url_for("gui.channelView", channel=channel.name))
 
     if request.method == "POST":
         if request.form.get("addCategory") and request.form.get("category"):
@@ -138,12 +138,14 @@ def createPost(channel):
     channel = Channel.query.filter_by(name=channel).first_or_404()
 
     if request.method == "POST":
-        post = Post.new(channel.id, request.form.get("content") or "")
-        content = post.getContent().replace("tmp/" + str(User.getCurrentUser().id), "p/" + str(post.id))
-        post.setContent(content)
-        move_images(User.getCurrentUser().id, post.id)
-        return redirect(url_for("gui.postView", postid = post.id))
-
+        if "create" in request.form:
+            post = Post.new(channel.id, request.form.get("content") or "")
+            content = post.getContent().replace("tmp/" + str(User.getCurrentUser().id), "p/" + str(post.id))
+            post.setContent(content)
+            move_images(User.getCurrentUser().id, post.id)
+            return redirect(url_for("gui.postView", postid = post.id))
+        elif "exit" in request.form:
+            return redirect(url_for("gui.channelView", channel=channel.name))
     return render_template("main/post/newPost.html", server=app.config["SERVER_NAME"], usrid=User.getCurrentUser().id)
 
 @gui.route("/post/<postid>/edit", methods=["GET", "POST"])
