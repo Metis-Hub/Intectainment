@@ -8,7 +8,7 @@
 {%block content%}
 <div>
     <center>
-        <img src="../../static/logo.png" style="width: 50%; height: auto;">
+        <img src="{{url_for('static', filename='logo.png')}}" style="width: 50%; height: auto;">
         <h1 style="font-size: 400%;">Herzlich Willkommen bei Intectainment!</h1>
 
         <div style="font-size: 200%">
@@ -28,13 +28,7 @@
             <br>
             {%endif%}
 
-            <a href="{{url_for('gui.home')}}">Benutzer</a>
-            <br>
-
-            {%if user and user.permission >= user.PERMISSION.ADMIN%}
-            <a href="{{url_for('gui.admin.main')}}">Admin</a>
-            <br>
-            {%endif%}
+            <a href="{{url_for('gui.start')}}">Start</a>: zurück zum Start
         </div>
         
     </center>
