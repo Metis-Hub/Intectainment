@@ -14,7 +14,7 @@ import datetime
 def handle_subscriptions():
     return render_template("main/home/subscriptions.html", channels=User.query.filter_by(id=User.getCurrentUser().id).first().getSubscriptions(), user=User.getCurrentUser())
 
-@gui.route("/channels/new", methods=["GET", "POST"])
+@gui.route("/discover/new", methods=["GET", "POST"])
 @login_required
 def channelCreation():
     if request.method == "POST":
