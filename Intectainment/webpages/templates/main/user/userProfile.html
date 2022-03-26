@@ -8,8 +8,10 @@
 
 {% block content %}
 
-{% if searchUser%}
+{% if searchUser %}
 <h1>{{searchUser.getName()}}</h1>
+
+<img src="{{ searchUser.getProfileImagePath() }}" class="profile_image" />
 
 <table>
     <tr>
@@ -17,8 +19,7 @@
         <td>{{searchUser.getName()}}</td>
     </tr>
     <tr>
-        <td>Email</td>
-        <td><a href="mailto:{{searchUser.email}}">{{searchUser.email}}</a></td>
+        <!-- TODO: Userdescription -->
     </tr>
 </table>
 

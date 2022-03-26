@@ -16,6 +16,8 @@
 <div class="channelinfo bg-dark text-white">
 <h1>{{channel.name}}</h1>
 
+    <img src="{{ channel.getProfileImagePath() }}" class="profile_image" />
+
     {% if channel.description %}
     <p>{{channel.description}}</p>
     {%endif%}
@@ -73,7 +75,7 @@
 {%endblock%}
 
 {% block js %}
-<script>
+<script type="text/JavaScript">
     var converter = new showdown.Converter();
     var contents = document.getElementsByClassName('postContent');
 

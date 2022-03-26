@@ -1,9 +1,10 @@
+import Intectainment.images
 from Intectainment.app import db
 from Intectainment.webpages.webpages import gui
 from Intectainment.datamodels import User, Channel, Post, Category
 from Intectainment.util import admin_required
 
-from flask import Blueprint, render_template, request, redirect, url_for, session
+from flask import Blueprint, render_template, request, redirect, url_for, session, flash
 
 
 admin: Blueprint = Blueprint("admin", __name__, url_prefix="/admin")
@@ -18,7 +19,44 @@ def before_request():
 def main():
     return render_template("admin/main.html")
 
-@admin.route("/user", methods= ["GET", "POST"])
+@admin.route("/<usrid>/edit", methods=["GET","POST"])
+def edit_user(usrid):
+    user = User.query.filter_by(id=usrid).first()
+    if request.method == "POST":
+        if "pw" and "new" and "ver_new" in request.form:
+            if request.form["new"] != request.form["ver_new"]:
+                flash("Neues Passwort stimmt nicht mit der Bestätigung des Neuens überein!")
+            else:
+                user.changePassword(request.form["new"])
+                db.session.add(user)
+                flash("Passwort wurde erfolgreich  geändert!")
+        elif "txtname" and "name" in request.form:
+            check_usr = User.query.filter_by(username=request.form["txtname"]).first()
+            if check_usr and check_usr.name == request.form["txtname"]:
+                flash("Benutzername ist bereits schon vergeben, wollen Sie aber dennoch einen anderen Namen angezeigt haben, so ändern Sie bitte Ihren Anzeignamen!")
+            else:
+                user.username = request.form["txtname"]
+                db.session.add(user)
+                flash("Benutzername wurde erfolgreich geändert!")
+        elif "txtdispl_name" and "displ_name" in request.form:
+            if request.form["txtdispl_name"] != user.username:
+                user.displayname = request.form["txtdispl_name"]
+            else:
+                user.displayname = None
+            db.session.add(user)
+            flash("Anzuzeigender Name wurde erfolgreich geändert!")
+        elif "submit_level" and "level" in request.form:
+            user.permission = int(request.form["level"])
+            db.session.add(user)
+            flash("Zugriffslevel wurde erfolgreich geändert!")
+        elif "del_image" in request.form:
+            Intectainment.images.deleteImage(user)
+            flash("Profilbild gelöscht!")
+
+        db.session.commit()
+    return render_template("admin/singleUserConfig.html", edit_user=user)
+
+@admin.route("/user", methods=["GET","POST"])
 def userconfig():
     if request.method == "GET":
         return render_template("admin/userConfig.html")

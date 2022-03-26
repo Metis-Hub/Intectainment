@@ -48,10 +48,9 @@
 
   <div class="show-post bg-dark" id="postConent">{{post.getContent()}}</div>
 
-  <script>
+  <script type="text/JavaScript">
     var target = document.getElementById('postConent');
     var converter = new showdown.Converter({tables: true, strikethrough: true, tasklists: true});
-
     target.innerHTML = converter.makeHtml(target.innerHTML);
   </script>
 {%endblock%}

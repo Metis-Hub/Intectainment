@@ -11,6 +11,9 @@
             <button type="submit" class="btn btn-primary search-button">Suchen</button>
         </form>
 
+        {% if user %}
+        <a href="{{url_for('gui.channelCreation')}}">Neuen Kanal erstellen</a>
+        {% endif %}
 </div>
 
 <div class="content-container">

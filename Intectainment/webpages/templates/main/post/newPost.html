@@ -26,6 +26,7 @@
 Hier können Sie Posts erstellen.
 
 **Markdown-Syntax:** [www.markdownguide.org](https://www.markdownguide.org/basic-syntax).</textarea>
+
     <!-- vorschau des posts -->
     <div id="rendert" class="preview bg-dark text-white form-control"></div>
   </div>
@@ -35,12 +36,8 @@ Hier können Sie Posts erstellen.
     <a class="btn btn-primary align-correct" href="{{url_for('upload_form', type='tmp', id=usrid)}}" onclick="open_wnd(this.href); return false">Bild hochladen</a>
   </div>
 </form>
-    <script>
-        function open_wnd(url) {
-            wnd = window.open(url, "Bild hochladen", "width=600,height=400,status=yes,scrollbars=yes,resizable=yes");
-            wnd.focus();
-        }
 
+    <script type="text/JavaScript">
         function run() {
             var text = document.getElementById('conent').value,
             target = document.getElementById('rendert'),
