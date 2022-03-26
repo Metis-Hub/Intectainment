@@ -24,7 +24,7 @@
 <p>
     <lable>Profilbild: </lable>
     {% if imgurl %}
-    <img href="{{ imgurl }}" />
+    <img src="{{ imgurl }}" class="profile_image" />
     <a href="{{ url_for('upload_form', type='usr', id=user.id) }}" onclick="open_wnd(this.href); return false">Ändern</a>
     {% else %}
     <a href="{{ url_for('upload_form', type='usr', id=user.id) }}" onclick="open_wnd(this.href); return false">Bild hochladen</a>

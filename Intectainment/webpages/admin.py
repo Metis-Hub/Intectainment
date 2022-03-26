@@ -49,7 +49,7 @@ def edit_user(usrid):
             db.session.add(user)
             flash("Zugriffslevel wurde erfolgreich geändert!")
 
-        db.session.commit
+        db.session.commit()
     return render_template("admin/singleUserConfig.html", edit_user=user)
 
 @admin.route("/user", methods=["GET","POST"])

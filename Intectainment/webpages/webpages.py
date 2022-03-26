@@ -5,7 +5,7 @@ from sqlalchemy import desc
 from Intectainment.app import app, db
 from Intectainment.datamodels import User, Post, Channel
 from Intectainment.util import login_required
-from Intectainment.imageuploder import upload_image, display_image
+from Intectainment.images import upload_image, display_image
 
 gui: Blueprint = Blueprint("gui", __name__)
 ap: Blueprint = Blueprint("interface", __name__, url_prefix="/interface")
@@ -131,7 +131,7 @@ def display_image_posts(type, post_id, filename):
 		return display_image(type + "/" + post_id, filename)
 
 #### User-Config ####
-@gui.route("/home/userconfig", methods=["POST", "GET"])
+@gui.route("/home/userconfig", methods=["POST","GET"])
 @login_required
 def userconfig():
 	user = User.getCurrentUser()
@@ -164,10 +164,7 @@ def userconfig():
 			db.session.commit()
 			flash("Anzuzeigender Name wurde erfolgreich geändert!")
 
-	imgurl = None
-	if user.icone_extension:
-		imgurl=url_for("display_image_", type="usr", filename=str(user.id) + "." + user.icone_extension)
-	return render_template("main/user/userconfig.html", user=user, imgurl=imgurl)
+	return render_template("main/user/userconfig.html", user=user, imgurl=user.getProfileImagePath())
 
 #Import other routing files
 from Intectainment.webpages import admin, channelsCategories, RestInterface

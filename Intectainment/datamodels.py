@@ -1,7 +1,7 @@
 import os.path, datetime, pathlib
 
 from Intectainment.app import db
-from flask import session
+from flask import session, url_for
 import bcrypt, threading, time, string, random
 
 
@@ -34,7 +34,7 @@ class User(db.Model):
 	displayname   = db.Column(db.String(80), unique=True)
 	password	  = db.Column(db.String(80), nullable=False)
 	permission	  = db.Column(db.Integer, default=PERMISSION.USER)
-	icone_extension = db.Column(db.String(4))
+	icon_extension = db.Column(db.String(4))
 
 
 	subscriptions = db.relationship("Channel", secondary=Subscription, backref="subscibers")
@@ -49,6 +49,11 @@ class User(db.Model):
 
 	def __repr__(self):
 		return '<User %r>' % self.username
+
+	def reload(self):
+		if "User" in session and session["User"] in User.activeUsers.keys():
+			User.activeUsers[session["User"]] = User.query.filter_by(id=self.id).first()
+
 
 	# Timeout management
 	TIMEOUT_TIME: int = 60 * 30
@@ -115,6 +120,11 @@ class User(db.Model):
 
 	def getSubscriptions(self):
 		return self.subscriptions
+
+	def getProfileImagePath(self):
+		if self.icon_extension:
+			return url_for("display_image_", type="usr", filename=str(self.id) + "." + self.icon_extension)
+		return url_for("static", filename="default_usrimg.png")
 
 class Channel(db.Model):
 	id = db.Column(db.Integer, primary_key=True, autoincrement=True)

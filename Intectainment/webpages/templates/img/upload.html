@@ -1,7 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Bild hochladen</title></head><body>
+{% extends "defaultLayout.html" %}
+{% block title %}Bild hochladen{%endblock%}
+
+{% block content %}
 <h2>Bitte wählen Sie die hochzuladene Bilddatei aus.</h2>
 <p>
 {% with messages = get_flashed_messages() %}
@@ -36,9 +36,7 @@
 
 {% if path %}
 <div>
-	<img src="{{ path }}">
+	<img src="{{ path }}"{% if profile %} class="profile_image"{% endif %} />
 </div>
 {% endif %}
-
-</body>
-</html>
+{% endblock %}

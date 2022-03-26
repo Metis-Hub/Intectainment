@@ -16,6 +16,20 @@ def create_subfolder(path):
     if not os.path.exists(path):
         os.makedirs(path)
 
+def deleteImage(user: User):
+    source_path = os.path.join(app.config["UPLOAD_FOLDER"], "usr/", str(user.id) + user.icon_extension)
+    user.icon_extension = None
+    if os.path.exists(source_path):
+        os.remove(source_path)
+    db.session.add(user)
+    db.session.commit()
+    user.reload()
+
+def softImageDelete(user: User):
+    source_path = os.path.join(app.config["UPLOAD_FOLDER"], "usr/", str(user.id) + user.icon_extension)
+    if os.path.exists(source_path):
+        os.remove(source_path)
+
 def move_images(userid, postid):
     source_path = os.path.join(app.config["UPLOAD_FOLDER"], "usr/tmp", str(userid))
     if os.path.exists(source_path):
@@ -41,24 +55,29 @@ def upload_image(name="", folder="c", subfolder="", type=""):
         create_subfolder(os.path.join(app.config["UPLOAD_FOLDER"], folder, subfolder))
         file.save(os.path.join(app.config["UPLOAD_FOLDER"], folder, subfolder, filename))
 
+        profile = None
+
         if folder == "c":
             channel = Channel.query.filter_by(id=int(name)).first()
             channel.icon_extension = get_extension(file.filename)
             db.session.add(channel)
             db.session.commit()
         elif folder == "usr":
+            profile = True
             user = User.query.filter_by(id=int(name)).first()
+            softImageDelete(user)
             user.icon_extension = get_extension(file.filename)
             db.session.add(user)
             db.session.commit()
+            user.reload()
 
         path = None
         if type:
             path = url_for("display_image_posts", type=type, post_id=subfolder, filename=filename)
         else:
-            path = url_for("display_image_", type=type, filename=filename)
+            path = url_for("display_image_", type=folder, filename=filename)
 
-        return render_template("img/upload.html", path=path, type=type)
+        return render_template("img/upload.html", path=path, type=type, profile=profile)
 
     else:
         flash("Zulässige Dateiendungen sind: png, jpg, jpeg, gif, bmp, svg, ico")

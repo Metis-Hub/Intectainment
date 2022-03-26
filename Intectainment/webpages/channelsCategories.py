@@ -2,7 +2,7 @@ from Intectainment.app import app, db
 from Intectainment.datamodels import Channel, Category, Post, User
 from Intectainment.webpages.webpages import gui
 from Intectainment.util import login_required
-from Intectainment.imageuploder import move_images
+from Intectainment.images import move_images
 
 from flask import request, render_template, redirect, url_for
 
