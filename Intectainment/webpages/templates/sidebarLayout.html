@@ -1,49 +1,37 @@
 {% extends "baseLayout.html" %}
 
+{% macro nav_link(endpoint, text) %}
+<a href="{{url_for(endpoint)}}">
+    <li class="nav-link tablinks">
+        <span class="mx-2">{{text}}</span>
+    </li>
+</a>
+{% endmacro %}
+
 {%block body%}
     <div class="sidebar">
         <div class="side-navbar active-nav d-flex justify-content-between flex-wrap flex-column width">
                 <ul class="nav flex-column text-white w-100">
-                    <a class="nav-link h3 text-white my-2">
+                    <a href="{{url_for('gui.home')}}" class="nav-link h3 text-white my-2">
                         Navigation
                     </a>
 
                     {%if user%}
-                    <a href="{{url_for('gui.dashboard')}}">
-                        <li class="nav-link tablinks">
-                            <span class="mx-2">Übersicht</span>
-                        </li>
-                    </a>
+                    {{ nav_link('gui.dashboard', 'Übersicht')}}
                     {%endif%}
-                    <a href="{{url_for('gui.discover')}}">
-                        <li class="nav-link tablinks">
-                            <span class="mx-2">Entdecken</span>
-                        </li>
-                    </a>
+
+                    {{ nav_link('gui.discover', 'Entdecken')}}
+
                     {%if user%}
-                    <a href="{{url_for('gui.handle_subscriptions')}}">
-                        <li class="nav-link tablinks">
-                            <span class="mx-2">Abonnierte Kanäle</span>
-                        </li>
-                    </a>
-                    <a href="{{url_for('gui.home')}}">
-                        <li class="nav-link tablinks">
-                            <span class="mx-2">Favoriten</span>
-                        </li>
-                    </a>
+                    {{ nav_link('gui.handle_subscriptions', 'Abonnierte Kanäle')}}
+
+                    {{ nav_link('gui.favorites', 'Favoriten')}}
                     {%endif%}
-                    <a href="{{url_for('gui.userconfig')}}">
-                        <li class="nav-link tablinks">
-                            <span class="mx-2">Benutzer</span>
-                        </li>
-                    </a>
+
+                    {{ nav_link('gui.userconfig', 'Benutzer')}}
 
                     {%if user and user.permission >= user.PERMISSION.ADMIN%}
-                    <a href="{{url_for('gui.admin.main')}}">
-                        <li class="nav-link tablinks">
-                            <span class="mx-2">Admin</span>
-                        </li>
-                    </a>
+                    {{ nav_link('gui.admin.main', 'Admin')}}
                     {%endif%}
 
                     {%if user%}

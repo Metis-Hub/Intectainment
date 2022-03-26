@@ -11,7 +11,7 @@
 
     {# Kanal existiert schon? #}
     {%if error%}{{error}}{%endif%}
-
+    <a href="{{url_for('gui.discover')}}">zurück</a>
     <form method="POST">
         <input type="text" placeholder="Name" name="name" required/>
         <input type="submit"/>

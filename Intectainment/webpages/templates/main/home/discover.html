@@ -12,6 +12,10 @@
             <input type="text" class="form-control search bg-dark text-white" name="channel" placeholder="Kanalname">
             <input type="submit" class="btn btn-outline-primary search-button bg-dark">Submit</input>
         </form>
+
+        {% if user %}
+        <a href="{{url_for('gui.channelCreation')}}">Neuen Kanal erstellen</a>
+        {% endif %}
     </div>
 </form>
 
