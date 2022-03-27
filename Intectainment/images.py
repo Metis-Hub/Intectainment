@@ -16,11 +16,6 @@ def create_subfolder(path):
     if not os.path.exists(path):
         os.makedirs(path)
 
-def deleteImageFolder(post: Post):
-    source_path = os.path.join(app.config["UPLOAD_FOLDER"], "c/", str(post.id) + "/")
-    if os.path.exists(source_path):
-        os.remove(source_path)
-
 def deleteImage(user: User):
     if user.icon_extension:
         source_path = os.path.join(app.config["UPLOAD_FOLDER"], "usr/", str(user.id) + user.icon_extension)
