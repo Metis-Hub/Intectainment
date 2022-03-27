@@ -84,17 +84,17 @@
 		<p>
 			<label>Zoomen: </label>
 			<br />
-			<input type="range" value="100" min="10.000" max="200.000" step="0.001" id="range_size">
+			<input type="range" value="100" min="10.000" max="200.000" step="0.001" id="range_size" name="range_size">
 		</p>
 		<p>
 			<label>horizontal Verschieben: </label>
 			<br />
-			<input type="range" value="0" min="-100.000" max="100.000" step="0.001" id="range_x">
+			<input type="range" value="0" min="-125.000" max="125.000" step="0.001" id="range_x" name="range_x">
 		</p>
 		<p>
 			<label>vertikal Verschieben: </label>
 			<br />
-			<input type="range" value="0" min="-100.000" max="100.000" step="0.001" id="range_y">
+			<input type="range" value="0" min="-125.000" max="125.000" step="0.001" id="range_y" name="range_y">
 		</p>
 		<input type="submit" value="Übernehmen" name="img_config">
 	</p>
@@ -111,19 +111,21 @@
 		zoom = document.getElementById("range_size");
 		x = document.getElementById("range_x");
 		y = document.getElementById("range_y");
+		image.style.width = zoom.value + "%";
+		image.style.marginLeft = "0%";
+		image.style.marginTop = "0%";
 	};
 
 	zoom.oninput = function() {
 		image.style.width = this.value + "%";
-		image.style.height = this.value + "%";
     }
 
     x.oninput = function() {
-		image.style.marginLeft = this.value + "px";
+		image.style.marginLeft = this.value + "%";
     }
 
     y.oninput = function() {
-		image.style.marginTop = this.value + "px";
+		image.style.marginTop = this.value + "%";
     }
 
 </script>

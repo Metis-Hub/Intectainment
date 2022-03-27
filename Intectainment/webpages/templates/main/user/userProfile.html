@@ -11,7 +11,8 @@
 {% if searchUser %}
 <h1>{{searchUser.getName()}}</h1>
 
-<div class="profile"><img src="{{ searchUser.getProfileImagePath() }}" /></div>
+{% from "img/profile_images.html" import profile_img with context %}
+{{ profile_img(searchUser) }}
 
 <table>
     <tr>

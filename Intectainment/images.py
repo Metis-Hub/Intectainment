@@ -48,11 +48,33 @@ def move_images(userid, postid):
 
 def upload_image(name="", folder="c", subfolder="", type=""):
     if "file" not in request.files:
-        flash("No file part")
-        return redirect(request.url)
-    file = request.files["file"]
+        if "img_config" not in request.form:
+            flash("Es wurde kein Bild zum hochladen ausgewählt!")
+            return redirect(request.url)
+        else:
+            if folder == "c":
+                target=Channel.query.filter_by(id=int(name)).first()
+                target.img_xPos = int(float(request.form["range_x"]) * 1000)
+                target.img_yPos = int(float(request.form["range_y"]) * 1000)
+                target.img_zoom = int(float(request.form["range_size"]) * 1000)
+                db.session.add(target)
+                db.session.commit()
+            elif folder == "usr":
+                target=User.getCurrentUser()
+                target.img_xPos = int(float(request.form["range_x"]) * 1000)
+                target.img_yPos = int(float(request.form["range_y"]) * 1000)
+                target.img_zoom = int(float(request.form["range_size"]) * 1000)
+                target.reload()
+            else:
+                flash("Unbekannter Fehler")
+                redirect(request.url)
+
+            flash("Einstellungen wurden übernommen!")
+            flash("Hinweis: Du kannst das Pop-up schließen und nachdem du deine Browserseite neu geladen hast, kannst du auch das neue Profilbild sehen.")
+            return redirect(request.url)
+    file=request.files["file"]
     if file.filename == "":
-        flash("No Image is selected for uploading")
+        flash("Es wurde kein gültiges Bild zum hochladen ausgewählt!")
         return redirect(request.url)
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
@@ -84,7 +106,8 @@ def upload_image(name="", folder="c", subfolder="", type=""):
         return render_template("img/upload.html", path=path, type=type, profile=profile)
 
     else:
-        flash("Zulässige Dateiendungen sind: png, jpg, jpeg, gif, bmp, svg, ico")
+        flash("Unzulässige Dateiendung!")
+        flash("Hinweis: Zulässige Dateiendungen sind: *.png, *.jpg, *.jpeg, *.gif, *.bmp, *.svg, *.ico")
         return redirect(request.url)
 
 def display_image(folder, filename):
