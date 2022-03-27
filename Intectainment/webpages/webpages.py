@@ -166,6 +166,11 @@ def userconfig():
 			db.session.add(user)
 			db.session.commit()
 			flash("Anzuzeigender Name wurde erfolgreich geändert!")
+		elif "timeout" in request.form:
+			user.timeout = request.form["timeout"]
+			db.session.add(user)
+			db.session.commit()
+			flash("Timeout geändert!")
 
 	return render_template("main/user/userconfig.html", user=user)
 

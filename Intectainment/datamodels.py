@@ -59,7 +59,7 @@ class User(db.Model):
 
 
 	# Timeout management
-	TIMEOUT_TIME = timeout
+	TIMEOUT_TIME: int = 60 * 30
 	activeUsers: dict = dict()
 	@staticmethod
 	def resetTimeout():
@@ -254,10 +254,10 @@ class Category(db.Model):
 def checkUsers():
 	for key in User.activeUsers.keys():
 		user = User.activeUsers[key]
-		if time.time() - user.lastActive >= User.TIMEOUT_TIME and User.activeUsers[key].TIMEOUT_TIME != -1:
+		if time.time() - user.lastActive >= user.timeout and User.activeUsers[key].timeout != -1:
 			User.activeUsers.pop(key)
 		
-	time.sleep(User.TIMEOUT_TIME)
+	time.sleep(60 * 1)
 afkCheckThread = threading.Thread(name="afkChecker", target=checkUsers)
 afkCheckThread.daemon = True
 afkCheckThread.start()
