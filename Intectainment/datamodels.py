@@ -188,6 +188,31 @@ class Post(db.Model):
 
 	canModify = lambda self, user: user and (user.permission >= User.PERMISSION.MODERATOR or user.id == self.owner.id)
 
+	def addFav(self, user=None, commit=True):
+
+		if not user:
+			if currentUser := User.getCurrentUser():
+				user = User.query.filter_by(id=currentUser.id).first()
+			else:
+				return False
+		if not self in user.favoritePosts:
+			user.favoritePosts.append(self)
+			if commit: db.session.commit()
+			return True
+		return False
+
+	def remFav(self, user=None, commit=True):
+		if not user:
+			if currentUser := User.getCurrentUser():
+				user = User.query.filter_by(id=currentUser.id).first()
+			else:
+				return False
+		if self in user.favoritePosts:
+			user.favoritePosts.remove(self)
+			if commit: db.session.commit()
+			return True
+		return False
+
 	@staticmethod
 	def new(channel_id, content, user=None):
 		"""To create a basic Post"""
