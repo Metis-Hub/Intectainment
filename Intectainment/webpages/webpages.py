@@ -64,15 +64,19 @@ def favorites():
 @gui.route("/p/<search>")
 def profile(search):
 	user = User.query.filter_by(username=search).first()
-	return render_template("main/user/userProfile.html", searchUser=user)
+	return render_template("main/user/userProfile.html", searchUser=user, user=User.getCurrentUser())
 
 
 @gui.route("/profiles", methods=["GET"])
 def profileSearch():
-	search = request.args.get('username')
-	query = User.query.filter(User.username.like(f"%{search}%"))
+	search = request.args.get("username")
+	query = User.query
 
-	return render_template("main/user/profiles.html", users=query.all())
+	if search and search != "":
+		query = User.query.filter(User.username.like(f"%{search}%"))
+		print(True)
+
+	return render_template("main/user/profiles.html", users=query.all(), user=User.getCurrentUser())
 
 ##### Access Points #####
 @ap.route("/user/login", methods=["POST"])
@@ -96,7 +100,7 @@ def login():
 			#form nicht ausgefüllt
 			return redirect(request.referrer)
 
-@ap.route("/user/logout", methods = ["POST"])
+@ap.route("/user/logout", methods=["POST"])
 def logout():
 	"""logout access point"""
 	User.logOut()
