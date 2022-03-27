@@ -167,12 +167,12 @@ def userconfig():
 			db.session.commit()
 			flash("Anzuzeigender Name wurde erfolgreich geändert!")
 		elif "timeout" in request.form:
-			user.timeout = request.form["timeout"]
+			user.timeout = int(request.form["timeout"]) * 60
 			db.session.add(user)
 			db.session.commit()
 			flash("Timeout geändert!")
 
-	return render_template("main/user/userconfig.html", user=user)
+	return render_template("main/user/userconfig.html", user=user, timeout=int(user.timeout / 60))
 
 #Import other routing files
 from Intectainment.webpages import admin, channelsCategories, RestInterface

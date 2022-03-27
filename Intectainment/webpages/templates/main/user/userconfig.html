@@ -49,7 +49,7 @@
 <form method="post" action="{{ this_url }}">
     <p>
                                                         <!-- this are seven days -->
-        <label>Timeout: </label> <input type="number" min="5" max="10080" step="1" name="timeout" value="{{ user.timeout / 60 }}" required> <label>min</label>
+        <label>Timeout: </label> <input type="number" min="5" max="10080" step="1" name="timeout" value="{{ timeout }}" required> <label>min</label>
         <input type="submit" value="Timeout ändern">
     </p>
 </form>
