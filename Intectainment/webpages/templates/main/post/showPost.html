@@ -16,14 +16,13 @@
 <div class="offcanvas offcanvas-start w-auto p-3 bg-black" id="demo">
   <div class="offcanvas-body text-left">
 
-    <a href=""><span class="bi bi-star big-icon text-left"> Favoritisieren</span></a>
     <br>
     {% if user %}
     <form method="POST">
       {% if faved %}
-      <button class="unstyle link-button text-left" type="submit" name="defav"><span class="bi bi-trash big-icon"> Unmerken</span></button>
+      <button class="unstyle link-button text-left" type="submit" name="defav"><span class="bi bi-star-fill big-icon"> Unmerken</span></button>
       {%else%}
-      <button class="unstyle link-button text-left" type="submit" name="fav"><span class="bi bi-trash big-icon"> Merken</span></button>
+      <button class="unstyle link-button text-left" type="submit" name="fav"><span class="bi bi-star big-icon"> Merken</span></button>
       {%endif%}
     </form>
     {%endif%}
