@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.exc import OperationalError
 import configparser, os, sys
 
 
@@ -36,6 +37,14 @@ app.config["UPLOAD_FOLDER"] = os.path.join(os.path.dirname(__file__), app.static
 app.config["SQLALCHEMY_DATABASE_URI"] = config['Database'].get("URI")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
+
+
+try:
+	db.engine.execute("SELECT 1")
+except OperationalError:
+	print("Could not connect to database!\nPlease make sure you entered the correct database-URI")
+	exit()
+
 
 # load tables
 import Intectainment.datamodels

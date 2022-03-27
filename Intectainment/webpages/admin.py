@@ -118,6 +118,9 @@ def setup():
                 channel.owner = user
                 db.session.add(channel)
 
+            intectainment = Channel.query.filter_by(name="Intectainment").first()
+            [Post.new(intectainment.id, content, user) for content in [f"# Post {i}\n\nEs war einmal vor langer, langer Zeit" for i in range(0, 100)]]
+
             for i in range(100):
                 channel = Channel(name=f"Kanal{i}", description="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.")
                 channel.owner = user

@@ -104,18 +104,8 @@ def postView(postid):
                 post.delete()
                 db.session.commit()
             return redirect(url_for("gui.channelView", channel=channel))
-        elif "fav" in request.form:
-            user = User.query.filter_by(id=User.getCurrentUser().id).first()
-            if user:
-                if not post in user.favoritePosts:
-                    user.favoritePosts.append(post)
-                    db.session.commit()
-        elif "defav" in request.form:
-            user = User.query.filter_by(id=User.getCurrentUser().id).first()
-            if user:
-                if post in user.favoritePosts:
-                    user.favoritePosts.remove(post)
-                    db.session.commit()
+        elif "fav" in request.form: post.addFav()
+        elif "defav" in request.form: post.remFav()
 
     timeMessage = f"Erstellt am {post.creationDate.strftime('%d.%m.%Y %H:%M')}"
     if post.creationDate != post.modDate:
