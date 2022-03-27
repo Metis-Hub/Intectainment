@@ -9,14 +9,14 @@
 {% block content %}
     {% if channel%}
     <h1>{{channel.name}}</h1>
-<div class="block">
+
    <div class="settings-categories">
         <div class="categories">Kategorien: </div>
             <div class="text-right">{% if channel.categories | length > 0 %}
               {%for cat in channel.categories %}
               <form method="POST">
                 {{cat.name}}
-                <input class="btn btn-outline-danger btn-sm list-margin bi bi-trash" type="submit" name="deleteCategory" value="Löschen" />
+                <input class="btn btn-outline-danger btn-sm list-margin bi bi-trash" type="submit" name="deleteCategory"/>
                 <input type="hidden" name="category" value="{{cat.name}}"/>
               </form>
               {%endfor%}
@@ -27,19 +27,19 @@
 
             <div class="add-categories">
                 <form method="POST" class="input-group mb-3 w-auto">
-                    
+
                     <input class="form-control w-auto" list="categories" placeholder="Kategorie" name="category"/>
                     <datalist id="categories">
                     {% for cat in categories %}<option class="dropdown-item" value="{{cat.name}}">{% endfor %}
                     </datalist>
                     <input class="btn btn-outline-primary" type="submit" name="addCategory" value="Hinzufügen"/>
-                
+
                 </form>
             </div>
         </div>
-        
-        
-        
+
+
+
     </div>
     <div class="settings-description">
             
@@ -52,14 +52,16 @@
                 </form>
     </div>
 
-    <div class="settings-picture">
+
+       <div class="settings-picture">
         <a class="btn btn-outline-primary" href="{{url_for('gui.channelView', channel=channel.name)}}">Ansicht</a>
         <div class="profile"><img src="{{ channel.getProfileImagePath() }}" /></div>
+        {% from "img/profile_images.html" import profile_img with context %}
+        {{ profile_img(channel) }}
         <a class="btn btn-outline-primary" href="{{ url_for('upload_form', type='c', id=channel.id) }}" onclick="open_wnd(this.href); return false">Kanalbild ändern</a>
     </div>
 </div>
-    
-    
+
 
 
     {% else %}

@@ -1,0 +1,3 @@
+{% macro profile_img(object) %}
+<div class="profile"><img src="{{ object.getProfileImagePath() }}" style="width:{{object.img_zoom/1000}}%;margin-left:{{object.img_xPos/1000}}%;margin-top:{{object.img_yPos/1000}}%;" /></div>
+{% endmacro %}
