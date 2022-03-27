@@ -21,7 +21,7 @@ def channelCreation():
         name = request.form.get("name")
         if name:
             if not Channel.query.filter_by(name=name).first():
-                channel = Channel(name=name, owner=User.getCurrentUser())
+                channel = Channel(name=name, owner=User.query.filter_by(id=User.getCurrentUser().id).first())
                 db.session.add(channel)
                 db.session.commit()
 
