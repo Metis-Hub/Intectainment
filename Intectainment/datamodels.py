@@ -30,18 +30,21 @@ class User(db.Model):
 
 	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
-	username	  = db.Column(db.String(80), unique=True, nullable=False)
-	displayname   = db.Column(db.String(80), unique=True)
-	password	  = db.Column(db.String(80), nullable=False)
-	permission	  = db.Column(db.Integer, default=PERMISSION.USER)
-	icon_extension = db.Column(db.String(4))
+	username	  	= db.Column(db.String(80), unique=True, nullable=False)
+	displayname   	= db.Column(db.String(80), unique=True)
+	password	  	= db.Column(db.String(80), nullable=False)
+	permission	  	= db.Column(db.Integer, default=PERMISSION.USER)
+	icon_extension	= db.Column(db.String(4))
+	timeout 		= db.Column(db.Integer, default=60 * 30)
+	img_xPos		= db.Column(db.Short, nullable=True)
+	img_yPos		= db.Column(db.Short, nullable=True)
+	img_zoom		= db.Column(db.Short, nullable=True)
 
+	subscriptions 	= db.relationship("Channel", secondary=Subscription, backref="subscibers")
+	favoritePosts 	= db.relationship("Post", secondary=Favorites, backref="favUsers")
 
-	subscriptions = db.relationship("Channel", secondary=Subscription, backref="subscibers")
-	favoritePosts = db.relationship("Post", secondary=Favorites, backref="favUsers")
-
-	channels = db.relationship("Channel", backref="owner")
-	posts    = db.relationship("Post", backref="owner")
+	channels 		= db.relationship("Channel", backref="owner")
+	posts    		= db.relationship("Post", backref="owner")
 
 	def __init__(self, **kwargs):
 		super(User, self).__init__(**kwargs)
@@ -56,7 +59,7 @@ class User(db.Model):
 
 
 	# Timeout management
-	TIMEOUT_TIME: int = 60 * 30
+	TIMEOUT_TIME = timeout
 	activeUsers: dict = dict()
 	@staticmethod
 	def resetTimeout():
@@ -129,13 +132,16 @@ class User(db.Model):
 class Channel(db.Model):
 	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
-	name			= db.Column( db.String(80), unique=True, nullable=False )
-	description		= db.Column( db.String(80), nullable=True )
+	name			= db.Column(db.String(80), unique=True, nullable=False)
+	description		= db.Column(db.String(80), nullable=True)
+	owner_id		= db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 	icon_extension	= db.Column(db.String(4))
-	owner_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+	img_xPos		= db.Column(db.Short, nullable=True)
+	img_yPos		= db.Column(db.Short, nullable=True)
+	img_zoom		= db.Column(db.Short, nullable=True)
 
-	categories	= db.relationship("Category", secondary=ChannelCategory, backref="channels")
-	posts		= db.relationship("Post", backref="channel")
+	categories		= db.relationship("Category", secondary=ChannelCategory, backref="channels")
+	posts			= db.relationship("Post", backref="channel")
 
 	canModify = lambda self, user: user and (user.permission >= User.PERMISSION.MODERATOR or user.id == self.owner.id)
 	
@@ -147,12 +153,12 @@ class Channel(db.Model):
 class Post(db.Model):
 	CONTENTDIRECTORY = "content/posts"
 
-	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-	creationDate = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
-	modDate = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
+	id 				= db.Column(db.Integer, primary_key=True, autoincrement=True)
+	creationDate 	= db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
+	modDate 		= db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
 
-	channel_id = db.Column(db.Integer, db.ForeignKey('channel.id'), nullable=False)
-	owner_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+	channel_id 		= db.Column(db.Integer, db.ForeignKey('channel.id'), nullable=False)
+	owner_id 		= db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
 
 	def getContent(self):
