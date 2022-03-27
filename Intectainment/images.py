@@ -22,8 +22,6 @@ def deleteImage(user: User):
         user.icon_extension = None
         if os.path.exists(source_path):
             os.remove(source_path)
-        db.session.add(user)
-        db.session.commit()
         user.reload()
 
 def softImageDelete(user: User):
@@ -71,8 +69,6 @@ def upload_image(name="", folder="c", subfolder="", type=""):
             user = User.query.filter_by(id=int(name)).first()
             softImageDelete(user)
             user.icon_extension = get_extension(file.filename)
-            db.session.add(user)
-            db.session.commit()
             user.reload()
         else: profile=False
 

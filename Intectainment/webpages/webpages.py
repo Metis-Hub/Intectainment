@@ -146,8 +146,7 @@ def userconfig():
 				flash("Altes Passwort ist falsch!")
 			else:
 				user.changePassword(request.form["new"])
-				db.session.add(user)
-				db.session.commit()
+				user.reload()
 				flash("Passwort wurde erfolgreich  geändert!")
 		elif "txtname" and "name" in request.form:
 			check_usr = User.query.filter_by(username=request.form["txtname"]).first()
@@ -155,21 +154,18 @@ def userconfig():
 				flash("Benutzername ist bereits schon vergeben, wollen Sie aber dennoch einen anderen Namen angezeigt haben, so ändern Sie bitte Ihren Anzeignamen!")
 			else:
 				user.username = request.form["txtname"]
-				db.session.add(user)
-				db.session.commit()
+				user.reload()
 				flash("Benutzername wurde erfolgreich geändert!")
 		elif "txtdispl_name" and "displ_name" in request.form:
 			if request.form["txtdispl_name"] != user.username:
 				user.displayname = request.form["txtdispl_name"]
 			else:
 				user.displayname = None
-			db.session.add(user)
-			db.session.commit()
+			user.reload()
 			flash("Anzuzeigender Name wurde erfolgreich geändert!")
 		elif "timeout" in request.form:
 			user.timeout = int(request.form["timeout"]) * 60
-			db.session.add(user)
-			db.session.commit()
+			user.reload()
 			flash("Timeout geändert!")
 
 	return render_template("main/user/userconfig.html", user=user, timeout=int(user.timeout / 60))

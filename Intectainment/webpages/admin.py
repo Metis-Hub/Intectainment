@@ -28,7 +28,7 @@ def edit_user(usrid):
                 flash("Neues Passwort stimmt nicht mit der Bestätigung des Neuens überein!")
             else:
                 user.changePassword(request.form["new"])
-                db.session.add(user)
+                user.reload()
                 flash("Passwort wurde erfolgreich  geändert!")
         elif "txtname" and "name" in request.form:
             check_usr = User.query.filter_by(username=request.form["txtname"]).first()
@@ -36,24 +36,23 @@ def edit_user(usrid):
                 flash("Benutzername ist bereits schon vergeben, wollen Sie aber dennoch einen anderen Namen angezeigt haben, so ändern Sie bitte Ihren Anzeignamen!")
             else:
                 user.username = request.form["txtname"]
-                db.session.add(user)
+                user.reload()
                 flash("Benutzername wurde erfolgreich geändert!")
         elif "txtdispl_name" and "displ_name" in request.form:
             if request.form["txtdispl_name"] != user.username:
                 user.displayname = request.form["txtdispl_name"]
             else:
                 user.displayname = None
-            db.session.add(user)
+            user.reload()
             flash("Anzuzeigender Name wurde erfolgreich geändert!")
         elif "submit_level" and "level" in request.form:
             user.permission = int(request.form["level"])
-            db.session.add(user)
+            user.reload()
             flash("Zugriffslevel wurde erfolgreich geändert!")
         elif "del_image" in request.form:
             Intectainment.images.deleteImage(user)
             flash("Profilbild gelöscht!")
 
-        db.session.commit()
     return render_template("admin/singleUserConfig.html", edit_user=user)
 
 @admin.route("/user", methods=["GET","POST"])

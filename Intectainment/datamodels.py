@@ -54,6 +54,8 @@ class User(db.Model):
 		return '<User %r>' % self.username
 
 	def reload(self):
+		db.session.add(self)
+		db.session.commit()
 		if "User" in session and session["User"] in User.activeUsers.keys():
 			User.activeUsers[session["User"]] = User.query.filter_by(id=self.id).first()
 
