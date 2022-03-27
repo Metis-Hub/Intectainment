@@ -3,7 +3,7 @@
     Description: Displays user details
 #}
 
-{% extends "defaultLayout.html" %}
+{% extends "sidebarLayout.html" %}
 {% block title %}Nutzerprofil{%endblock%}
 
 {% block content %}
@@ -11,7 +11,7 @@
 {% if searchUser %}
 <h1>{{searchUser.getName()}}</h1>
 
-<img src="{{ searchUser.getProfileImagePath() }}" class="profile_image" />
+<div class="profile"><img src="{{ searchUser.getProfileImagePath() }}" /></div>
 
 <table>
     <tr>

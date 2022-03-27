@@ -69,7 +69,7 @@ def channelSettings(channel):
     channel = Channel.query.filter_by(name=channel).first_or_404()
 
     if not channel.canModify(User.getCurrentUser()):
-        return redirect(url_for("gui.channelView", channel=channel))
+        return redirect(url_for("gui.channelView", channel=channel.name))
 
     if request.method == "POST":
         if request.form.get("addCategory") and request.form.get("category"):
@@ -104,18 +104,8 @@ def postView(postid):
                 post.delete()
                 db.session.commit()
             return redirect(url_for("gui.channelView", channel=channel))
-        elif "fav" in request.form:
-            user = User.query.filter_by(id=User.getCurrentUser().id).first()
-            if user:
-                if not post in user.favoritePosts:
-                    user.favoritePosts.append(post)
-                    db.session.commit()
-        elif "defav" in request.form:
-            user = User.query.filter_by(id=User.getCurrentUser().id).first()
-            if user:
-                if post in user.favoritePosts:
-                    user.favoritePosts.remove(post)
-                    db.session.commit()
+        elif "fav" in request.form: post.addFav()
+        elif "defav" in request.form: post.remFav()
 
     timeMessage = f"Erstellt am {post.creationDate.strftime('%d.%m.%Y %H:%M')}"
     if post.creationDate != post.modDate:
@@ -138,12 +128,14 @@ def createPost(channel):
     channel = Channel.query.filter_by(name=channel).first_or_404()
 
     if request.method == "POST":
-        post = Post.new(channel.id, request.form.get("content") or "")
-        content = post.getContent().replace("tmp/" + str(User.getCurrentUser().id), "p/" + str(post.id))
-        post.setContent(content)
-        move_images(User.getCurrentUser().id, post.id)
-        return redirect(url_for("gui.postView", postid = post.id))
-
+        if "create" in request.form:
+            post = Post.new(channel.id, request.form.get("content") or "")
+            content = post.getContent().replace("tmp/" + str(User.getCurrentUser().id), "p/" + str(post.id))
+            post.setContent(content)
+            move_images(User.getCurrentUser().id, post.id)
+            return redirect(url_for("gui.postView", postid = post.id))
+        elif "exit" in request.form:
+            return redirect(url_for("gui.channelView", channel=channel.name))
     return render_template("main/post/newPost.html", server=app.config["SERVER_NAME"], usrid=User.getCurrentUser().id)
 
 @gui.route("/post/<postid>/edit", methods=["GET", "POST"])

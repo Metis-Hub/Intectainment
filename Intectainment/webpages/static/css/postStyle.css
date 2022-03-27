@@ -3,12 +3,12 @@
 .postcontainer {
     display: flex;
     overflow-y: auto;
+    height: 80vh;
     flex-flow: row wrap;
     scrollbar-width: none;
     -ms-overflow-style: none;
     align-content: row;
     flex-direction: row;
-    height: 80vh;
 }
 
 .nopostcontainer {
@@ -29,10 +29,14 @@
     margin-right: 10px;
     margin-top: 20px;
     margin-bottom: 20px;
+    min-height: 78%;
+    max-height: 78%;
+    overflow-y: auto;
+    border: 5px solid darkgray;
 }
 
 .channelinfo {
-    height: 20vh;
+    height: 22vh;
     text-align: center;
     border-bottom: 1px solid darkgray;
 }
@@ -58,10 +62,13 @@
 .post-ta {
     word-wrap: break-word;
     max-height: 84vh;
+    min-height: 84vh;
+    min-width: 48vw;
 }
 
 .preview {
     max-width: 48vw;
+    min-width: 48vw;
     word-wrap: break-word;
     margin-left: 10px;
     overflow-y: auto;
@@ -90,3 +97,144 @@
     position: absolute;
     right: 2vw;
     bottom: 1vh;
+}
+
+.styled-submit {
+    border: none;
+    background: none;
+    margin: 0px;
+    padding: 0px;
+    width: 14vw;
+    height: 8vh;
+    position: absolute;
+    bottom: 5vh;
+    left: 0vw;
+    text-align: left;
+    color: blue;
+    text-indent: 2px;
+}
+
+.bottom {
+    float: bottom;
+}
+
+.bottom-sidebar {
+    position: absolute;
+    bottom: 5vh;
+    left: 0vw;
+    width: 14vw;
+}
+
+.inline-form {
+    display: inline;
+}
+
+.unstyle {
+    border: none;
+    background: none;
+    margin: 0px;
+    padding: 0px;
+}
+
+.big-text {
+    font-size: 26px;
+    margin-top: -2vh;
+}
+
+.postContent {
+    max-width: 500px;
+    max-height: 250px; ;
+}
+
+.postContent img {
+    max-width: 75%;
+    max-height: 50%;
+}
+
+.show-post {
+    max-width: 100vw;
+    max-height: 79vh;
+    overflow-y: auto;
+}
+
+.show-post img {
+    max-height: 100%;
+    max-width: 80%;
+}
+
+.text-left {
+    text-align: left;
+    float: left;
+}
+
+.link-button {
+    color: blue;
+}
+
+a {
+    text-decoration: none;
+}
+
+.container {
+    min-width: 100vw;
+    min-height: 100vh;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    overflow: hidden;
+    
+}
+
+.main-content {
+    overflow: hidden;
+    text-align: center;
+}
+
+.align-correct {
+    margin-top: 1vh;
+    margin-left: 1vw;
+}
+
+.settings-categories {
+    border-bottom: 1px solid darkgray;
+    display: flex;
+    padding-bottom: 2vh;
+}
+
+.settings-description {
+    margin-top: 2vh;
+}
+
+.text-right {
+    text-align: right;
+    margin-left: 1vw;
+}
+
+.add-categories {
+    margin-left: 1vw;
+    padding-left: 1vw;
+    border-left: 1px solid darkgray;
+}
+
+.list-margin {
+    margin-bottom: 1vh;
+}
+
+.categories {
+    padding-right: 1vw;
+    border-right: 1px solid darkgray;
+}
+
+.description-ta {
+    word-wrap: break-word;
+}
+
+.margin-description {
+    margin-right: 1vw;
+}
+
+.settings-picture {
+    padding-top: 1vh;
+    border-top: 1px solid darkgray;
+}
+

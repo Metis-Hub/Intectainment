@@ -17,7 +17,7 @@
 	{% endwith %}
 </p>
 
-<img src="{{ edit_user.getProfileImagePath() }}" class="profile_image" />
+<div class="profile"><img src="{{ edit_user.getProfileImagePath() }}" /></div>
 <form method="post" action="{{ this_url }}">
     <p> <input type="submit" name="del_image" value="Profilbild löschen"> </p>
 </form>
@@ -77,7 +77,6 @@
       slider.value = this.value;
       write_lable();
     }
-
 </script>
 
 {%endblock%}

@@ -3,24 +3,28 @@
     Description: 
 #}
 
-{% extends "baseLayout.html" %}
+{% extends "sidebarLayout.html" %}
 {% block title %}Nutzersuche{%endblock%}
 
 {% block content %}
     <form method="get">
         <label>Nutzer-Suche</label>
-        <input type="text" placeholder="Nutzername" name="username" required/>
+        <input type="text" placeholder="Nutzername" name="username" value="{{request.args.get('username')}}">
         <input type="submit" value="Suchen"/>
     </form>
 
     {%if request.args.get('username')%}
         {%if users%}
             <p> Gefundene Nutzer ({{users|length}}): </p>
-            {%for user in users%}
-                <a href="p/{{user.username}}"> {{user.getName()}} </a><br/>
+            {%for usr in users%}
+                <a href="p/{{user.username}}"> {{usr.getName()}} </a><br/>
             {%endfor%}
         {%else%}
             <p> Es gibt keinen Nutzer mit einem Namen wie "{{request.args.get('username')}}" </p>
         {%endif%}
+    {%else%}
+    {%for usr in users%}
+        <a href="p/{{user.username}}"> {{usr.getName()}} </a><br/>
+    {%endfor%}
     {%endif%}
 {%endblock%}

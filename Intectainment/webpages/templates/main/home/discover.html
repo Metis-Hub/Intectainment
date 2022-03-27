@@ -5,30 +5,18 @@
 {% extends "sidebarLayout.html" %}
 {% block title %}Entdecken{%endblock%}
 {% block content%}
-<form method="get">
-    <div class="hey">
-        <form method="POST" class="left">
-            <label for="searchbar" class="form-label search"></label>
-            <input type="text" class="form-control search bg-dark text-white" name="channel" placeholder="Kanalname">
-            <input type="submit" class="btn btn-outline-primary search-button bg-dark">Submit</input>
+<div>
+        <form method="get" class="left">
+            <input type="text" class="form-control search bg-dark w-auto text-white" name="channel" placeholder="Kanalname">
+            <button type="submit" class="btn btn-primary search-button">Suchen</button>
         </form>
 
         {% if user %}
         <a href="{{url_for('gui.channelCreation')}}">Neuen Kanal erstellen</a>
         {% endif %}
-    </div>
-</form>
-
+</div>
 
 <div class="content-container">
-    <div class="blog-entries">Blogs
-        <div class="blog"></div>
-        <div class="blog"></div>
-        <div class="blog"></div>
-        <div class="blog"></div>
-        <div class="blog"></div>
-        <div class="blog"></div>
-    </div>
     <div class="channels text-white">Channels<p></p>
         {%if channels.total>0%}
             {%for channel in channels.items%}

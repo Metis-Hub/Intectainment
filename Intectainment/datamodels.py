@@ -30,18 +30,21 @@ class User(db.Model):
 
 	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
-	username	  = db.Column(db.String(80), unique=True, nullable=False)
-	displayname   = db.Column(db.String(80), unique=True)
-	password	  = db.Column(db.String(80), nullable=False)
-	permission	  = db.Column(db.Integer, default=PERMISSION.USER)
-	icon_extension = db.Column(db.String(4))
+	username	  	= db.Column(db.String(80), unique=True, nullable=False)
+	displayname   	= db.Column(db.String(80), unique=True)
+	password	  	= db.Column(db.String(80), nullable=False)
+	permission	  	= db.Column(db.Integer, default=PERMISSION.USER)
+	icon_extension	= db.Column(db.String(4))
+	timeout 		= db.Column(db.Integer, default=60 * 30)
+	img_xPos		= db.Column(db.Integer, nullable=True)
+	img_yPos		= db.Column(db.Integer, nullable=True)
+	img_zoom		= db.Column(db.Integer, nullable=True)
 
+	subscriptions 	= db.relationship("Channel", secondary=Subscription, backref="subscibers")
+	favoritePosts 	= db.relationship("Post", secondary=Favorites, backref="favUsers")
 
-	subscriptions = db.relationship("Channel", secondary=Subscription, backref="subscibers")
-	favoritePosts = db.relationship("Post", secondary=Favorites, backref="favUsers")
-
-	channels = db.relationship("Channel", backref="owner")
-	posts    = db.relationship("Post", backref="owner")
+	channels 		= db.relationship("Channel", backref="owner")
+	posts    		= db.relationship("Post", backref="owner")
 
 	def __init__(self, **kwargs):
 		super(User, self).__init__(**kwargs)
@@ -51,6 +54,8 @@ class User(db.Model):
 		return '<User %r>' % self.username
 
 	def reload(self):
+		db.session.add(self)
+		db.session.commit()
 		if "User" in session and session["User"] in User.activeUsers.keys():
 			User.activeUsers[session["User"]] = User.query.filter_by(id=self.id).first()
 
@@ -129,13 +134,16 @@ class User(db.Model):
 class Channel(db.Model):
 	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
-	name			= db.Column( db.String(80), unique=True, nullable=False )
-	description		= db.Column( db.String(80), nullable=True )
+	name			= db.Column(db.String(80), unique=True, nullable=False)
+	description		= db.Column(db.String(80), nullable=True)
+	owner_id		= db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 	icon_extension	= db.Column(db.String(4))
-	owner_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+	img_xPos		= db.Column(db.Integer, nullable=True)
+	img_yPos		= db.Column(db.Integer, nullable=True)
+	img_zoom		= db.Column(db.Integer, nullable=True)
 
-	categories	= db.relationship("Category", secondary=ChannelCategory, backref="channels")
-	posts		= db.relationship("Post", backref="channel")
+	categories		= db.relationship("Category", secondary=ChannelCategory, backref="channels")
+	posts			= db.relationship("Post", backref="channel")
 
 	canModify = lambda self, user: user and (user.permission >= User.PERMISSION.MODERATOR or user.id == self.owner.id)
 	
@@ -147,12 +155,12 @@ class Channel(db.Model):
 class Post(db.Model):
 	CONTENTDIRECTORY = "content/posts"
 
-	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-	creationDate = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
-	modDate = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
+	id 				= db.Column(db.Integer, primary_key=True, autoincrement=True)
+	creationDate 	= db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
+	modDate 		= db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
 
-	channel_id = db.Column(db.Integer, db.ForeignKey('channel.id'), nullable=False)
-	owner_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+	channel_id 		= db.Column(db.Integer, db.ForeignKey('channel.id'), nullable=False)
+	owner_id 		= db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
 
 	def getContent(self):
@@ -187,6 +195,31 @@ class Post(db.Model):
 				pass
 
 	canModify = lambda self, user: user and (user.permission >= User.PERMISSION.MODERATOR or user.id == self.owner.id)
+
+	def addFav(self, user=None, commit=True):
+
+		if not user:
+			if currentUser := User.getCurrentUser():
+				user = User.query.filter_by(id=currentUser.id).first()
+			else:
+				return False
+		if not self in user.favoritePosts:
+			user.favoritePosts.append(self)
+			if commit: db.session.commit()
+			return True
+		return False
+
+	def remFav(self, user=None, commit=True):
+		if not user:
+			if currentUser := User.getCurrentUser():
+				user = User.query.filter_by(id=currentUser.id).first()
+			else:
+				return False
+		if self in user.favoritePosts:
+			user.favoritePosts.remove(self)
+			if commit: db.session.commit()
+			return True
+		return False
 
 	@staticmethod
 	def new(channel_id, content, user=None):
@@ -223,10 +256,10 @@ class Category(db.Model):
 def checkUsers():
 	for key in User.activeUsers.keys():
 		user = User.activeUsers[key]
-		if time.time() - user.lastActive >= User.TIMEOUT_TIME and User.activeUsers[key].TIMEOUT_TIME != -1:
+		if time.time() - user.lastActive >= user.timeout and User.activeUsers[key].timeout != -1:
 			User.activeUsers.pop(key)
 		
-	time.sleep(User.TIMEOUT_TIME)
+	time.sleep(60 * 1)
 afkCheckThread = threading.Thread(name="afkChecker", target=checkUsers)
 afkCheckThread.daemon = True
 afkCheckThread.start()

@@ -1,8 +1,21 @@
 @import url('//cdn.jsdelivr.net/npm/bootstrap-icons@1.6.1/font/bootstrap-icons.css');
 
-img.profile_image {
-    max-width: 250px;
-    max-height: 300px;
+html {
+    background-color: #212529;
+}
+
+.profile img {
+    max-height: 200px;
+    max-width: 200px;
+}
+
+.profile {
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+    border-radius: 200px;
+    -moz-border-radius: 200px;
+	-webkit-border-radius: 200px
 }
 
 .sidebar {
@@ -71,17 +84,15 @@ a {
 	border-top: 1px solid darkgray;
 }
 .channels {
-	height: 87vh;
-	width: 28%;
-	border-left:  1px solid darkgray;
+	height: 85vh;
+	width: 100%;
 	border-top: 1px solid darkgray;
 	overflow: auto;
 }
 .content-container {
 	display: flex;
 	justify-content: center;
-	height: 90vh;
-	background: rgb(37, 37, 37);
+	height: 95vh;
 }
 .search {
 	max-width: 150  px;
@@ -106,7 +117,6 @@ a {
 	left:0px;
 }
 .left {
-	width: 50px;
 	display: flex;
 	padding-top: 20px;
 	padding-left: 20px;
@@ -114,9 +124,7 @@ a {
 }
 .search-button {
 	margin-bottom: 20px;
-}
-.hey {
-	background: rgb(37, 37, 37);
+	vertical-align: middle;
 }
 .temp {
 	margin-left: 20px;

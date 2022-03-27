@@ -28,24 +28,34 @@
                     {{ nav_link('gui.favorites', 'Favoriten')}}
                     {%endif%}
 
-                    {{ nav_link('gui.userconfig', 'Benutzer')}}
+                    {{ nav_link('gui.profileSearch', 'Benutzer')}}
+
+                    {%if user%}
+                    {{ nav_link('gui.userconfig', 'Einstellungen')}}
+                    {%endif%}
 
                     {%if user and user.permission >= user.PERMISSION.ADMIN%}
                     {{ nav_link('gui.admin.main', 'Admin')}}
                     {%endif%}
 
                     {%if user%}
-                    <form method="post" action="{{url_for('interface.logout')}}">
-                        <label>Logout</label>
-                        <input type="submit" value="Logout"/>
+                    <form method="post" action="{{url_for('interface.logout')}}" class="align-bottom">
+                            <input class="nav-link styled-submit" type="submit" value="Logout"/>
                     </form>
                     {%else%}
+                    <!--
                     <form method="post" action="{{url_for('interface.login')}}">
                         <label>Login</label>
                         <input type="text" placeholder="Nutzername" name="username" required/>
                         <input type="password" placeholder="Passwort" name="password" required/>
                         <input type="submit"/>
                     </form>
+                    -->
+                    <a href="{{url_for('gui.start')}}" class="bottom-sidebar">
+                        <li class="nav-link tablinks">
+                            <span class="mx-2">Login</span>
+                        </li>
+                    </a>
                     {%endif%}
                 </ul>
         </div>

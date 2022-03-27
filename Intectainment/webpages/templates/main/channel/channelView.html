@@ -8,7 +8,6 @@
 
 {% block head %}
   {{super()}}
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/postStyle.css') }}">
   <script src="https://cdn.rawgit.com/showdownjs/showdown/1.0.1/dist/showdown.min.js"></script>
 {% endblock %}
 
@@ -17,27 +16,31 @@
 <div class="channelinfo bg-dark text-white">
 <h1>{{channel.name}}</h1>
 
-    <img src="{{ channel.getProfileImagePath() }}" class="profile_image" />
+    <div class="profile"><img src="{{ channel.getProfileImagePath() }}" /></div>
 
     {% if channel.description %}
     <p>{{channel.description}}</p>
     {%endif%}
-
-    {% if canModify %}
-    <a href="{{url_for('gui.channelSettings', channel=channel.name)}}">Einstellungen</a>
-    {% endif %}
-
+    <div class="big-text">
     {% if user %}
-        <form method="post">
-            {% if subscribed %}<input type="submit" name="desubscr" value="Deabonnieren">
-            {% else %}<input type="submit" name="subscr" value="Abonnieren">
+        <form method="post" class="inline-form">
+            {% if subscribed %}<button class="btn btn-outline-danger" type="submit" name="desubscr">Deabonnieren</button>
+            {% else %}<button class="btn btn-danger" type="submit" name="subscr">Abonnieren</button>
             {% endif %}
         </form>
     {% endif %}
 
-    {% if user %}
-    <a href="{{url_for('gui.createPost', channel=channel.name)}}"><i class="bi bi-plus-square"></i></a>
+    {% if canModify %}
+    <a class="btn btn-outline-secondary text-white" href="{{url_for('gui.channelSettings', channel=channel.name)}}"><i class="bi bi-gear"></i> Einstellungen</a>
     {% endif %}
+
+    {% if user %}
+    <a class="btn btn-outline-primary" href="{{url_for('gui.createPost', channel=channel.name)}}"><i class="bi bi-plus-square"></i> Neuer Post</a>
+    {% endif %}
+
+    </div>
+
+    
 
 
 </div>
@@ -46,7 +49,7 @@
     <hr/>
     <!-- Latest posts -->
     {% for post in posts.items %}
-            <div class="card bg-black text-white post-margin" style="width: 12rem;" id="touch">
+            <div class="card bg-dark text-white post-margin border-light" style="width: 20rem;" id="touch">
                 <div class="card-text postContent">
 {% for line in post.getContentLines()[:5]%}{{line}}{%endfor%}
                 </div>
