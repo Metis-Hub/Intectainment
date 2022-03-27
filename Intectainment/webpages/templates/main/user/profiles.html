@@ -7,24 +7,33 @@
 {% block title %}Nutzersuche{%endblock%}
 
 {% block content %}
-    <form method="get">
-        <label>Nutzer-Suche</label>
-        <input type="text" placeholder="Nutzername" name="username" value="{{request.args.get('username', '')}}">
-        <input type="submit" value="Suchen"/>
+<div class="profile-search">
+<h1>Nutzer-Suche:</h1>
+
+    <form method="get" class="display-flex input-group w-50">
+        
+        <input class="form-control" type="text" placeholder="Nutzername" name="username" value="{{request.args.get('username', '')}}">
+        <input class="btn btn-primary" type="submit" value="Suchen"/>
     </form>
 
     {%if request.args.get('username')%}
         {%if users%}
             <p> Gefundene Nutzer ({{users|length}}): </p>
             {%for usr in users%}
-                <a href="p/{{usr.username}}"> {{usr.getName()}} </a><br/>
+            <div class="user-search">
+                <a class="btn btn-outline-info border-0" href="p/{{usr.username}}"> {{usr.getName()}} </a><br/>
+            </div>
             {%endfor%}
         {%else%}
             <p> Es gibt keinen Nutzer mit einem Namen wie "{{request.args.get('username')}}" </p>
         {%endif%}
     {%else%}
     {%for usr in users%}
-        <a href="p/{{usr.username}}"> {{usr.getName()}} </a><br/>
+    <div class="user-search">
+        <a class="btn btn-outline-info border-0 w-25 h-auto" href="p/{{usr.username}}"> {{usr.getName()}} </a><br/>
+    </div>
     {%endfor%}
     {%endif%}
+
+</div>
 {%endblock%}

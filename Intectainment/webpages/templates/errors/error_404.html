@@ -2,7 +2,12 @@
 {% block title %}404{%endblock%}
 
 {%block content%}
-    <p> Upsi wupsi, die seite gibts wohl nicht</p>
+<div class="error-div">
+    <h1>
+    <p> Diese Seite gibt es nicht.</p>
     <!-- Redirects to the last visited page -->
-    <button type="button" onclick="history.go(-1)">Zurück zur letzten Seite</button>
+    <button class="btn btn-outline-primary" type="button" onclick="history.go(-1)">Zurück zur letzten Seite</button>
+    </h1>
+</div>
+    
 {%endblock%}

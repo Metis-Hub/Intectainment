@@ -193,10 +193,13 @@ a {
     border-bottom: 1px solid darkgray;
     display: flex;
     padding-bottom: 2vh;
+    width: 100vw;
 }
 
 .settings-description {
     margin-top: 2vh;
+    padding-bottom: 1vh;
+    border-bottom: 1px solid darkgray;
 }
 
 .text-right {
@@ -230,6 +233,7 @@ a {
 .settings-picture {
     padding-top: 1vh;
     border-top: 1px solid darkgray;
+    display: inline-block
 }
 
 .channelinfo-buttons {
@@ -263,5 +267,59 @@ a {
 
 .channel-creator {
     min-width: 50vw;
+}
+
+.subscribed-channels {
+    height: 100vh;
+	overflow: auto;
+	text-align: center;
+	align-items: center;
+}
+
+.display-flex {
+    display: flex;
+    width: 100vw;
+}
+
+.userconfig {
+    height: 100vh;
+    overflow-y: auto;
+    padding-left: 1vw;
+    padding-bottom: 3vh;
+}
+
+.profile-search {
+    height: 100vh;
+    padding-left: 1vw;
+    padding-top: 1vh;
+    padding-right: 1vw;
+    text-align: center;
+}
+
+.picture {
+    display: inline-block;
+}
+
+.user-search {
+    height: 10%;
+    border-bottom: 1px solid darkgray;
+    padding-bottom: 1vh;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 26px;
+    padding-top: 1vh;
+}
+
+.error-div {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 32%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+.block {
+    display: block
 }
 

@@ -11,13 +11,19 @@
 {% endblock %}
 
 {% block content%}
-<h1>Abonnierte Kanäle</h1>
-<table>
+
+<div class="subscribed-channels">
+    
+    <h1>Abonnierte Kanäle:</h1>
 {% for channel in channels %}
-    <tr>
-        <td>{{ channel.name }}</td>
-        <td><a href="{{ url_for('gui.channelView', channel=channel.name) }}">Besuchen</a></td>
-    </tr>
+    <a href="{{url_for('gui.channelView', channel=channel.name)}}">
+        <div class="blog w-50">
+             
+                <img src="{{ channel.getProfileImagePath() }}" class="profile_image" />
+                <span class="btn btn-outline-info border-0">{{channel.name}}</span>
+            
+        </div>
+    </a>
 {% endfor %}
-</table>
+</div>
 {% endblock %}
