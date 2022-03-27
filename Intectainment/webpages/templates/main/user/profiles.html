@@ -9,7 +9,7 @@
 {% block content %}
     <form method="get">
         <label>Nutzer-Suche</label>
-        <input type="text" placeholder="Nutzername" name="username" value="{{request.args.get('username')}}">
+        <input type="text" placeholder="Nutzername" name="username" value="{{request.args.get('username', '')}}">
         <input type="submit" value="Suchen"/>
     </form>
 
@@ -17,14 +17,14 @@
         {%if users%}
             <p> Gefundene Nutzer ({{users|length}}): </p>
             {%for usr in users%}
-                <a href="p/{{user.username}}"> {{usr.getName()}} </a><br/>
+                <a href="p/{{usr.username}}"> {{usr.getName()}} </a><br/>
             {%endfor%}
         {%else%}
             <p> Es gibt keinen Nutzer mit einem Namen wie "{{request.args.get('username')}}" </p>
         {%endif%}
     {%else%}
     {%for usr in users%}
-        <a href="p/{{user.username}}"> {{usr.getName()}} </a><br/>
+        <a href="p/{{usr.username}}"> {{usr.getName()}} </a><br/>
     {%endfor%}
     {%endif%}
 {%endblock%}
