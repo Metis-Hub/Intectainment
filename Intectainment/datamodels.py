@@ -112,7 +112,10 @@ class User(db.Model):
 		return None
 			
 	def validatePassword(self, password: str) -> bool:
-		return bcrypt.checkpw(password.encode("utf-8"), self.password.encode("utf-8"))
+		# This fixes a weird error, don't touch!!!
+		if isinstance(self.password, str):
+			return bcrypt.checkpw(password.encode("utf-8"), self.password.encode("utf-8"))
+		return bcrypt.checkpw(password.encode("utf-8"), self.password)
 
 	def changePassword(self, newPassword: str) -> None:
 		self.password = bcrypt.hashpw(newPassword.encode("utf-8"), bcrypt.gensalt())
