@@ -15,12 +15,10 @@
 {{super()}}
 <div class="channelinfo d-flex justify-content-center bg-dark text-white">
     <div class="channelinfo-image">
-        <img src="{{ channel.getProfileImagePath() }}" class="profile_image" />
+        <div class="profile"><img src="{{ channel.getProfileImagePath() }}" /></div>
     </div>
     <div class="channelinfo-info">
         <h1>{{channel.name}}</h1>
-
-    
 
     {% if channel.description %}
     <p>{{channel.description}}</p>

@@ -64,15 +64,18 @@ def favorites():
 @gui.route("/p/<search>")
 def profile(search):
 	user = User.query.filter_by(username=search).first()
-	return render_template("main/user/userProfile.html", searchUser=user)
+	return render_template("main/user/userProfile.html", searchUser=user, user=User.getCurrentUser())
 
 
 @gui.route("/profiles", methods=["GET"])
 def profileSearch():
-	search = request.args.get('username')
-	query = User.query.filter(User.username.like(f"%{search}%"))
+	search = request.args.get("username")
+	query = User.query
 
-	return render_template("main/user/profiles.html", users=query.all())
+	if search and search != "":
+		query = User.query.filter(User.username.like(f"%{search}%"))
+
+	return render_template("main/user/profiles.html", users=query.all(), user=User.getCurrentUser())
 
 ##### Access Points #####
 @ap.route("/user/login", methods=["POST"])
@@ -96,7 +99,7 @@ def login():
 			#form nicht ausgefüllt
 			return redirect(request.referrer)
 
-@ap.route("/user/logout", methods = ["POST"])
+@ap.route("/user/logout", methods=["POST"])
 def logout():
 	"""logout access point"""
 	User.logOut()
@@ -143,8 +146,7 @@ def userconfig():
 				flash("Altes Passwort ist falsch!")
 			else:
 				user.changePassword(request.form["new"])
-				db.session.add(user)
-				db.session.commit()
+				user.reload()
 				flash("Passwort wurde erfolgreich  geändert!")
 		elif "txtname" and "name" in request.form:
 			check_usr = User.query.filter_by(username=request.form["txtname"]).first()
@@ -152,19 +154,21 @@ def userconfig():
 				flash("Benutzername ist bereits schon vergeben, wollen Sie aber dennoch einen anderen Namen angezeigt haben, so ändern Sie bitte Ihren Anzeignamen!")
 			else:
 				user.username = request.form["txtname"]
-				db.session.add(user)
-				db.session.commit()
+				user.reload()
 				flash("Benutzername wurde erfolgreich geändert!")
 		elif "txtdispl_name" and "displ_name" in request.form:
 			if request.form["txtdispl_name"] != user.username:
 				user.displayname = request.form["txtdispl_name"]
 			else:
 				user.displayname = None
-			db.session.add(user)
-			db.session.commit()
+			user.reload()
 			flash("Anzuzeigender Name wurde erfolgreich geändert!")
+		elif "timeout" in request.form:
+			user.timeout = int(request.form["timeout"]) * 60
+			user.reload()
+			flash("Timeout geändert!")
 
-	return render_template("main/user/userconfig.html", user=user)
+	return render_template("main/user/userconfig.html", user=user, timeout=int(user.timeout / 60))
 
 #Import other routing files
 from Intectainment.webpages import admin, channelsCategories, RestInterface

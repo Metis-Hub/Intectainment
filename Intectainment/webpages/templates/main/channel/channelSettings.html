@@ -49,7 +49,7 @@
     </div>
     <div class="settings-picture">
         <a href="{{url_for('gui.channelView', channel=channel.name)}}">Ansicht</a>
-        <img src="{{ channel.getProfileImagePath() }}" class="profile_image" />
+        <div class="profile"><img src="{{ channel.getProfileImagePath() }}" /></div>
         <a href="{{ url_for('upload_form', type='c', id=channel.id) }}" onclick="open_wnd(this.href); return false">Kanalbild ändern</a>
     </div>
 
