@@ -7,6 +7,8 @@
 **AG-Leiter:** Tassilo Tanneberger
 
 
+![Intectainment](https://github.com/Metis-Hub/Intectainment/blob/main/Intectainment/webpages/static/logo.png)
+
 ## Ziel des Projektes
 Intectainment ist ein Infotainment-System, das, ähnlich zu anderen sozialen Netzwerken, Kommunikation und das Veröffentlichen von Inhalten ermöglicht. 
 Dazu kann jeder Nutzer einen Kanal (ggf. mit Beschreibung) erstellen, auf dem er Informationen herausgibt. Diese Kanäle können von anderen Usern abonniert werden, welche sich die entsprechenden Zusammenhänge auf ihren Startseiten anzeigen lassen können.
