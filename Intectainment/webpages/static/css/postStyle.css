@@ -261,3 +261,7 @@ a {
     padding-top: 2vh;
 }
 
+.channel-creator {
+    min-width: 50vw;
+}
+

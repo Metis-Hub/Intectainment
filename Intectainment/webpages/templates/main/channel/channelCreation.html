@@ -3,7 +3,7 @@
     Description:
 #}
 
-{% extends "defaultLayout.html" %}
+{% extends "baseLayout.html" %}
 {% block title %}Kanalsuche{%endblock%}
 
 {% block content %}
@@ -11,9 +11,11 @@
 
     {# Kanal existiert schon? #}
     {%if error%}{{error}}{%endif%}
-    <a href="{{url_for('gui.discover')}}">zurück</a>
-    <form method="POST">
-        <input type="text" placeholder="Name" name="name" required/>
-        <input type="submit"/>
+    <div class="channel-creator">
+    <form method="POST" class="input-group">
+        <span class="input-group-text"><a href="{{url_for('gui.discover')}}">Zurück</a></span>
+        <input class="form-control w-auto" type="text" placeholder="Name" name="name" required/>
+        <input class="btn btn-outline-primary form-control" type="submit" value="Neuen Kanal erstellen" />
     </form>
+</div>
 {%endblock%}
