@@ -21,7 +21,7 @@
 		</p>
     </dl>
     <p>
-		<input type="submit" value="Submit">
+		<input type="submit" value="Hochladen">
 	</p>
 </form>
 
@@ -29,14 +29,54 @@
 <p>
 	<table border="0">
 		<tr> <td> <label>Pfad: </label> </td> <td> <input type="text" value="{{ path }}" size="100%"> </td> </tr>
-		<tr> <td> <label>Post: </label> </td> <td> <input type="text" value="![]({{ path }})" size="100%"> </td> </tr>
+		<tr> <td> <label>Post: (ohne angepasste Größe)</label> </td> <td> <input type="text" value="![]({{ path }})" size="100%"> </td> </tr>
+		<tr> <td> <label>Post/HTML (mit angepasster Größe): </label> </td> <td> <input type="text" value="" size="100%" id="img_tag"> </td> </tr>
+		<tr>
+			<td> <label>Größe: </label> <input type="number" value="100" min="0" max="150" step="1" id="num_size"> <label>%</label> </td>
+			<td> <input type="range" value="100" min="0" max="150" step="1" style="{width: 100%;}" id="range_size" /> </td>
+		</tr>
 	</table>
 </p>
+
+<script type="text/JavaScript">
+	var range = document.getElementById("range_size");
+    var numField = document.getElementById("num_size");
+    var input = document.getElementById("img_tag");
+    var image = document.getElementById("image");
+
+	function write_input() {
+        var content = "<img src=\"{{ path }}\"";
+        if (numField.value != 100) content += " width=\"" + numField.value.toString() + "%\" + height=\"" + numField.value.toString() + "%\"";
+		content += " />";
+		input.value = content;
+		image.style.width = numField.value + "%";
+		image.style.height = numField.value + "%";
+    }
+
+    window.onload = function() {
+		range = document.getElementById("range_size");
+    	numField = document.getElementById("num_size");
+    	input = document.getElementById("img_tag");
+    	image = document.getElementById("image");
+ 		numField.value = range.value;
+ 		write_input();
+	};
+
+    range.oninput = function() {
+      numField.value = this.value;
+      write_input();
+    }
+
+    numField.oninput = function() {
+      range.value = this.value;
+      write_input();
+    }
+</script>
 {% endif %}
 
 {% if path %}
-<div>
-	<img src="{{ path }}"{% if profile %} class="profile_image"{% endif %} />
+<div{% if profile %} class="profile"{% endif %}>
+	<img src="{{ path }}" id="image" />
 </div>
 {% endif %}
 {% endblock %}

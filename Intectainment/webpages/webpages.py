@@ -74,7 +74,6 @@ def profileSearch():
 
 	if search and search != "":
 		query = User.query.filter(User.username.like(f"%{search}%"))
-		print(True)
 
 	return render_template("main/user/profiles.html", users=query.all(), user=User.getCurrentUser())
 

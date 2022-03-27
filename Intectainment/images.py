@@ -58,13 +58,9 @@ def upload_image(name="", folder="c", subfolder="", type=""):
         return redirect(request.url)
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
-        if name != "":
-            filename = name + "." + get_extension(file.filename)
-        create_subfolder(os.path.join(app.config["UPLOAD_FOLDER"], folder, subfolder))
-        file.save(os.path.join(app.config["UPLOAD_FOLDER"], folder, subfolder, filename))
+        if name != "": filename = name + "." + get_extension(file.filename)
 
-        profile = None
-
+        profile=True
         if folder == "c":
             channel = Channel.query.filter_by(id=int(name)).first()
             softImageDelete(channel)
@@ -72,15 +68,18 @@ def upload_image(name="", folder="c", subfolder="", type=""):
             db.session.add(channel)
             db.session.commit()
         elif folder == "usr":
-            profile = True
             user = User.query.filter_by(id=int(name)).first()
             softImageDelete(user)
             user.icon_extension = get_extension(file.filename)
             db.session.add(user)
             db.session.commit()
             user.reload()
+        else: profile=False
 
-        path = None
+        create_subfolder(os.path.join(app.config["UPLOAD_FOLDER"], folder, subfolder))
+        file.save(os.path.join(app.config["UPLOAD_FOLDER"], folder, subfolder, filename))
+
+        path=None
         if type:
             path = url_for("display_image_posts", type=type, post_id=subfolder, filename=filename)
         else:

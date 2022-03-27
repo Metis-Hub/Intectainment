@@ -16,7 +16,7 @@
 <div class="channelinfo bg-dark text-white">
 <h1>{{channel.name}}</h1>
 
-    <img src="{{ channel.getProfileImagePath() }}" class="profile_image" />
+    <div class="profile"><img src="{{ channel.getProfileImagePath() }}" /></div>
 
     {% if channel.description %}
     <p>{{channel.description}}</p>

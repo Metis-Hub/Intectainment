@@ -4,9 +4,18 @@ html {
     background-color: #212529;
 }
 
-img.profile_image {
-    max-width: 250px;
-    max-height: 300px;
+.profile img {
+    max-height: 200px;
+    max-width: 200px;
+}
+
+.profile {
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+    border-radius: 200px;
+    -moz-border-radius: 200px;
+	-webkit-border-radius: 200px
 }
 
 .sidebar {
