@@ -44,8 +44,7 @@
   </button>
 </div>
   <p>{{timeMessage}}</p>
-
-  {# mark post as favorite #}
+  <p>Erstellt von <a href="{{url_for('gui.profile', search=post.owner.username)}}">{{post.owner.getName()}}</a></p>
   
   <form method="post">
   
