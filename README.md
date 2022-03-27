@@ -1,13 +1,13 @@
 # Dokumentation Firmenprojekt im SRZ: Intectainment - communication is key
 
-**Schüler:** Bruno Hoffmann, Karl Jahn, Tom Nitsche & Jakob Paridon
-**Kurs:** [Informatik III/IV 4 SRZ](https://tu-dresden.de/ing/informatik/srz)
-**Firma:** [intecsoft group](https://www.intecsoft.de/)
-**Firmenbetreuer:** Klaus Jungmann, Eugen Göring
-**AG-Leiter:** Tassilo Tanneberger
-
-
 ![Intectainment](https://github.com/Metis-Hub/Intectainment/blob/main/Intectainment/webpages/static/logo.png)
+
+- **Schüler:** Bruno Hoffmann, Karl Jahn, Tom Nitsche & Jakob Paridon
+- **Kurs:** [Informatik III/IV 4 SRZ](https://tu-dresden.de/ing/informatik/srz)
+- **Firma:** [intecsoft group](https://www.intecsoft.de/)
+- **Firmenbetreuer:** Klaus Jungmann, Eugen Göring
+- **AG-Leiter:** Tassilo Tanneberger
+
 
 ## Ziel des Projektes
 Intectainment ist ein Infotainment-System, das, ähnlich zu anderen sozialen Netzwerken, Kommunikation und das Veröffentlichen von Inhalten ermöglicht. 
