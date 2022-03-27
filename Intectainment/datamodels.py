@@ -1,5 +1,6 @@
 import os.path, datetime, pathlib
 
+import Intectainment.images
 from Intectainment.app import db
 from flask import session, url_for
 import bcrypt, threading, time, string, random
@@ -243,6 +244,7 @@ class Post(db.Model):
 
 	def delete(self):
 		"""removes the db-object and the linked file"""
+		Intectainment.images.deleteImageFolder(self)
 		os.remove(self.getFilePath())
 		db.session.delete(self)
 
