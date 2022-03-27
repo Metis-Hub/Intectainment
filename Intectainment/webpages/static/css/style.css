@@ -79,6 +79,11 @@ a {
 	width: 100%;
 	border-top: 1px solid darkgray;
 	overflow: auto;
+	text-align: center;
+	align-items: center;
+}
+.channels a {
+	text-decoration: none;
 }
 .content-container {
 	display: flex;
@@ -90,15 +95,19 @@ a {
 	vertical-align: middle;
 }
 .blog {
-	width: 60%;
-	height: 20%;
-	border: 1px solid darkgray;
-	position: relative;
+	height: 25%;
+	border-bottom: 1px solid darkgray;
+	padding-bottom: 5vh;
+	margin-top: 5vh;
 	text-align: center;
-	display: block;
-	margin-left: auto;
-	margin-right: auto;
-	margin-top: 2%;
+	display: inline-block;
+}
+.blog img {
+	max-width: 100%;
+	max-height: 100%;
+}
+.blog a {
+	text-decoration: none;
 }
 .search {
 	width: 200px;
@@ -106,12 +115,6 @@ a {
 }
 .centered-div {
 	left:0px;
-}
-.left {
-	display: flex;
-	padding-top: 20px;
-	padding-left: 20px;
-	height: 12vh;
 }
 .search-button {
 	margin-bottom: 20px;
@@ -155,4 +158,16 @@ a {
 }
 .width {
 	width: 14vw;
+}
+
+.discover-head {
+	padding-top: 20px;
+	padding-left: 20px;
+	height: 12vh;
+}
+
+.create-channel-button {
+	margin-left: 2vw;
+	vertical-align: middle;
+	height: 6vh;
 }
