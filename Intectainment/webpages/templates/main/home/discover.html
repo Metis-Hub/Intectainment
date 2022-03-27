@@ -5,14 +5,16 @@
 {% extends "sidebarLayout.html" %}
 {% block title %}Entdecken{%endblock%}
 {% block content%}
-<div>
-        <form method="get" class="left">
+<div class="discover-head d-flex justify-content-evenly">
+        <form method="get" class="input-group mb-3 w-50">
             <input type="text" class="form-control search bg-dark w-auto text-white" name="channel" placeholder="Kanalname">
             <button type="submit" class="btn btn-primary search-button">Suchen</button>
         </form>
 
         {% if user %}
-        <a href="{{url_for('gui.channelCreation')}}">Neuen Kanal erstellen</a>
+        
+            <a href="{{url_for('gui.channelCreation')}}" class="create-channel-button btn btn-outline-primary"><i class="bi bi-plus-square"></i> Neuen Kanal erstellen</a>
+        
         {% endif %}
 </div>
 
@@ -20,15 +22,20 @@
     <div class="channels text-white">Channels<p></p>
         {%if channels.total>0%}
             {%for channel in channels.items%}
-                <div class="blog">
-                    <a href="{{url_for('gui.channelView', channel=channel.name)}}"> {{channel.name}} </a>
+            <a href="{{url_for('gui.channelView', channel=channel.name)}}">
+                <div class="blog w-50">
+                     
+                        <img src="{{ channel.getProfileImagePath() }}" class="profile_image" />
+                        <span class="btn btn-outline-info border-0">{{channel.name}}</span>
+                    
                 </div>
+            </a>
             {%endfor%}
             {%if channels.pages > 1 %}
                 <hr/>
                 {% for page in channels.iter_pages() %}
                     {%if page%}
-                        <a href="?page={{page}}">{{page}}</a>
+                        <li><a class="page-link" href="?page={{page}}">{{page}}</a></li>
                     {%else%}
                         ...
                     {%endif%}

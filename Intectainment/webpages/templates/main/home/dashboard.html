@@ -14,18 +14,24 @@
 
 
 {%block content%}
+<div class="favourite-posts row row-cols-1 row-cols-md-3">
 {%if favs.total > 0%}
     {%for post in favs.items%}
-        <div class="card bg-dark text-white" id="touch">
-            <div class="card-text postContent">
+    <div class="col">
+        <div class="card bg-dark text-white post-margin border-light border-1" id="touch">
+            <div class="card-text">
+            <div class="postContent">
 {% for line in post.getContentLines()[:5]%}{{line}}{%endfor%}
             </div>
-            <a href="{{url_for('gui.postView', postid=post.id)}}" class="btn btn-outline-primary">Zum Post</a>
+            <a href="{{url_for('gui.postView', postid=post.id)}}" class="btn btn-outline-primary w-100">Zum Post</a>
         </div>
+        </div>
+    </div>
     {%endfor%}
     {%else%}
         <p> Es gibt noch keine gemerkten Posts. </p>
 {%endif%}
+</div>
 {%endblock%}
 
 

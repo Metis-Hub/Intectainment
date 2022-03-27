@@ -13,48 +13,58 @@
 
 {% block content %}
 {{super()}}
-<div class="channelinfo bg-dark text-white">
-<h1>{{channel.name}}</h1>
-
-    <div class="profile"><img src="{{ channel.getProfileImagePath() }}" /></div>
+<div class="channelinfo d-flex justify-content-center bg-dark text-white">
+    <div class="channelinfo-image">
+        <div class="profile"><img src="{{ channel.getProfileImagePath() }}" /></div>
+    </div>
+    <div class="channelinfo-info">
+        <h1>{{channel.name}}</h1>
 
     {% if channel.description %}
     <p>{{channel.description}}</p>
     {%endif%}
-    <div class="big-text">
-    {% if user %}
-        <form method="post" class="inline-form">
-            {% if subscribed %}<button class="btn btn-outline-danger" type="submit" name="desubscr">Deabonnieren</button>
-            {% else %}<button class="btn btn-danger" type="submit" name="subscr">Abonnieren</button>
-            {% endif %}
-        </form>
-    {% endif %}
-
-    {% if canModify %}
-    <a class="btn btn-outline-secondary text-white" href="{{url_for('gui.channelSettings', channel=channel.name)}}"><i class="bi bi-gear"></i> Einstellungen</a>
-    {% endif %}
-
-    {% if user %}
-    <a class="btn btn-outline-primary" href="{{url_for('gui.createPost', channel=channel.name)}}"><i class="bi bi-plus-square"></i> Neuer Post</a>
-    {% endif %}
 
     </div>
-
-    
-
-
+    <div class="channelinfo-buttons">
+        <div class="big-text">
+            <div>
+            {% if user %}
+                <form method="post" class="inline-form">
+                    {% if subscribed %}<button class="btn btn-outline-danger" type="submit" name="desubscr">Deabonnieren</button>
+                    {% else %}<button class="btn btn-danger" type="submit" name="subscr">Abonnieren</button>
+                    {% endif %}
+                </form>
+            {% endif %}
+            </div>
+            <div>
+            {% if canModify %}
+            <a class="btn btn-outline-secondary text-white" href="{{url_for('gui.channelSettings', channel=channel.name)}}"><i class="bi bi-gear"></i> Einstellungen</a>
+            {% endif %}
+            </div>
+            <div>
+            {% if user %}
+            <a class="btn btn-outline-primary" href="{{url_for('gui.createPost', channel=channel.name)}}"><i class="bi bi-plus-square"></i> Neuer Post</a>
+            {% endif %}
+            </div>
+            </div>
+        
+    </div>
 </div>
 {%if posts.total > 0 %}
-<div class="postcontainer bg-dark">
-    <hr/>
+<div class="postcontainer row row-cols-1 row-cols-md-3">
+    
     <!-- Latest posts -->
     {% for post in posts.items %}
-            <div class="card bg-dark text-white post-margin border-light" style="width: 20rem;" id="touch">
-                <div class="card-text postContent">
+    <div class="col">
+            <div class="card bg-dark text-white post-margin border-light" id="touch">
+                <div class="card-text" >
+                <div class="postContent">
 {% for line in post.getContentLines()[:5]%}{{line}}{%endfor%}
                 </div>
-                <a href="{{url_for('gui.postView', postid=post.id)}}" class="btn btn-outline-primary">Zum Post</a>
+                <a href="{{url_for('gui.postView', postid=post.id)}}" class="btn btn-outline-primary w-100">Zum Post</a>
             </div>
+            </div>
+        </div>
     {%endfor%}
     
     

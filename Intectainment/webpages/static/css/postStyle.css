@@ -1,18 +1,17 @@
 /* style specally for markdown renders */
 
 .postcontainer {
-    display: flex;
     overflow-y: auto;
-    height: 80vh;
-    flex-flow: row wrap;
+    height: 78vh;
     scrollbar-width: none;
     -ms-overflow-style: none;
-    align-content: row;
-    flex-direction: row;
+    padding-left: 1vw;
+    padding-right: 1vw;
+    padding-top: 2vh;
 }
 
 .nopostcontainer {
-    height: 80vh;
+    height: 78vh;
     text-align: center;
     display: flex;
     justify-content: center;
@@ -24,21 +23,25 @@
     display: none;
 }
 
+.favourite-posts::-webkit-scrollbar { 
+    display: none;
+}
+
 .post-margin {
-    margin-left: 10px;
-    margin-right: 10px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    min-height: 78%;
-    max-height: 78%;
     overflow-y: auto;
-    border: 5px solid darkgray;
+    margin-bottom: 4vh;
 }
 
 .channelinfo {
     height: 22vh;
     text-align: center;
     border-bottom: 1px solid darkgray;
+    display: flex;
+}
+
+.channelinfo img {
+    max-width: 100%;
+    max-height: 100%;
 }
 
 .big-icon {
@@ -136,16 +139,6 @@
     padding: 0px;
 }
 
-.big-text {
-    font-size: 26px;
-    margin-top: -2vh;
-}
-
-.postContent {
-    max-width: 500px;
-    max-height: 250px; ;
-}
-
 .postContent img {
     max-width: 75%;
     max-height: 50%;
@@ -236,5 +229,34 @@ a {
 .settings-picture {
     padding-top: 1vh;
     border-top: 1px solid darkgray;
+}
+
+.channelinfo-buttons {
+    text-align: right;
+    float: right;
+    font-size: 26px;
+}
+
+.channelinfo-info {
+    word-wrap: break-word;
+    max-width: 30vw;
+    padding-left: 1vw;
+    padding-right: 1vw;
+}
+
+.card-bottom {
+    position: absolute;
+    bottom: 0px;
+    min-width: 100%;
+}
+
+.favourite-posts {
+    overflow-y: auto;
+    height: 100vh;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding-left: 1vw;
+    padding-right: 1vw;
+    padding-top: 2vh;
 }
 
