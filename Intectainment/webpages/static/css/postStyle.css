@@ -148,6 +148,7 @@
     max-width: 100vw;
     max-height: 79vh;
     overflow-y: auto;
+    word-wrap: break-word;
 }
 
 .show-post img {
