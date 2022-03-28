@@ -16,7 +16,7 @@
               {%for cat in channel.categories %}
               <form method="POST">
                 {{cat.name}}
-                <input class="btn btn-outline-danger btn-sm list-margin bi bi-trash" type="submit" name="deleteCategory"/>
+                <input class="btn btn-outline-danger btn-sm list-margin bi bi-trash" type="submit" name="deleteCategory" value="Löschen" />
                 <input type="hidden" name="category" value="{{cat.name}}"/>
               </form>
               {%endfor%}
@@ -39,25 +39,27 @@
         </div>
 
 
-
-    </div>
-    <div class="settings-description">
+        <div class="settings-description">
             
-                <form method="POST" class="input-group mb-3">
-                    <div class="input-group-text">
-                        Beschreibung: 
-                    </div>
-                    <input class="form-control description-ta" type="text" name="description" placeholder="Beschreibung" value="{{channel.description or ''}}"/>
-                    <input class="btn btn-outline-primary" type="submit" name="changeDescription" value="Bestätigen"/>
-                </form>
+            <form method="POST" class="input-group mb-3">
+                <div class="input-group-text">
+                    Beschreibung: 
+                </div>
+                <input class="form-control description-ta" type="text" name="description" placeholder="Beschreibung" value="{{channel.description or ''}}"/>
+                <input class="btn btn-outline-primary" type="submit" name="changeDescription" value="Bestätigen"/>
+            </form>
+</div>
+
+<div class="settings-picture">
+    <a class="btn btn-outline-primary" href="{{url_for('gui.channelView', channel=channel.name)}}">Zum Kanal</a>
+    <div class="profile"><img src="{{ channel.getProfileImagePath() }}"/></div>
+    <a class="btn btn-outline-primary" href="{{ url_for('upload_form', type='c', id=channel.id) }}" onclick="open_wnd(this.href); return false">Kanalbild ändern</a>
+</div>
     </div>
+    
 
 
-       <div class="settings-picture">
-        <a class="btn btn-outline-primary" href="{{url_for('gui.channelView', channel=channel.name)}}">Ansicht</a>
-        <div class="profile"><img src="{{ channel.getProfileImagePath() }}"/></div>
-        <a class="btn btn-outline-primary" href="{{ url_for('upload_form', type='c', id=channel.id) }}" onclick="open_wnd(this.href); return false">Kanalbild ändern</a>
-    </div>
+       
 </div>
 
 
