@@ -21,25 +21,34 @@
 <form method="post" action="{{ this_url }}" enctype="multipart/form-data">
     <dl>
 		<p>
-			<input type="file" name="file" autocomplete="off" required>
+			<input class="form-label form-control" type="file" name="file" autocomplete="off" required>
 		</p>
     </dl>
     <p>
-		<input type="submit" value="Hochladen">
+		<input class="btn btn-outline-primary" type="submit" value="Hochladen">
 	</p>
 </form>
 
 {% if type %}
 <p>
-	<table border="0">
-		<tr> <td> <label>Pfad: </label> </td> <td> <input type="text" value="{{ path }}" size="100%"> </td> </tr>
-		<tr> <td> <label>Post: (ohne angepasste Größe)</label> </td> <td> <input type="text" value="![]({{ path }})" size="100%"> </td> </tr>
-		<tr> <td> <label>Post/HTML (mit angepasster Größe): </label> </td> <td> <input type="text" value="" size="100%" id="img_tag"> </td> </tr>
-		<tr>
-			<td> <label>Größe: </label> <input type="number" value="100" min="0" max="150" step="1" id="num_size"> <label>%</label> </td>
-			<td> <input type="range" value="100" min="0" max="150" step="1" style="{width: 100%;}" id="range_size" /> </td>
-		</tr>
-	</table>
+	<div class="input-group">
+		<label class="input-group-text">Pfad: </label>
+		<input class="form-control" type="text" value="{{ path }}" size="100%">
+	</div>
+	<div class="input-group">
+		<label class="input-group-text">Post: (ohne angepasste Größe)</label>
+		<input class="form-control" type="text" value="![]({{ path }})" size="100%">
+	</div>
+	<div class="input-group">
+		<label class="input-group-text">Post/HTML (mit angepasster Größe): </label>
+	    <input class="form-control" type="text" value="" size="100%" id="img_tag">
+	</div>
+	<div class="input-group">
+		<label class="input-group-text">Größe: </label> 
+		<input class="form-control" type="number" value="100" min="0" max="150" step="1" id="num_size"> 
+		<label class="input-group-text">%</label>
+		<input type="range" value="100" min="0" max="150" step="1" style="{width: 100%;}" id="range_size" />
+	</div>
 </p>
 
 <script type="text/JavaScript">

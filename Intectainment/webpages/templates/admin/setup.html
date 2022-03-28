@@ -3,11 +3,12 @@
 
 {% block content %}
     <div>
-        <form method="POST">
-            <label>Testdatensätze einfügen</label>
-            <input type="submit" name="createDefault"/>
+        <h1><p>Testdatensätze</p></h1>
+        <form method="POST" class="input-group">
+            <span class="input-group-text">Testdatensätze einfügen</span>
+            <input class="btn btn-primary form-control" type="submit" name="createDefault"/>
         </form>
     </div>
-    <a href="{{url_for('gui.admin.main')}}">zurück</a>
+    <a class="btn btn-outline-primary margin-admin" href="{{url_for('gui.admin.main')}}">Zurück</a>
 
 {%endblock%}
