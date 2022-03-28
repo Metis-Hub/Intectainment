@@ -88,12 +88,13 @@ Die Darstellung umfasst jedoch nur die Grundlagen des Backend-Systems und besitz
 
 ### Wichtige Abläufe
 #### Erstellung von Nutzern
+![Benutzerkonfiguration.PNG](https://raw.githubusercontent.com/Metis-Hub/Intectainment/basicFrontend/docs/img/Benutzerkonfiguration.png)
+*Abb. 2: Erstellen von Nutzern mithilfe des Admin-Interfaces*
+
 Die verschiedenen User, die die lokale Instanz von Intectainment nutzen, müssen von dem Administrator des Netzwerk in einem eigenen Interface erstellt werden. 
 Es gibt keine Möglichkeit, nicht vom Administrator genehmigte Accounts zu erstellen. Auch wenn durch diese Regelung die erste Einrichtung des Systems etwas anspruchsvoller macht, kann so verhindert werden, dass Unbefugte Zugriff auf das Netzwerk erlangen.
 
 #### Erstellen von Kanälen
-
-![Benutzerkonfiguration.PNG](https://raw.githubusercontent.com/Metis-Hub/Intectainment/basicFrontend/docs/img/Benutzerkonfiguration.png)
 
 Jeder Nutzer kann Kanäle erstellen, die gemeinschaftlich von allen Mitarbeitern des Unternehmens genutzt und betrieben werden. Den Kanälen kann bei ihrer Erstellung eine Kategorie zugewiesen werden (z. B. C++, IoT, Web-Development usw.), die die Suche nach und das Entdecken von Kanälen erleichtert.
 Wie bereits erwähnt, werden alle Kanäle nicht von einzelnen Usern, sondern von der gesamten Mitarbeiterschaft betrieben. Das bedeutet, dass jeder angemeldete Nutzer auf einem beliebigen Kanal Posts verfassen und veröffentlichen kann. Dies soll dabei helfen, dass jeder Nutzer Texte zu für ihn interessanten Themen verfassen kann und keine Konkurrenz zwischen verschiedenen Kanälen zum gleichen Themea entsteht.
@@ -101,6 +102,7 @@ Wie bereits erwähnt, werden alle Kanäle nicht von einzelnen Usern, sondern von
 #### Kanalansicht und -navigation
 
 ![Kanalansicht.PNG](https://raw.githubusercontent.com/Metis-Hub/Intectainment/main/docs/img/Kanalansicht.PNG)
+*Abb. 3: Beispielansicht eines Kanals inklusive der neuesten Posts*
 
 Wählt man einen Kanal aus, wird eine Vorschau der aktuellsten Posts angezeigt, welche die ersten Zeilen des Textes umfasst. Über die Schaltfläche "Zum Post" lässt sich der Text in voller Länge aufrufen.
 Als angemeldeter Nutzer kann man Kanäle abonnieren bzw. deabonnieren, aber auch Posts erstellen und auf dem entsprechenden Kanal veröffentlichen. Ist man der Ersteller des Kanals, kann man auch die Einstellungen (z. B. Beschreibung, Kategorie und Kanalbild) anpassen.
@@ -108,6 +110,7 @@ Als angemeldeter Nutzer kann man Kanäle abonnieren bzw. deabonnieren, aber auch
 #### Erstellen und Bearbeiten von Posts
 
 ![Posterstellung.PNG](https://raw.githubusercontent.com/Metis-Hub/Intectainment/main/docs/img/PostErstellung.PNG)
+*Abb. 4: Beispielansicht eines Posts während der Erstellung*
 
 Nach der Auswahl des Kanals, auf  welchem der entsprechende Post erscheinen soll, kann der Nutzer mithilfe der Markdown-Syntax einen Text verfassen, welcher in Echtzeit zu HTML konvertiert und neben dem Eingabefeld angezeigt wird. 
 Für das Hochladen von Bildern gibt es eine eigene Schaltfläche; mit dieser kann man Bilder auf dem genutzten Server hochladen und über einen eigens dafür generierten Link im Text einbinden. Alternativ ist auch das Einbinden ein Bildern aus externen Quellen möglich.
