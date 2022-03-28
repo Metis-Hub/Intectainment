@@ -5,7 +5,7 @@
 - **Schüler:** Bruno Hoffmann, Karl Jahn, Tom Nitsche & Jakob Paridon
 - **Kurs:** [Informatik III/IV 4 SRZ](https://tu-dresden.de/ing/informatik/srz)
 - **Firma:** [intecsoft group](https://www.intecsoft.de/)
-- **Firmenbetreuer:** Klaus Jungmann, Eugen Göring
+- **Firmenbetreuer:** Claus Jungmann, Eugen Gorning
 - **AG-Leiter:** Tassilo Tanneberger
 
 
