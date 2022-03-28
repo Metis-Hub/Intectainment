@@ -5,6 +5,7 @@ from Intectainment.util import login_required
 from Intectainment.images import move_images
 
 from flask import request, render_template, redirect, url_for
+from sqlalchemy import desc
 
 import datetime
 
@@ -52,7 +53,7 @@ def channelView(channel):
             user.subscriptions.remove(channel)
             db.session.commit()
 
-    posts = Post.query.filter_by(channel_id=channel.id).paginate(per_page=20, page=page_num, error_out=False)
+    posts = Post.query.filter_by(channel_id=channel.id).order_by(desc(Post.creationDate)).paginate(per_page=20, page=page_num, error_out=False)
 
     return render_template("main/channel/channelView.html",
                            channel=channel,
