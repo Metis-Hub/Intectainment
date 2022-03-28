@@ -19,7 +19,7 @@
     <a href="{{url_for('gui.channelView', channel=channel.name)}}">
         <div class="blog w-50">
              
-                <img src="{{ channel.getProfileImagePath() }}" class="profile_image" />
+                <div class="channel-profile"><img src="{{ channel.getProfileImagePath() }}"/></div>
                 <span class="btn btn-outline-info border-0">{{channel.name}}</span>
             
         </div>

@@ -87,7 +87,7 @@
 </script>
 {% endif %}
 
-{% if profile %}
+{% if profile and profile=="usr" %}
 <form method="post" action="{{ this_url }}">
 	<p>
 		<p>
@@ -141,7 +141,7 @@
 {% endif %}
 
 {% if path %}
-<div{% if profile %} class="profile"{% endif %}>
+<div{% if profile and profile=="usr" %} class="profile"{% elif profile and profile=="c" %} class="channel-profile"{% endif %}>
 	<img src="{{ path }}" id="image" />
 </div>
 {% endif %}
