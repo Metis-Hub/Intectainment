@@ -171,7 +171,7 @@ def userconfig():
 	return render_template("main/user/userconfig.html", user=user, timeout=int(user.timeout / 60))
 
 #Import other routing files
-from Intectainment.webpages import admin, channelsCategories, RestInterface
+from Intectainment.webpages import admin, channelsCategories
 
 
 app.register_blueprint(ap)
