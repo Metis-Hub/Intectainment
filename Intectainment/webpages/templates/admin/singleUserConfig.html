@@ -2,7 +2,8 @@
 {% block title %}Nutzerprofilbearbeitung{%endblock%}
 
 {% block content %}
-<a href="{{ url_for('gui.admin.userconfig') }}">Zurück zur Benutzerübersicht</a>
+<div class="singel-user-config-div">
+<a class="btn btn-outline-primary" href="{{ url_for('gui.admin.userconfig') }}">Zurück zur Benutzerübersicht</a>
 <h1>Nutzerprofil von {{ edit_user.getName() }}</h1>
 
 <p>
@@ -16,43 +17,56 @@
 	  {% endif %}
 	{% endwith %}
 </p>
-
+<div class="single-user-config">
 {% from "img/profile_images.html" import profile_img with context %}
 {{ profile_img(edit_user) }}
+</div>
 
 <form method="post" action="{{ this_url }}">
-    <p> <input type="submit" name="del_image" value="Profilbild löschen"> </p>
+    <p> <input class="btn btn-outline-primary" type="submit" name="del_image" value="Profilbild löschen"> </p>
 </form>
 
-<form method="post" action="{{ this_url }}">
-    <p> <label>Benutzername:</label> <input type="text" value="{{ edit_user.username }}" name="txtname" required> <input type="submit" name="name" value="Namen ändern"> </p>
+<form method="post" action="{{ this_url }}" class="input-group">
+        <label class="input-group-text">Benutzername:</label> 
+        <input class="form-control" type="text" value="{{ edit_user.username }}" name="txtname" required> 
+        <input class="btn btn-primary form-control" type="submit" name="name" value="Namen ändern"> 
 </form>
+<p></p>
+
+<form method="post" action="{{ this_url }}" class="input-group">
+        <label class="input-group-text">angezeigter Name:</label> 
+        <input class="form-control" type="text" value="{{ edit_user.getName() }}" name="txtdispl_name" required> 
+        <input class="btn btn-primary form-control" type="submit" name="displ_name" value="Namen ändern"> 
+</form>
+<p></p>
 
 <form method="post" action="{{ this_url }}">
-    <p> <label>angezeigter Name:</label> <input type="text" value="{{ edit_user.getName() }}" name="txtdispl_name" required> <input type="submit" name="displ_name" value="Namen ändern"> </p>
+    <div class="input-group">
+            <label class="input-group-text">Neues Passwort:</label>
+            <input class="form-control" type="password" name="new" required>
+        </div>
+        <div class="input-group">
+            <label class="input-group-text">Bestätigung des Neuen:</label>
+            <input class="form-control" type="password" name="ver_new" required>
+            <input class="btn btn-primary form-control" type="submit" name="pw" value="Passwort ändern">
+        </div>
 </form>
 
 <form method="post" action="{{ this_url }}">
     <p>
-        <table border="0">
-            <tr><td width="40%"><label>neues Passwort:</label></td><td><input type="password" name="new" required></td></tr>
-            <tr><td width="40%"><label>Bestätigung des Neuen:</label></td><td><input type="password" name="ver_new" required></td></tr>
-            <tr><td><input type="submit" name="pw" value="Passwort ändern"></td></tr>
-        </table>
+        <lable><h3>Zugriffslevel: <lable id="level_name"></lable></h3></lable>
+        
     </p>
-</form>
-
-<form method="post" action="{{ this_url }}">
     <p>
-        <lable>Zugriffslevel: </lable>
-        <lable id="level_name"></lable>
-    </p>
-    <p>
-        <input type="number" min="0" max="255" value="10" id="level" name="level">
+        <div class="input-group">
+        <input class="form-control" type="number" min="0" max="255" value="10" id="level" name="level">
         <input type="range" min="0" max="255" step="1" value="{{ edit_user.permission }}" id="level_slider">
-        <input type="submit" name="submit_level" value="Ändern">
+        <input class="btn btn-primary form-control" type="submit" name="submit_level" value="Ändern">
+        </div>
     </p>
 </form>
+
+</div>
 
 <script type="text/JavaScript">
     var slider = document.getElementById("level_slider");

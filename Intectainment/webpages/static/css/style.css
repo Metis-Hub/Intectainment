@@ -529,3 +529,14 @@ a {
     margin-left: 1vw;
 }
 
+.single-user-config {
+    display: inline-block;
+    overflow: hidden;
+}
+
+.single-user-config-div {
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
+
