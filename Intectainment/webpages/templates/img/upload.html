@@ -2,7 +2,11 @@
 {% block title %}Bild hochladen{%endblock%}
 
 {% block content %}
+{% if profile %}
+<h2>Bild wurde hochgeladen, wähle ein anderes aus, oder &quot;bearbeite&quot; es nach.</h2>
+{% else %}
 <h2>Bitte wählen Sie die hochzuladene Bilddatei aus.</h2>
+{% endif %}
 <p>
 {% with messages = get_flashed_messages() %}
 	{% if messages %}
@@ -46,7 +50,7 @@
 
 	function write_input() {
         var content = "<img src=\"{{ path }}\"";
-        if (numField.value != 100) content += " width=\"" + numField.value.toString() + "%\" + height=\"" + numField.value.toString() + "%\"";
+        if (numField.value != 100) content += " width=\"" + numField.value.toString() + "%\" height=\"" + numField.value.toString() + "%\"";
 		content += " />";
 		input.value = content;
 		image.style.width = numField.value + "%";
@@ -71,6 +75,59 @@
       range.value = this.value;
       write_input();
     }
+</script>
+{% endif %}
+
+{% if profile %}
+<form method="post" action="{{ this_url }}">
+	<p>
+		<p>
+			<label>Zoomen: </label>
+			<br />
+			<input type="range" value="100" min="10.000" max="200.000" step="0.001" id="range_size" name="range_size">
+		</p>
+		<p>
+			<label>horizontal Verschieben: </label>
+			<br />
+			<input type="range" value="0" min="-125.000" max="125.000" step="0.001" id="range_x" name="range_x">
+		</p>
+		<p>
+			<label>vertikal Verschieben: </label>
+			<br />
+			<input type="range" value="0" min="-125.000" max="125.000" step="0.001" id="range_y" name="range_y">
+		</p>
+		<input type="submit" value="Übernehmen" name="img_config">
+	</p>
+</form>
+
+<script type="text/JavaScript">
+	var image = document.getElementById("image");
+	var zoom = document.getElementById("range_size");
+	var x = document.getElementById("range_x");
+	var y = document.getElementById("range_y");
+
+	window.onload = function() {
+		image = document.getElementById("image");
+		zoom = document.getElementById("range_size");
+		x = document.getElementById("range_x");
+		y = document.getElementById("range_y");
+		image.style.width = zoom.value + "%";
+		image.style.marginLeft = "0%";
+		image.style.marginTop = "0%";
+	};
+
+	zoom.oninput = function() {
+		image.style.width = this.value + "%";
+    }
+
+    x.oninput = function() {
+		image.style.marginLeft = this.value + "%";
+    }
+
+    y.oninput = function() {
+		image.style.marginTop = this.value + "%";
+    }
+
 </script>
 {% endif %}
 

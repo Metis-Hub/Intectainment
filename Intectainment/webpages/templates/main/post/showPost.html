@@ -15,7 +15,17 @@
 
 <div class="offcanvas offcanvas-start w-auto p-3 bg-black" id="demo">
   <div class="offcanvas-body text-left">
-    <a href=""><span class="bi bi-star big-icon text-left"> Favoritisieren</span></a>
+
+    <br>
+    {% if user %}
+    <form method="POST">
+      {% if faved %}
+      <button class="unstyle link-button text-left" type="submit" name="defav"><span class="bi bi-star-fill big-icon"> Unmerken</span></button>
+      {%else%}
+      <button class="unstyle link-button text-left" type="submit" name="fav"><span class="bi bi-star big-icon"> Merken</span></button>
+      {%endif%}
+    </form>
+    {%endif%}
     <br>
     <a href="{{url_for('gui.channelView', channel=post.channel.name)}}"><span class="bi bi-person-circle big-icon text-left"> Kanal</span></a>
     <br>
@@ -34,17 +44,12 @@
   </button>
 </div>
   <p>{{timeMessage}}</p>
-
-  {# mark post as favorite #}
-  {% if user %}
+  <p>Erstellt von <a href="{{url_for('gui.profile', search=post.owner.username)}}">{{post.owner.getName()}}</a></p>
+  
   <form method="post">
-  {% if faved %}
-    <input type="submit" name="defav" value="Unmerken ❌">
-  {%else%}
-    <input type="submit" name="fav" value="Merken ✅">
-  {%endif%}
+  
   </form>
-  {%endif%}
+  
 
   <div class="show-post bg-dark" id="postConent">{{post.getContent()}}</div>
 

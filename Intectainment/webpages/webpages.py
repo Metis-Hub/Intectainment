@@ -69,13 +69,17 @@ def profile(search):
 
 @gui.route("/profiles", methods=["GET"])
 def profileSearch():
-	search = request.args.get("username")
-	query = User.query
+	page_num = 1
+	try:
+		page_num = int(request.args.get("page"))
+	except (ValueError, TypeError):
+		pass
 
-	if search and search != "":
-		query = User.query.filter(User.username.like(f"%{search}%"))
-
-	return render_template("main/user/profiles.html", users=query.all(), user=User.getCurrentUser())
+	return render_template("main/user/profiles.html",
+						   user=User.getCurrentUser(),
+						   users=User.query.filter(User.username.like(f"%{request.args.get('username', '')}%")).paginate(per_page=20,
+																											page=page_num,
+																											error_out=False))
 
 ##### Access Points #####
 @ap.route("/user/login", methods=["POST"])
@@ -171,7 +175,7 @@ def userconfig():
 	return render_template("main/user/userconfig.html", user=user, timeout=int(user.timeout / 60))
 
 #Import other routing files
-from Intectainment.webpages import admin, channelsCategories, RestInterface
+from Intectainment.webpages import admin, channelsCategories
 
 
 app.register_blueprint(ap)

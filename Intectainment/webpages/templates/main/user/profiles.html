@@ -14,17 +14,26 @@
     </form>
 
     {%if request.args.get('username')%}
-        {%if users%}
-            <p> Gefundene Nutzer ({{users|length}}): </p>
-            {%for usr in users%}
-                <a href="p/{{usr.username}}"> {{usr.getName()}} </a><br/>
-            {%endfor%}
-        {%else%}
+        {%if users.total <= 0%}
             <p> Es gibt keinen Nutzer mit einem Namen wie "{{request.args.get('username')}}" </p>
         {%endif%}
-    {%else%}
-    {%for usr in users%}
+    {%endif%}
+
+    {%for usr in users.items%}
         <a href="p/{{usr.username}}"> {{usr.getName()}} </a><br/>
     {%endfor%}
+
+    {%if users.pages > 1 %}
+    <hr/>
+    <ul class="pagination">
+        {% for page in users.iter_pages() %}
+        {%if page%}
+        <li><a class="page-link" href="?page={{page}}">{{page}}</a></li>
+        {%else%}
+        ...
+        {%endif%}
+        {% endfor %}
+    </ul>
     {%endif%}
+
 {%endblock%}

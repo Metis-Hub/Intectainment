@@ -1,6 +1,6 @@
 import os.path, datetime, pathlib
 
-from Intectainment.app import db
+from Intectainment.app import db, app
 from flask import session, url_for
 import bcrypt, threading, time, string, random
 
@@ -36,9 +36,9 @@ class User(db.Model):
 	permission	  	= db.Column(db.Integer, default=PERMISSION.USER)
 	icon_extension	= db.Column(db.String(4))
 	timeout 		= db.Column(db.Integer, default=60 * 30)
-	img_xPos		= db.Column(db.Integer, nullable=True)
-	img_yPos		= db.Column(db.Integer, nullable=True)
-	img_zoom		= db.Column(db.Integer, nullable=True)
+	img_xPos		= db.Column(db.Integer, nullable=False, default=0)
+	img_yPos		= db.Column(db.Integer, nullable=False, default=0)
+	img_zoom		= db.Column(db.Integer, nullable=False, default=100000)
 
 	subscriptions 	= db.relationship("Channel", secondary=Subscription, backref="subscibers")
 	favoritePosts 	= db.relationship("Post", secondary=Favorites, backref="favUsers")
@@ -141,9 +141,9 @@ class Channel(db.Model):
 	description		= db.Column(db.String(80), nullable=True)
 	owner_id		= db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 	icon_extension	= db.Column(db.String(4))
-	img_xPos		= db.Column(db.Integer, nullable=True)
-	img_yPos		= db.Column(db.Integer, nullable=True)
-	img_zoom		= db.Column(db.Integer, nullable=True)
+	img_xPos		= db.Column(db.Integer, nullable=False, default=0)
+	img_yPos		= db.Column(db.Integer, nullable=False, default=0)
+	img_zoom		= db.Column(db.Integer, nullable=False, default=100000)
 
 	categories		= db.relationship("Category", secondary=ChannelCategory, backref="channels")
 	posts			= db.relationship("Post", backref="channel")
@@ -243,6 +243,9 @@ class Post(db.Model):
 
 	def delete(self):
 		"""removes the db-object and the linked file"""
+		source_path = os.path.join(app.config["UPLOAD_FOLDER"], "c/", str(self.id) + "/")
+		if os.path.exists(source_path):
+			os.remove(source_path)
 		os.remove(self.getFilePath())
 		db.session.delete(self)
 
