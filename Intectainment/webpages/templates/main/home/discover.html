@@ -24,8 +24,12 @@
             {%for channel in channels.items%}
             <a href="{{url_for('gui.channelView', channel=channel.name)}}">
                 <div class="blog w-50">
-                        <div class="channel-profile"><img src="{{ channel.getProfileImagePath() }}"/></div>
-                        <div class="btn btn-outline-info border-0 discover">{{channel.name}}</div>
+                    <table border="0" width="100%">
+                        <tr valign="center">
+                            <td width="50%" align="center"><div class="channel-profile" style="margin-top: 10%;"><img src="{{ channel.getProfileImagePath() }}"/></div></td>
+                            <td width="50%"><div class="btn btn-outline-info border-0">{{channel.name}}</div></td>
+                        </tr>
+                    </table>
                 </div>
             </a>
             {%endfor%}
