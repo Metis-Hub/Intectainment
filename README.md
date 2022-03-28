@@ -88,7 +88,7 @@ Die Darstellung umfasst jedoch nur die Grundlagen des Backend-Systems und besitz
 
 ### Wichtige Abläufe
 #### Erstellung von Nutzern
-![Benutzerkonfiguration.PNG](https://raw.githubusercontent.com/Metis-Hub/Intectainment/basicFrontend/docs/img/Benutzerkonfiguration.png)
+![Benutzerkonfiguration.PNG](https://raw.githubusercontent.com/Metis-Hub/Intectainment/main/docs/img/Benutzerkonfiguration.png)
 *Abb. 2: Erstellen von Nutzern mithilfe des Admin-Interfaces*
 
 Die verschiedenen User, die die lokale Instanz von Intectainment nutzen, müssen von dem Administrator des Netzwerk in einem eigenen Interface erstellt werden. 
