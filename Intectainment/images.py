@@ -80,7 +80,7 @@ def upload_image(name="", folder="c", subfolder="", type=""):
         filename = secure_filename(file.filename)
         if name != "": filename = name + "." + get_extension(file.filename)
 
-        profile=True
+        profile=False
         if folder == "c":
             channel = Channel.query.filter_by(id=int(name)).first()
             softImageDelete(channel)
@@ -92,7 +92,7 @@ def upload_image(name="", folder="c", subfolder="", type=""):
             softImageDelete(user)
             user.icon_extension = get_extension(file.filename)
             user.reload()
-        else: profile=False
+            profile = True
 
         create_subfolder(os.path.join(app.config["UPLOAD_FOLDER"], folder, subfolder))
         file.save(os.path.join(app.config["UPLOAD_FOLDER"], folder, subfolder, filename))
