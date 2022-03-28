@@ -43,7 +43,7 @@
             
             <form method="POST" class="input-group mb-3">
                 <div class="input-group-text">
-                    Beschreibung: 
+                    Beschreibung:
                 </div>
                 <input class="form-control description-ta" type="text" name="description" placeholder="Beschreibung" value="{{channel.description or ''}}"/>
                 <input class="btn btn-outline-primary" type="submit" name="changeDescription" value="Bestätigen"/>
@@ -52,14 +52,14 @@
 
 <div class="settings-picture">
     <a class="btn btn-outline-primary" href="{{url_for('gui.channelView', channel=channel.name)}}">Zum Kanal</a>
-    <div class="profile"><img src="{{ channel.getProfileImagePath() }}"/></div>
+    <div class="channel-profile"><img src="{{ channel.getProfileImagePath() }}"/></div>
     <a class="btn btn-outline-primary" href="{{ url_for('upload_form', type='c', id=channel.id) }}" onclick="open_wnd(this.href); return false">Kanalbild ändern</a>
 </div>
     </div>
-    
 
 
-       
+
+
 </div>
 
 

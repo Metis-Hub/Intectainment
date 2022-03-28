@@ -10,7 +10,17 @@ html {
     overflow: hidden;
     border-radius: 200px;
     -moz-border-radius: 200px;
-	-webkit-border-radius: 200px
+	-webkit-border-radius: 200px;
+}
+
+.channel-profile {
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+}
+.channel-profile img {
+    max-width: 200px;
+    max-height: 200px;
 }
 
 .sidebar {
@@ -103,13 +113,16 @@ html {
 	margin-top: 5vh;
 	display: inline-block;
 }
-.blog img {
-	max-width: 50%;
-	max-height: 50%;
-}
+
 .blog a {
 	text-decoration: none;
 }
+
+.blog .channel-profile img {
+    max-width: 50%;
+	max-height: 50%;
+}
+
 .search {
 	width: 200px;
 	margin-bottom: 20px;
@@ -217,7 +230,7 @@ html {
     display: flex;
 }
 
-.channelinfo img {
+.channelinfo .channel-profile img {
     max-width: 65%;
     max-height: 65%;
 }

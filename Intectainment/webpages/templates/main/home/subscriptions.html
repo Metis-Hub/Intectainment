@@ -5,11 +5,6 @@
 {% extends "sidebarLayout.html" %}
 {% block title %}Abonnierte Kanäle{% endblock %}
 
-{% block head %}
-  {{ super() }}
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/postStyle.css') }}">
-{% endblock %}
-
 {% block content%}
 
 <div class="subscribed-channels">
@@ -19,7 +14,7 @@
     <a href="{{url_for('gui.channelView', channel=channel.name)}}">
         <div class="blog w-50">
              
-                <img src="{{ channel.getProfileImagePath() }}" class="profile_image" />
+                <div class="channel-profile"><img src="{{ channel.getProfileImagePath() }}"/></div>
                 <span class="btn btn-outline-info border-0">{{channel.name}}</span>
             
         </div>
