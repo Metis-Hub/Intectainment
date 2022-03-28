@@ -21,6 +21,23 @@
         <input class="btn btn-primary form-control" type="submit" name="createUser" value="Erstellen"/>
     </form>
 
-    
+        <hr/>
+    <label> Benutzer anzeigen </label>
+    <form method="post">
+        <input type="text" name="queryname" placeholder="Namens Abfrage"/>
+        <input type="submit" name="queryUser" value="Suchen"/>
+    </form>
+    {%if users!=None%}
+        {%if users|length > 0%}
+        <table>
+            <tr><th>Name</th></tr>
+        {%for user in users%}
+            <tr><td><a href="{{url_for('gui.admin.edit_user', usrid=user.id)}}">{{user.getName()}}</a></td></tr>
+        {%endfor%}
+        </table>
+        {%else%}
+            <p>Keine Nutzer gefunden</p>
+        {%endif%}
+    {%endif%}
     
 {%endblock%}
