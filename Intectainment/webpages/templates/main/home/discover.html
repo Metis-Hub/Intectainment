@@ -26,7 +26,7 @@
                 <div class="blog w-50">
                         {% from "img/profile_images.html" import profile_img with context %}
                         {{ profile_img(channel) }}
-                        <span class="btn btn-outline-info border-0">{{channel.name}}</span>
+                        <div class="btn btn-outline-info border-0 discover">{{channel.name}}</div>
                 </div>
             </a>
             {%endfor%}

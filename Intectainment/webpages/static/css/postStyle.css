@@ -39,12 +39,7 @@
     display: flex;
 }
 
-/*.channelinfo img {
-    max-width: 65%;
-    max-height: 65%;
-}*/
-
-.channelinfo .profile {
+.channelinfo img {
     max-width: 65%;
     max-height: 65%;
 }
