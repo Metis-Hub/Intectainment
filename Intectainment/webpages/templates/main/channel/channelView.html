@@ -15,8 +15,7 @@
 {{super()}}
 <div class="channelinfo d-flex justify-content-center bg-dark text-white">
     <div class="channelinfo-image">
-        {% from "img/profile_images.html" import profile_img with context %}
-        {{ profile_img(channel) }}
+        <div class="profile"><img src="{{ channel.getProfileImagePath() }}"/></div>
     </div>
     <div class="channelinfo-info">
         <h1>{{channel.name}}</h1>

@@ -24,8 +24,7 @@
             {%for channel in channels.items%}
             <a href="{{url_for('gui.channelView', channel=channel.name)}}">
                 <div class="blog w-50">
-                        {% from "img/profile_images.html" import profile_img with context %}
-                        {{ profile_img(channel) }}
+                        <div class="profile"><img src="{{ channel.getProfileImagePath() }}"/></div>
                         <div class="btn btn-outline-info border-0 discover">{{channel.name}}</div>
                 </div>
             </a>
