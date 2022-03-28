@@ -16,24 +16,27 @@
         <input class="btn btn-primary" type="submit" value="Suchen"/>
     </form>
 
-    {%if request.args.get('username')%}
-        {%if users%}
-            <p> Gefundene Nutzer ({{users|length}}): </p>
-            {%for usr in users%}
+    {%if users.total>0%}
+    {%for usr in users.items%}
             <div class="user-search">
-                <a class="btn btn-outline-info border-0" href="p/{{usr.username}}"> {{usr.getName()}} </a><br/>
+                <a class="btn btn-outline-info border-0 w-25 h-auto" href="p/{{usr.username}}"> {{usr.getName()}} </a><br/>
             </div>
-            {%endfor%}
-        {%else%}
-            <p> Es gibt keinen Nutzer mit einem Namen wie "{{request.args.get('username')}}" </p>
-        {%endif%}
-    {%else%}
-    {%for usr in users%}
-    <div class="user-search">
-        <a class="btn btn-outline-info border-0 w-25 h-auto" href="p/{{usr.username}}"> {{usr.getName()}} </a><br/>
-    </div>
     {%endfor%}
+    {%if users.pages > 1 %}
+    <hr/>
+    <ul class="pagination d-flex justify-content-center">
+        {% for page in users.iter_pages() %}
+        {%if page%}
+        <li class="page-item"><a class="page-link" href="?page={{page}}">{{page}}</a></li>
+        {%else%}
+        <li class="page-item"><a class="page-link">...</a></li>
+        {%endif%}
+        {% endfor %}
+    </ul>
     {%endif%}
+        {%else%}
+            <p> Es wurden keine Kanäle gefunden </p>
+        {%endif%}
 
 </div>
 {%endblock%}
