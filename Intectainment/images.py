@@ -80,19 +80,20 @@ def upload_image(name="", folder="c", subfolder="", type=""):
         filename = secure_filename(file.filename)
         if name != "": filename = name + "." + get_extension(file.filename)
 
-        profile=True
+        profile=None
         if folder == "c":
             channel = Channel.query.filter_by(id=int(name)).first()
             softImageDelete(channel)
             channel.icon_extension = get_extension(file.filename)
             db.session.add(channel)
             db.session.commit()
+            profile = "c"
         elif folder == "usr":
             user = User.query.filter_by(id=int(name)).first()
             softImageDelete(user)
             user.icon_extension = get_extension(file.filename)
             user.reload()
-        else: profile=False
+            profile="usr"
 
         create_subfolder(os.path.join(app.config["UPLOAD_FOLDER"], folder, subfolder))
         file.save(os.path.join(app.config["UPLOAD_FOLDER"], folder, subfolder, filename))

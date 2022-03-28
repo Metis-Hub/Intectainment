@@ -19,13 +19,13 @@
         <hr/>
         {% if not user %}
         <p style="font-size: 200%;">Melde dich an</p>
-        <form method="post" action="{{url_for('interface.login')}}" style="font-size: 110%;">
-            <input type="text" placeholder="Nutzername" name="username" required/>
-            <input type="password" placeholder="Passwort" name="password" required/>
+        <form method="post" action="{{url_for('interface.login')}}" style="font-size: 110%;" class="input-group w-50">
+            <input class="form-control" type="text" placeholder="Nutzername" name="username" required/>
+            <input class="form-control" type="password" placeholder="Passwort" name="password" required/>
             <input type="hidden" name="redirect" value="{{url_for('gui.home')}}"/>
-            <input type="submit" value="Anmelden"/>
+            <input class="btn btn-primary form-control" type="submit" value="Anmelden"/>
         </form>
-        <p style="font-size: 160%;">Oder browse <a href="{{url_for('gui.home')}}" >ohne Account</a></p>
+        <p style="font-size: 160%;">oder browse <a href="{{url_for('gui.home')}}" >ohne Account</a></p>
         {% else %}
          <p style="font-size: 160%;">Genieße <a href="{{url_for('gui.home')}}" style="color:#004743;">Intectainment</a></p>
         {% endif %}

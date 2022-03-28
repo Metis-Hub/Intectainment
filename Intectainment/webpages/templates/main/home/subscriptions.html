@@ -5,19 +5,22 @@
 {% extends "sidebarLayout.html" %}
 {% block title %}Abonnierte Kanäle{% endblock %}
 
-{% block head %}
-  {{ super() }}
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/postStyle.css') }}">
-{% endblock %}
-
 {% block content%}
-<h1>Abonnierte Kanäle</h1>
-<table>
+
+<div class="subscribed-channels">
+    
+    <h1>Abonnierte Kanäle:</h1>
 {% for channel in channels %}
-    <tr>
-        <td>{{ channel.name }}</td>
-        <td><a href="{{ url_for('gui.channelView', channel=channel.name) }}">Besuchen</a></td>
-    </tr>
+    <a href="{{url_for('gui.channelView', channel=channel.name)}}">
+        <div class="blog w-50">
+            <table border="0" width="100%">
+                <tr valign="center">
+                    <td width="50%" align="center"><div class="channel-profile" style="margin-top: 10%;"><div class="channel-profile"><img src="{{ channel.getProfileImagePath() }}"/></div></td>
+                    <td width="50%"><span class="btn btn-outline-info border-0">{{channel.name}}</span></td>
+                </tr>
+            </table>
+        </div>
+    </a>
 {% endfor %}
-</table>
+</div>
 {% endblock %}

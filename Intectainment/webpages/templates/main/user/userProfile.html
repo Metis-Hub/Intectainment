@@ -7,26 +7,21 @@
 {% block title %}Nutzerprofil{%endblock%}
 
 {% block content %}
-
+<div class="profile-search">
 {% if searchUser %}
-<h1>{{searchUser.getName()}}</h1>
+<h1>Nutzer: {{searchUser.getName()}}</h1>
+<div class="picture">
+    {% from "img/profile_images.html" import profile_img with context %}
+    {{ profile_img(searchUser) }}
+</div>
 
-{% from "img/profile_images.html" import profile_img with context %}
-{{ profile_img(searchUser) }}
-
-<table>
-    <tr>
-        <td>Name</td>
-        <td>{{searchUser.getName()}}</td>
-    </tr>
-    <tr>
-        <!-- TODO: Userdescription -->
-    </tr>
-</table>
+<p></p>
+        Name:
+        {{searchUser.getName()}}
 
 {% else %}
 <h1>User not found</h1>
 <p> Dieser Nutzer scheint nicht zu existieren </p>
 {% endif %}
-    
+</div>
 {%endblock%}

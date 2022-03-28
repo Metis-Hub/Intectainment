@@ -7,6 +7,7 @@
 {% block title %}Eigenes Profil{%endblock%}
 
 {% block content %}
+<div class="userconfig-div">
 
 <h1>Eigenes Nutzerprofil</h1>
 <p>
@@ -25,34 +26,47 @@
     <lable>Profilbild: </lable>
     {% from "img/profile_images.html" import profile_img with context %}
     {{ profile_img(user) }}
-    <a href="{{ url_for('upload_form', type='usr', id=user.id) }}" onclick="open_wnd(this.href); return false">ändern</a>
+    <a class="btn btn-outline-primary" href="{{ url_for('upload_form', type='usr', id=user.id) }}" onclick="open_wnd(this.href); return false">Ändern</a>
 </p>
 
-<form method="post" action="{{ this_url }}">
-    <p> <label>Benutzername:</label> <input type="text" value="{{ user.username }}" name="txtname" required> <input type="submit" name="name" value="Namen ändern"> </p>
+<form method="post" action="{{ this_url }}" class="display-flex input-group w-50 justify-content-center">
+        <span class="input-group-text">Benutzername:</span>
+        <input class="form-control" type="text" value="{{ user.username }}" name="txtname" required>
+        <input class="btn btn-primary form-control" type="submit" name="name" value="Namen ändern">
 </form>
+<p></p>
+
+
+<form method="post" action="{{ this_url }}" class="display-flex input-group w-50">
+        <span class="input-group-text">Angezeigter Name:</span>
+        <input class="form-control" type="text" value="{{ user.getName() }}" name="txtdispl_name" required>
+        <input class="btn btn-primary form-control" type="submit" name="displ_name" value="Anzeigenamen ändern">
+</form>
+<p></p>
 
 <form method="post" action="{{ this_url }}">
-    <p> <label>angezeigter Name:</label> <input type="text" value="{{ user.getName() }}" name="txtdispl_name" required> <input type="submit" name="displ_name" value="Anzeigenamen ändern"> </p>
+    <div class="input-group w-50 display-flex">
+    <span class="input-group-text">Altes Passwort:</span>
+    <input class="form-control" type="password" name="old" required>
+    </div>
+    <div class="input-group w-50 display-flex">
+        <span class="input-group-text">Neues Passwort:</span>
+        <input class="form-control" type="password" name="new" required>
+    </div>
+    <div class="input-group w-50 display-flex">
+        <span class="input-group-text">Bestätigung des Neuen</span>
+        <input class="form-control" type="password" name="ver_new" required>
+        <input class="btn btn-primary form-control" type="submit" name="pw" value="Passwort ändern!">
+    </div>
+    <p></p>
 </form>
 
-<form method="post" action="{{ this_url }}">
-    <p>
-        <table border="0">
-            <tr><td width="40%"><label>altes Passwort:</label></td><td><input type="password" name="old" required></td></tr>
-            <tr><td width="40%"><label>neues Passwort:</label></td><td><input type="password" name="new" required></td></tr>
-            <tr><td width="40%"><label>Bestätigung des Neuen:</label></td><td><input type="password" name="ver_new" required></td></tr>
-            <tr><td><input type="submit" name="pw" value="Passwort ändern!"></td></tr>
-        </table>
-    </p>
+<form method="post" action="{{ this_url }}" class="display-flex input-group w-50">
+    <span class="input-group-text">Timeout</span>
+    <input class="form-control" type="number" min="5" max="10080" step="1" name="timeout" value="{{ timeout }}" required>
+    <span class="input-group-text">Minuten</span>
+    <input class="btn btn-primary" type="submit" value="Timeout ändern">
 </form>
 
-<form method="post" action="{{ this_url }}">
-    <p>
-                                                        <!-- this are seven days -->
-        <label>Timeout: </label> <input type="number" min="5" max="10080" step="1" name="timeout" value="{{ timeout }}" required> <label>min</label>
-        <input type="submit" value="Timeout ändern">
-    </p>
-</form>
-
+</div>
 {%endblock%}

@@ -15,8 +15,7 @@
 {{super()}}
 <div class="channelinfo d-flex justify-content-center bg-dark text-white">
     <div class="channelinfo-image">
-        {% from "img/profile_images.html" import profile_img with context %}
-        {{ profile_img(channel) }}
+        <div class="channel-profile"><img src="{{ channel.getProfileImagePath() }}"/></div>
     </div>
     <div class="channelinfo-info">
         <h1>{{channel.name}}</h1>
@@ -52,7 +51,8 @@
     </div>
 </div>
 {%if posts.total > 0 %}
-<div class="postcontainer row row-cols-1 row-cols-md-3">
+<div class="channelview-container">
+    <div class="postcontainer row row-cols-1 row-cols-md-3">
     
     <!-- Latest posts -->
     {% for post in posts.items %}
@@ -69,20 +69,28 @@
     {%endfor%}
     
     
-</div>
-{%if posts.pages > 1 %}
+
+    </div>
+    <div>
+        {%if posts.pages > 1 %}
     <hr/>
+    <ul class="pagination d-flex justify-content-center">
     {% for page in posts.iter_pages() %}
         {%if page%}
-            <a href="?page={{page}}">{{page}}</a>
+            <li class="page-item"><a class="page-link" href="?page={{page}}">{{page}}</a></li>
         {%else%}
-            ...
+            <li class="page-item"><a class="page-link">...</a></li>
         {%endif%}
     {% endfor %}
+</ul>
     {%endif%}
 {%else%}
     <div class="nopostcontainer text-white bg-dark">Kein Post auf diesem Kanal</div>
 {%endif%}
+    </div>
+</div>
+
+
 {%endblock%}
 
 {% block js %}

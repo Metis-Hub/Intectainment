@@ -50,10 +50,6 @@ def discover():
 																										error_out=False)
 	return render_template("main/home/discover.html", user=User.getCurrentUser(), channels=channels)
 
-@gui.route("/home/userchannel")
-def userchannel():
-	return render_template("main/home/userchannel.html")
-
 @gui.route("/home/favorites")
 @login_required
 def favorites():
@@ -75,11 +71,11 @@ def profileSearch():
 	except (ValueError, TypeError):
 		pass
 
-	return render_template("main/user/profiles.html",
-						   user=User.getCurrentUser(),
-						   users=User.query.filter(User.username.like(f"%{request.args.get('username', '')}%")).paginate(per_page=20,
-																											page=page_num,
-																											error_out=False))
+	users = User.query.filter(User.username.like(f"%{request.args.get('username', '')}%")).paginate(per_page=20,
+																										page=page_num,
+																										error_out=False)
+
+	return render_template("main/user/profiles.html", users=users, user=User.getCurrentUser())
 
 ##### Access Points #####
 @ap.route("/user/login", methods=["POST"])

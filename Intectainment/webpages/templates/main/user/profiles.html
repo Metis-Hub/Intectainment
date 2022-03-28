@@ -7,33 +7,34 @@
 {% block title %}Nutzersuche{%endblock%}
 
 {% block content %}
-    <form method="get">
-        <label>Nutzer-Suche</label>
-        <input type="text" placeholder="Nutzername" name="username" value="{{request.args.get('username', '')}}">
-        <input type="submit" value="Suchen"/>
+<div class="profile-search">
+<h1>Nutzer-Suche:</h1>
+
+    <form method="get" class="display-flex input-group w-50">
+
+        <input class="form-control" type="text" placeholder="Nutzername" name="username" value="{{request.args.get('username', '')}}">
+        <input class="btn btn-primary" type="submit" value="Suchen"/>
     </form>
 
-    {%if request.args.get('username')%}
-        {%if users.total <= 0%}
-            <p> Es gibt keinen Nutzer mit einem Namen wie "{{request.args.get('username')}}" </p>
-        {%endif%}
-    {%endif%}
-
+    {%if users.total>0%}
     {%for usr in users.items%}
-        <a href="p/{{usr.username}}"> {{usr.getName()}} </a><br/>
+            <div class="user-search">
+                <a class="btn btn-outline-info border-0 w-25 h-auto" href="p/{{usr.username}}"> {{usr.getName()}} </a><br/>
+            </div>
     {%endfor%}
-
     {%if users.pages > 1 %}
     <hr/>
-    <ul class="pagination">
+    <ul class="pagination d-flex justify-content-center">
         {% for page in users.iter_pages() %}
         {%if page%}
-        <li><a class="page-link" href="?page={{page}}">{{page}}</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{page}}">{{page}}</a></li>
         {%else%}
-        ...
+        <li class="page-item"><a class="page-link">...</a></li>
         {%endif%}
         {% endfor %}
     </ul>
     {%endif%}
+    {% endif %}
 
+</div>
 {%endblock%}

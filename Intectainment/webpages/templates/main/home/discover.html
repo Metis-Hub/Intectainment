@@ -19,25 +19,28 @@
 </div>
 
 <div class="content-container">
-    <div class="channels text-white">Channels<p></p>
+    <div class="channels text-white"><h2>Channels</h2><p></p>
         {%if channels.total>0%}
             {%for channel in channels.items%}
             <a href="{{url_for('gui.channelView', channel=channel.name)}}">
                 <div class="blog w-50">
-                        {% from "img/profile_images.html" import profile_img with context %}
-                        {{ profile_img(channel) }}
-                        <span class="btn btn-outline-info border-0">{{channel.name}}</span>
+                    <table border="0" width="100%">
+                        <tr valign="center">
+                            <td width="50%" align="center"><div class="channel-profile" style="margin-top: 10%;"><img src="{{ channel.getProfileImagePath() }}"/></div></td>
+                            <td width="50%"><div class="btn btn-outline-info border-0">{{channel.name}}</div></td>
+                        </tr>
+                    </table>
                 </div>
             </a>
             {%endfor%}
             {%if channels.pages > 1 %}
                 <hr/>
-                <ul class="pagination">
+                <ul class="pagination d-flex justify-content-center">
                 {% for page in channels.iter_pages() %}
                     {%if page%}
-                        <li><a class="page-link" href="?page={{page}}">{{page}}</a></li>
+                        <li class="page-item"><a class="page-link" href="?page={{page}}">{{page}}</a></li>
                     {%else%}
-                        ...
+                        <li class="page-item"><a class="page-link">...</a></li>
                     {%endif%}
                 {% endfor %}
             </ul>

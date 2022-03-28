@@ -2,40 +2,42 @@
 {% block title %}Nutzereinstellung{%endblock%}
 
 {% block content %}
-    <p>Hallihallo, das ist die Benutzerkonfigurationsseite</p>
-    <a href="{{url_for('gui.admin.main')}}">zurück</a>
+    <h1><p>Benutzerkonfigurationsseite</p></h1>
+    <a class="btn btn-outline-primary" href="{{url_for('gui.admin.main')}}">Zurück</a>
 
     {# Erstellen von Nutzern #}
     <hr/>
-    <label>Benutzer erstellen</label>
+    
     {%if createUser == "success"%}
-        <p>Nutzer {{userName}} erfolgreich erstellt</p>
+        <p>Nutzer {{userName}} erfolgreich erstellt.</p>
     {%elif createUser == "fail"%}
-        <p>Nutzer konnte nicht erstellt werden ({{error}})</p>
+        <p>Nutzer konnte nicht erstellt werden. ({{error}})</p>
     {%endif%}
-    <form method="POST">
-        <input type="text" name="username" placeholder="Username" required/>
-        <input type="password" name="password" placeholder="Passwort" required/>
+    <form method="POST" class="input-group">
+        <span class="input-group-text">Benutzer erstellen:</span>
+        <input class="form-control" type="text" name="username" placeholder="Username" required/>
+        <input class="form-control" type="password" name="password" placeholder="Passwort" required/>
         <!--input type="email" name="email" placeholder="E-Mail" required/-->
-        <input type="submit" name="createUser" value="Erstellen"/>
+        <input class="btn btn-primary form-control" type="submit" name="createUser" value="Erstellen"/>
     </form>
 
-    <hr/>
-    <label> Benutzer anzeigen </label>
-    <form method="post">
-        <input type="text" name="queryname" placeholder="Namens Abfrage"/>
-        <input type="submit" name="queryUser" value="Suchen"/>
+        <hr/>
+    <label><h2> Benutzer anzeigen </h2></label>
+    <form method="post" class="input-group">
+        <input class="form-control" type="text" name="queryname" placeholder="Namens Abfrage"/>
+        <input class="btn btn-primary form-control" type="submit" name="queryUser" value="Suchen"/>
     </form>
     {%if users!=None%}
         {%if users|length > 0%}
         <table>
-            <tr><th>Name</th></tr>
+            <tr><th>Name:</th></tr>
         {%for user in users%}
-            <tr><td><a href="{{url_for('gui.admin.edit_user', usrid=user.id)}}">{{user.getName()}}</a></td></tr>
+            <tr><td><a class="btn btn-outline-primary" href="{{url_for('gui.admin.edit_user', usrid=user.id)}}">{{user.getName()}}</a></td></tr>
         {%endfor%}
         </table>
         {%else%}
             <p>Keine Nutzer gefunden</p>
         {%endif%}
     {%endif%}
+    
 {%endblock%}
