@@ -192,7 +192,7 @@ html {
 
 /* style specally for markdown renders */
 
-.postcontainer {    
+.postcontainer {
     scrollbar-width: none;
     -ms-overflow-style: none;
     padding-left: 1vw;
@@ -552,4 +552,3 @@ a {
     width: 100vw;
     overflow: hidden;
 }
-
