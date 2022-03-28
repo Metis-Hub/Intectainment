@@ -93,6 +93,7 @@ Die Darstellung umfasst jedoch nur die Grundlagen des Backend-Systems und besitz
 
 Die verschiedenen User, die die lokale Instanz von Intectainment nutzen, müssen von dem Administrator des Netzwerk in einem eigenen Interface erstellt werden. 
 Es gibt keine Möglichkeit, nicht vom Administrator genehmigte Accounts zu erstellen. Auch wenn durch diese Regelung die erste Einrichtung des Systems etwas anspruchsvoller macht, kann so verhindert werden, dass Unbefugte Zugriff auf das Netzwerk erlangen.
+Dem Nutzer ist ein Berechtigungsleven in Form einer Zahl zugeordnet. 0 - Guest, 10 - User, 100 - Moderator, 255 - Admin. Dieser Parameter entscheidet über die Zugriffsrechte des Nutzers und kann in der Nutzereinstellung verändert werden.
 
 #### Erstellen von Kanälen
 
@@ -104,7 +105,7 @@ Wie bereits erwähnt, werden alle Kanäle nicht von einzelnen Usern, sondern von
 ![Kanalansicht.PNG](https://raw.githubusercontent.com/Metis-Hub/Intectainment/main/docs/img/Kanalansicht.PNG)
 *Abb. 3: Beispielansicht eines Kanals inklusive der neuesten Posts*
 
-Wählt man einen Kanal aus, wird eine Vorschau der aktuellsten Posts angezeigt, welche die ersten Zeilen des Textes umfasst. Über die Schaltfläche "Zum Post" lässt sich der Text in voller Länge aufrufen.
+Wählt man einen Kanal aus, wird eine Vorschau der aktuellsten Posts angezeigt, welche die ersten Zeilen des Textes umfasst. Über die Schaltfläche "Zum Post" lässt sich der Text in voller Länge aufrufen. Dort kann man diesen auch als Favoriten markieren und ggf. bearbeiten.
 Als angemeldeter Nutzer kann man Kanäle abonnieren bzw. deabonnieren, aber auch Posts erstellen und auf dem entsprechenden Kanal veröffentlichen. Ist man der Ersteller des Kanals, kann man auch die Einstellungen (z. B. Beschreibung, Kategorie und Kanalbild) anpassen.
 
 #### Erstellen und Bearbeiten von Posts
@@ -116,7 +117,6 @@ Nach der Auswahl des Kanals, auf  welchem der entsprechende Post erscheinen soll
 Für das Hochladen von Bildern gibt es eine eigene Schaltfläche; mit dieser kann man Bilder auf dem genutzten Server hochladen und über einen eigens dafür generierten Link im Text einbinden. Alternativ ist auch das Einbinden ein Bildern aus externen Quellen möglich.
 Bei der Veröffentlichung wird der Posts als Markdown-Datei auf dem Server gespeichert. In der Datenbank wird zudem eine Verlinkung zu der Datei eingetragen, welche zusätzliche Informationen wie das Datum der Erstellung, den Kanal und das Datum der letzten Bearbeitung speichert. 
 Auch nach der Veröffentlichung kann der User, welcher den Post erstellt hat, diesen in beliebigem Maße bearbeiten bzw. löschen.
-
 
 
 #### Redaktion und Moderation
