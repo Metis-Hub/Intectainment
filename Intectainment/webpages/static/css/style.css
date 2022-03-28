@@ -179,14 +179,13 @@ html {
 
 /* style specally for markdown renders */
 
-.postcontainer {
-    overflow-y: auto;
-    height: 78vh;
+.postcontainer {    
     scrollbar-width: none;
     -ms-overflow-style: none;
     padding-left: 1vw;
     padding-right: 1vw;
     padding-top: 2vh;
+    position: relative;
 }
 
 .nopostcontainer {
@@ -510,5 +509,17 @@ a {
 
 .admin-div {
     display:grid;
+}
+
+.channelview-container {
+    overflow-y: auto;
+    height: 78vh;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.channelview-container::-webkit-scrollbar {
+    display: none;
 }
 

@@ -52,7 +52,8 @@
     </div>
 </div>
 {%if posts.total > 0 %}
-<div class="postcontainer row row-cols-1 row-cols-md-3">
+<div class="channelview-container">
+    <div class="postcontainer row row-cols-1 row-cols-md-3">
     
     <!-- Latest posts -->
     {% for post in posts.items %}
@@ -68,21 +69,30 @@
         </div>
     {%endfor%}
     
+   
     
-</div>
-{%if posts.pages > 1 %}
+    
+    </div>
+    <div>
+        {%if posts.pages > 1 %}
     <hr/>
+    <ul class="pagination d-flex justify-content-center">
     {% for page in posts.iter_pages() %}
         {%if page%}
-            <a href="?page={{page}}">{{page}}</a>
+            <li class="page-item"><a class="page-link" href="?page={{page}}">{{page}}</a></li>
         {%else%}
             ...
         {%endif%}
     {% endfor %}
+</ul>
     {%endif%}
 {%else%}
     <div class="nopostcontainer text-white bg-dark">Kein Post auf diesem Kanal</div>
 {%endif%}
+    </div>
+</div>
+
+
 {%endblock%}
 
 {% block js %}
