@@ -523,3 +523,9 @@ a {
     display: none;
 }
 
+.userconfig-div {
+    height: 100vh;
+    overflow-y: auto;
+    margin-left: 1vw;
+}
+
