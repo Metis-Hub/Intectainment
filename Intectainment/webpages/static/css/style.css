@@ -554,5 +554,6 @@ a {
 }
 
 .tablinks {
-    color: #BFEFFF !important;
+    color: white !important;
+    text-decoration: none !important;
 }
