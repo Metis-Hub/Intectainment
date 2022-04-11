@@ -64,7 +64,7 @@ def userconfig():
 
         if post.get("createUser"):
             # all fields are filled
-            if post.get("username") and post.get("email") and post.get("password"):
+            if post.get("username") and post.get("password"):
 
                 #if username is not taken
                 if User.query.filter_by(username=post.get("username")).first() is None:
