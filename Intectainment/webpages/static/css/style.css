@@ -304,7 +304,7 @@ html {
     bottom: 5vh;
     left: 0vw;
     text-align: left;
-    color: blue;
+    color: #BFEFFF !important;
     text-indent: 2px;
 }
 
@@ -357,7 +357,7 @@ html {
 }
 
 a {
-	text-decoration: none;
+    color: #BFEFFF;
 }
 
 .container {
@@ -551,4 +551,8 @@ a {
     height: 100vh;
     width: 100vw;
     overflow: hidden;
+}
+
+.tablinks {
+    color: #BFEFFF !important;
 }
