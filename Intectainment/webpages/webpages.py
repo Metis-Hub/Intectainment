@@ -1,4 +1,5 @@
-import os
+import os, feedparser
+from turtle import title
 from flask import render_template, send_from_directory, request, redirect, url_for, Blueprint, flash
 from sqlalchemy import desc
 
@@ -20,6 +21,39 @@ def before_request():
 @gui.route("/")
 def start():
 	return render_template("main/start.html", user=User.getCurrentUser())
+
+@gui.route("/rss")
+def rss():
+	feed = feedparser.parse('https://rss.dw.com/xml/rss-de-all')
+	entry = feed['entries'][1]
+	title = ""
+	author = ""
+	link = ""
+	summary = ""
+	description = ""
+	pubDate = "Veröffentlichung: "+entry.published+"  \n"
+
+	if ('title' in entry):
+		title = "# "+entry['title']+"\n"
+	if ('author' in entry):
+		author = "_von "+entry['author']+"_  \n"
+	if ('link' in entry):
+		link = "[Link zum Artikel]("+entry['link']+")\n  \n"
+	if ('description' in entry):
+		description = entry['description']
+	elif ('summary' in entry):
+		summary = entry['summary']
+
+	entryMd = title+pubDate+author+link+description+summary
+	# adding post
+	post = Post(channel_id=1, owner=User.query.filter_by(id=1).first())
+	db.session.add(post)
+	db.session.commit()
+
+	post.createFile()
+	post.setContent(entryMd)
+
+	return "done"
 
 @gui.route("/home")
 def home():
