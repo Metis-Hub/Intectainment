@@ -20,9 +20,9 @@
     <form method="POST">
         <!-- post area -->
         <div class="forms">
-          <textarea class="form-control bg-dark text-white p-3 post-ta" name="content" id="conent" oninput="run()">{{post.getContent()}}</textarea>
+          <textarea class="form-control p-3 post-ta" name="content" id="conent" oninput="run()">{{post.getContent()}}</textarea>
           <!-- vorschau des posts -->
-          <div id="rendert" class="preview bg-dark text-white form-control"></div>
+          <div id="rendert" class="preview form-control"></div>
         </div>
         <div>
           <input class="btn btn-primary edit-post-button" type="submit" name="update" value="Updaten"></input>

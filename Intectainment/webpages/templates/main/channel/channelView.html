@@ -13,7 +13,7 @@
 
 {% block content %}
 {{super()}}
-<div class="channelinfo d-flex justify-content-center bg-dark text-white">
+<div class="channelinfo d-flex justify-content-center">
     <div class="channelinfo-image">
         <div class="channel-profile"><img src="{{ channel.getProfileImagePath() }}"/></div>
     </div>
@@ -38,7 +38,7 @@
             </div>
             <div>
             {% if canModify %}
-            <a class="btn btn-outline-secondary text-white" href="{{url_for('gui.channelSettings', channel=channel.name)}}"><i class="bi bi-gear"></i> Einstellungen</a>
+            <a class="btn btn-outline-secondary" href="{{url_for('gui.channelSettings', channel=channel.name)}}"><i class="bi bi-gear"></i> Einstellungen</a>
             {% endif %}
             </div>
             <div>
@@ -57,7 +57,7 @@
     <!-- Latest posts -->
     {% for post in posts.items %}
     <div class="col">
-            <div class="card bg-dark text-white post-margin border-light" id="touch">
+            <div class="card border-secondary post-margin" id="touch">
                 <div class="card-text" >
                 <div class="postContent">
 {% for line in post.getContentLines()[:5]%}{{line}}{%endfor%}
@@ -85,7 +85,7 @@
 </ul>
     {%endif%}
 {%else%}
-    <div class="nopostcontainer text-white bg-dark">Kein Post auf diesem Kanal</div>
+    <div class="nopostcontainer">Kein Post auf diesem Kanal</div>
 {%endif%}
     </div>
 </div>

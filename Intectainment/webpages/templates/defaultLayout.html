@@ -23,8 +23,9 @@
 		<script type="text/JavaScript">function open_wnd(url){var w=window.open(url,"","width=1000,height=800,status=yes,scrollbars=yes,resizable=yes");w.focus();}</script>
         {%endblock%}
 	</head>
+	
 	<body>
-		<div class="container bg-dark text-white">
+		<div class="container">
 			{%block body%}
 			<div class="main-content" id="content">{%block content%}{%endblock%}</div>
 			{%endblock%}
@@ -32,4 +33,5 @@
 		{%block js%}
 		{%endblock%}
 	</body>
+	
 </html>

@@ -18,7 +18,7 @@
 {%if favs.total > 0%}
     {%for post in favs.items%}
     <div class="col">
-        <div class="card bg-dark text-white post-margin border-light border-1" id="touch">
+        <div class="card post-margin border-secondary" id="touch">
             <div class="card-text">
             <div class="postContent">
 {% for line in post.getContentLines()[:5]%}{{line}}{%endfor%}

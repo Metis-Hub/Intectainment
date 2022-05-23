@@ -1,7 +1,7 @@
 @import url('//cdn.jsdelivr.net/npm/bootstrap-icons@1.6.1/font/bootstrap-icons.css');
 
 html {
-    background-color: #212529;
+
 }
 
 .profile {
@@ -35,7 +35,8 @@ html {
 .sidebar-content {
 	height: 95vh;
 	width: 86vw;
-
+    background: white;
+    color: black;
 	position: fixed;
 	right: 0px;
 	top: 0px;
@@ -56,6 +57,7 @@ html {
 	height: 4vh;
 	vertical-align: middle;
 	text-align: center;
+    background: white;
 }
 #touch {
 	touch-action: none;
@@ -64,7 +66,7 @@ html {
 }
 .tabcontent {
 	display: none;
-	  height: 95vh;
+	height: 95vh;
 	width: 86vw;
 	position: fixed;
 	right: 0px;
@@ -101,6 +103,7 @@ html {
 	display: flex;
 	justify-content: center;
 	height: 95vh;
+    background: white;
 }
 .search {
 	max-width: 150  px;
@@ -138,7 +141,7 @@ html {
 	margin-left: 20px;
 }
 .content {
-	background:red
+	background: white
 }
 .side-navbar {
   width: 180px;
@@ -147,7 +150,7 @@ html {
   margin-left: -300px;
   background: rgb(0,224,219);
   background: rgb(0,105,102);
-  background: linear-gradient(110deg, rgba(0,105,102,1) 0%, rgba(0,31,30,1) 100%); 
+  background: linear-gradient(110deg, rgba(0,105,102,1) 0%, rgba(0,31,30,1) 100%);
   cursor: pointer;
 }
 .nav-link:active,
@@ -367,12 +370,13 @@ a {
     top: 0px;
     left: 0px;
     overflow: hidden;
-
+    background: white;
 }
 
 .main-content {
     overflow: hidden;
     text-align: center;
+    background: white;
 }
 
 .align-correct {
@@ -556,4 +560,15 @@ a {
 .tablinks {
     color: white !important;
     text-decoration: none !important;
+}
+
+.white {
+    background: white !important; 
+    color: red !important;
+    font-size: 200%; 
+}
+
+.card {
+    color: black; 
+    background: white;
 }
