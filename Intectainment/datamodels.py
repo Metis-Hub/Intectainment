@@ -35,7 +35,6 @@ class User(db.Model):
 	password	  	= db.Column(db.String(80), nullable=False)
 	permission	  	= db.Column(db.Integer, default=PERMISSION.USER)
 	icon_extension	= db.Column(db.String(4))
-	timeout 		= db.Column(db.Integer, default=60 * 30)
 	img_xPos		= db.Column(db.Integer, nullable=False, default=0)
 	img_yPos		= db.Column(db.Integer, nullable=False, default=0)
 	img_zoom		= db.Column(db.Integer, nullable=False, default=100000)
@@ -259,7 +258,7 @@ class Category(db.Model):
 def checkUsers():
 	for key in User.activeUsers.keys():
 		user = User.activeUsers[key]
-		if time.time() - user.lastActive >= user.timeout and User.activeUsers[key].timeout != -1:
+		if time.time() - user.lastActive >= 60*20:
 			User.activeUsers.pop(key)
 		
 	time.sleep(60 * 1)

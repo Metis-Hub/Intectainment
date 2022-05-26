@@ -13,7 +13,7 @@ args = parser.parse_args()
 app = Flask(__name__, template_folder="./webpages/templates", static_folder="./webpages/static")
 
 app.config["UPLOAD_FOLDER"] = os.path.join(os.path.dirname(__file__), app.static_folder, "img")
-app.config["SECRET_KEY"] = os.environ.get("INTECTAINMENT_SECRET", fallback="replaceWhenDeployToDoThings")
+app.config["SECRET_KEY"] = os.environ.get("INTECTAINMENT_SECRET", "replaceWhenDeployToDoThings")
 
 
 ## init database

@@ -2,4 +2,3 @@ Flask==2.0.2
 Flask_SQLAlchemy==2.5.1
 bcrypt==3.2.0
 PyMySQL==1.0.2
-uWSGI==2.0.17.1

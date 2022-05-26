@@ -1,0 +1,22 @@
+# syntax=docker/dockerfile:1
+
+FROM python:3.8-slim-buster
+
+RUN apt-get clean \
+    && apt-get -y update
+RUN apt-get -y install nginx \
+    && apt-get -y install python3-dev \
+    && apt-get -y install build-essential
+
+WORKDIR /Intectainment
+
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+
+COPY . .
+RUN mv nginx.conf /etc/nginx
+
+EXPOSE 80
+
+RUN chmod +x ./start.sh
+CMD ["./start.sh"]
