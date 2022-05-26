@@ -1,6 +1,6 @@
-import os.path, datetime, pathlib
+import os.path, datetime
 
-from Intectainment.app import db, app
+from Intectainment import db, app
 from flask import session, url_for
 import bcrypt, threading, time, string, random
 

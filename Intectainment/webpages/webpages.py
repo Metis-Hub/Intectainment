@@ -2,7 +2,7 @@ import os
 from flask import render_template, send_from_directory, request, redirect, url_for, Blueprint, flash
 from sqlalchemy import desc
 
-from Intectainment.app import app, db
+from Intectainment import app, db
 from Intectainment.datamodels import User, Post, Channel
 from Intectainment.util import login_required
 from Intectainment.images import upload_image, display_image

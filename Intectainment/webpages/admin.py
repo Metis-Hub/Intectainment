@@ -1,5 +1,5 @@
 import Intectainment.images
-from Intectainment.app import db
+from Intectainment import db
 from Intectainment.webpages.webpages import gui
 from Intectainment.datamodels import User, Channel, Post, Category
 from Intectainment.util import admin_required
