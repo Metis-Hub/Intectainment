@@ -8,23 +8,23 @@
 <h2>Bitte wählen Sie die hochzuladene Bilddatei aus.</h2>
 {% endif %}
 <p>
-{% with messages = get_flashed_messages() %}
+	{% with messages = get_flashed_messages() %}
 	{% if messages %}
 	<ul>
-	{% for message in messages %}
+		{% for message in messages %}
 		<li>{{ message }}</li>
-	{% endfor %}
+		{% endfor %}
 	</ul>
 	{% endif %}
-{% endwith %}
+	{% endwith %}
 </p>
 <form method="post" action="{{ this_url }}" enctype="multipart/form-data">
-    <dl>
+	<dl>
 		<p>
 			<input class="form-label form-control" type="file" name="file" autocomplete="off" required>
 		</p>
-    </dl>
-    <p>
+	</dl>
+	<p>
 		<input class="btn btn-outline-primary" type="submit" value="Hochladen">
 	</p>
 </form>
@@ -49,7 +49,7 @@
 	</div>
 	<div class="input-group">
 		<label class="input-group-text">Post/HTML (mit angepasster Größe): </label>
-	    <input class="form-control" type="text" value="" size="100%" id="img_tag">
+		<input class="form-control" type="text" value="" size="100%" id="img_tag">
 	</div>
 	<div class="input-group">
 		<label class="input-group-text">Größe: </label>

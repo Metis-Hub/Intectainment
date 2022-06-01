@@ -5,6 +5,7 @@
 
 {% extends "sidebarLayout.html" %}
 {% block title %}Kanalansicht{%endblock%}
+{% from "img/profile_images.html" import profile_img with context %}
 
 {% block head %}
   {{super()}}
@@ -15,7 +16,7 @@
 {{super()}}
 <div class="channelinfo d-flex justify-content-center">
     <div class="channelinfo-image">
-        <div class="channel-profile"><img src="{{ channel.getProfileImagePath() }}"/></div>
+        <div class="channel-profile">{{ profile_img(channel) }}</div>
     </div>
     <div class="channelinfo-info">
         <h1>{{channel.name}}</h1>

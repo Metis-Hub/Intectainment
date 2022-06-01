@@ -4,6 +4,7 @@
 
 {% extends "sidebarLayout.html" %}
 {% block title %}Abonnierte Kanäle{% endblock %}
+{% from "img/profile_images.html" import profile_img with context %}
 
 {% block content%}
 
@@ -15,7 +16,7 @@
         <div class="blog w-50">
             <table border="0" width="100%">
                 <tr valign="center">
-                    <td width="50%" align="center"><div class="channel-profile" style="margin-top: 10%;"><div class="channel-profile"><img src="{{ channel.getProfileImagePath() }}"/></div></td>
+                    <td width="50%" align="center"><div class="channel-profile" style="margin-top: 10%;"><div class="channel-profile">{{ profile_img(channel) }}</div></td>
                     <td width="50%"><span class="btn btn-outline-info border-0">{{channel.name}}</span></td>
                 </tr>
             </table>
