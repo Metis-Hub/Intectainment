@@ -63,49 +63,53 @@ def upload_image(name="", folder="c", subfolder="", type=""):
 			target.img_xPos = int(float(request.form["range_x"]) * 1000)
 			target.img_yPos = int(float(request.form["range_y"]) * 1000)
 			target.img_zoom = int(float(request.form["range_size"]) * 1000)
-			target.reload()
 
-			flash("Einstellungen wurden übernommen!")
-			flash("Hinweis: Du kannst das Pop-up schließen und nachdem du deine Browserseite neu geladen hast, kannst du auch das neue Profilbild sehen.")
-			return redirect(request.url)
-	file=request.files["file"]
-	if file.filename == "":
-		flash("Es wurde kein gültiges Bild zum hochladen ausgewählt!")
-		return redirect(request.url)
-	if file and allowed_file(file.filename):
-		filename = secure_filename(file.filename)
-		if name != "": filename = name + "." + get_extension(file.filename)
 
-		profile=None
-		if folder == "c":
-			channel = Channel.query.filter_by(id=int(name)).first()
-			softImageDelete(channel)
-			channel.icon_extension=get_extension(file.filename)
-			db.session.add(channel)
-			db.session.commit()
-			profile = "c"
-		elif folder == "usr":
-			user = User.query.filter_by(id=int(name)).first()
-			softImageDelete(user)
-			user.icon_extension = get_extension(file.filename)
-			user.reload()
-			profile="usr"
+			if folder == "usr": target.reload()
+			else: db.session.add(target); db.session.commit()
 
-		create_subfolder(os.path.join(app.config["UPLOAD_FOLDER"], folder, subfolder))
-		file.save(os.path.join(app.config["UPLOAD_FOLDER"], folder, subfolder, filename))
+            flash("Einstellungen wurden übernommen!")
+            flash("Hinweis: Du kannst das Pop-up schließen und nachdem du deine Browserseite neu geladen hast, kannst du auch das neue Profilbild sehen.")
+            return redirect(request.url)
+    file=request.files["file"]
+    if file.filename == "":
+        flash("Es wurde kein gültiges Bild zum hochladen ausgewählt!")
+        return redirect(request.url)
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        if name != "": filename = name + "." + get_extension(file.filename)
 
-		path=None
-		if type:
-			path = url_for("display_image_posts", type=type, post_id=subfolder, filename=filename)
-		else:
-			path = url_for("display_image_", type=folder, filename=filename)
+        profile=None
+        if folder == "c":
+            channel = Channel.query.filter_by(id=int(name)).first()
+            softImageDelete(channel)
+            channel.icon_extension = get_extension(file.filename)
+            db.session.add(channel)
+            db.session.commit()
+            profile = "c"
+        elif folder == "usr":
+            user = User.query.filter_by(id=int(name)).first()
+            softImageDelete(user)
+            user.icon_extension = get_extension(file.filename)
+            user.reload()
+            profile="usr"
 
-		return render_template("img/upload.html", path=path, type=type, profile=profile)
+        create_subfolder(os.path.join(app.config["UPLOAD_FOLDER"], folder, subfolder))
+        file.save(os.path.join(app.config["UPLOAD_FOLDER"], folder, subfolder, filename))
 
-	else:
-		flash("Unzulässige Dateiendung!")
-		flash("Hinweis: Zulässige Dateiendungen sind: *.png, *.jpg, *.jpeg, *.gif, *.bmp, *.svg, *.ico")
-		return redirect(request.url)
+        path=None
+        if type:
+            path = url_for("display_image_posts", type=type, post_id=subfolder, filename=filename)
+        else:
+            path = url_for("display_image_", type=folder, filename=filename)
+
+        return render_template("img/upload.html", path=path, type=type, profile=profile)
+
+    else:
+        flash("Unzulässige Dateiendung!")
+        flash("Hinweis: Zulässige Dateiendungen sind: *.png, *.jpg, *.jpeg, *.gif, *.bmp, *.svg, *.ico")
+        return redirect(request.url)
+
 
 def display_image(folder, filename):
 	return redirect(url_for("static", filename="img/" + folder + "/" + filename), code=301)
