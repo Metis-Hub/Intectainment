@@ -47,27 +47,25 @@ def move_images(userid, postid):
         shutil.move(source_path, destination_path)
 
 def upload_image(name="", folder="c", subfolder="", type=""):
-    if "file" not in request.files:
-        if "img_config" not in request.form:
-            flash("Es wurde kein Bild zum hochladen ausgewählt!")
-            return redirect(request.url)
-        else:
-            if folder == "c":
-                target=Channel.query.filter_by(id=int(name)).first()
-                target.img_xPos = int(float(request.form["range_x"]) * 1000)
-                target.img_yPos = int(float(request.form["range_y"]) * 1000)
-                target.img_zoom = int(float(request.form["range_size"]) * 1000)
-                db.session.add(target)
-                db.session.commit()
-            elif folder == "usr":
-                target=User.getCurrentUser()
-                target.img_xPos = int(float(request.form["range_x"]) * 1000)
-                target.img_yPos = int(float(request.form["range_y"]) * 1000)
-                target.img_zoom = int(float(request.form["range_size"]) * 1000)
-                target.reload()
-            else:
-                flash("Unbekannter Fehler")
-                redirect(request.url)
+	if "file" not in request.files:
+		if "img_config" not in request.form:
+			flash("Es wurde kein Bild zum hochladen ausgewählt!")
+			return redirect(request.url)
+		else:
+			if folder == "c":
+				target=Channel.query.filter_by(id=int(name)).first()				
+			elif folder == "usr":
+				target=User.getCurrentUser()
+			else:
+				flash("Unbekannter Fehler")
+				redirect(request.url)
+
+			target.img_xPos = int(float(request.form["range_x"]) * 1000)
+			target.img_yPos = int(float(request.form["range_y"]) * 1000)
+			target.img_zoom = int(float(request.form["range_size"]) * 1000)
+
+			if folder == "usr": target.reload()
+			else: db.session.add(target); db.session.commit()
 
             flash("Einstellungen wurden übernommen!")
             flash("Hinweis: Du kannst das Pop-up schließen und nachdem du deine Browserseite neu geladen hast, kannst du auch das neue Profilbild sehen.")

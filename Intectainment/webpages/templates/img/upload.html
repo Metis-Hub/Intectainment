@@ -29,6 +29,14 @@
 	</p>
 </form>
 
+<center>
+	{% if path %}
+	<div {% if profile %}class="profile"{% endif %}>
+		<canvas id="imgcan" width="200px" height="200px"></canvas>
+	</div>
+	{% endif %}
+</center>
+
 {% if type %}
 <p>
 	<div class="input-group">
@@ -87,62 +95,67 @@
 </script>
 {% endif %}
 
-{% if profile and profile=="usr" %}
+{% if profile %}
 <form method="post" action="{{ this_url }}">
 	<p>
-		<p>
-			<label>Zoomen: </label>
-			<br />
-			<input type="range" value="100" min="10.000" max="200.000" step="0.001" id="range_size" name="range_size">
-		</p>
-		<p>
-			<label>horizontal Verschieben: </label>
-			<br />
-			<input type="range" value="0" min="-125.000" max="125.000" step="0.001" id="range_x" name="range_x">
-		</p>
-		<p>
-			<label>vertikal Verschieben: </label>
-			<br />
-			<input type="range" value="0" min="-125.000" max="125.000" step="0.001" id="range_y" name="range_y">
-		</p>
-		<input type="submit" value="Übernehmen" name="img_config">
+	<p>
+		<label>Zoomen: </label>
+		<br />
+		<input type="range" min="0.5" max="100" value="5.5" step="0.001" id="range_size" name="range_size">
+	</p>
+	<p>
+		<label>horizontal Verschieben: </label>
+		<br />
+		<input type="range" min="-100" max="100" value="0" step="0.001" id="range_x" name="range_x">
+	</p>
+	<p>
+		<label>vertikal Verschieben: </label>
+		<br />
+		<input type="range" min="-100" max="100" value="0" step="0.001" id="range_y" name="range_y">
+	</p>
+		<input class="btn btn-outline-primary" type="submit" value="Übernehmen" name="img_config">
 	</p>
 </form>
 
 <script type="text/JavaScript">
-	var image = document.getElementById("image");
-	var zoom = document.getElementById("range_size");
-	var x = document.getElementById("range_x");
-	var y = document.getElementById("range_y");
+	var zoominpt = document.getElementById("range_size");
+	var xinpt = document.getElementById("range_x");
+	var yinpt = document.getElementById("range_y");
+
+    const canvas = document.getElementById('imgcan');
+	const ctx = canvas.getContext('2d');
+	var img = new Image();
+	img.src = "{{ path }}";
+
+	function max(a, b) { return a < b ? b : a; }
+
+	function draw() {
+		//console.log("xinpt.value: " + xinpt.value.toString() + "; yinpt.value: " + yinpt.value.toString() + "; zoominpt.value: " + zoominpt.value.toString() + "; src: " + img.src.toString());
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, xinpt.value, yinpt.value, zoominpt.value * img.width, zoominpt.value * img.height, 0, 0, img.width, img.height);
+    }
 
 	window.onload = function() {
 		image = document.getElementById("image");
-		zoom = document.getElementById("range_size");
-		x = document.getElementById("range_x");
-		y = document.getElementById("range_y");
-		image.style.width = zoom.value + "%";
-		image.style.marginLeft = "0%";
-		image.style.marginTop = "0%";
+        zoominpt = document.getElementById("range_size");
+        xinpt = document.getElementById("range_x");
+        yinpt = document.getElementById("range_y");
 	};
 
-	zoom.oninput = function() {
-		image.style.width = this.value + "%";
-    }
-
-    x.oninput = function() {
-		image.style.marginLeft = this.value + "%";
-    }
-
-    y.oninput = function() {
-		image.style.marginTop = this.value + "%";
+	img.onload = function () {
+        zoominpt.setAttribute("oninput", "draw()");
+        xinpt.setAttribute("max", max(img.width, img.height).toString());
+        xinpt.setAttribute("oninput", "draw()");
+        xinpt.setAttribute("min", "-" + img.width.toString());
+        xinpt.setAttribute("max", img.width.toString());
+        yinpt.setAttribute("oninput", "draw()");
+		yinpt.setAttribute("min", "-" + img.height.toString());
+		yinpt.setAttribute("max", img.height.toString());
+        console.log("imgwidth: " + img.width.toString() + "; imgheight: " + img.height.toString());
+		draw();
     }
 
 </script>
 {% endif %}
 
-{% if path %}
-<div{% if profile and profile=="usr" %} class="profile"{% elif profile and profile=="c" %} class="channel-profile"{% endif %}>
-	<img src="{{ path }}" id="image" />
-</div>
-{% endif %}
 {% endblock %}
