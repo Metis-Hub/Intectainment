@@ -5,6 +5,8 @@
 {% extends "sidebarLayout.html" %}
 {% block title %}Entdecken{%endblock%}
 {% block content%}
+{% from "img/profile_images.html" import profile_img with context %}
+
 <div class="discover-head d-flex justify-content-evenly">
         <form method="get" class="input-group mb-3 w-50">
             <input type="text" class="form-control search w-auto text-white" name="channel" placeholder="Kanalname">
@@ -26,7 +28,7 @@
                 <div class="blog w-50">
                     <table border="0" width="100%">
                         <tr valign="center">
-                            <td width="50%" align="center"><div class="channel-profile" style="margin-top: 10%;"><img src="{{ channel.getProfileImagePath() }}"/></div></td>
+                            <td width="50%" align="center"><div class="channel-profile" style="margin-top: 10%;">{{ profile_img(channel) }}</div></td>
                             <td width="50%"><div class="btn btn-outline-info border-0">{{channel.name}}</div></td>
                         </tr>
                     </table>
