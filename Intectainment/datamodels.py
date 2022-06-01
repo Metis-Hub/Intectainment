@@ -38,7 +38,7 @@ class User(db.Model):
 	timeout 		= db.Column(db.Integer, default=60 * 30)
 	img_xPos		= db.Column(db.Integer, nullable=False, default=0)
 	img_yPos		= db.Column(db.Integer, nullable=False, default=0)
-	img_zoom		= db.Column(db.Integer, nullable=False, default=100000)
+	img_zoom		= db.Column(db.Integer, nullable=False, default=5500)
 
 	subscriptions 	= db.relationship("Channel", secondary=Subscription, backref="subscibers")
 	favoritePosts 	= db.relationship("Post", secondary=Favorites, backref="favUsers")
@@ -141,6 +141,9 @@ class Channel(db.Model):
 	description		= db.Column(db.String(80), nullable=True)
 	owner_id		= db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 	icon_extension	= db.Column(db.String(4))
+	img_xPos		= db.Column(db.Integer, nullable=False, default=0)
+	img_yPos		= db.Column(db.Integer, nullable=False, default=0)
+	img_zoom		= db.Column(db.Integer, nullable=False, default=5500)
 
 	categories		= db.relationship("Category", secondary=ChannelCategory, backref="channels")
 	posts			= db.relationship("Post", backref="channel")
