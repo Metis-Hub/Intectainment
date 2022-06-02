@@ -9,7 +9,7 @@ volumes:
   openldap_data:
     driver: local
   postgres_data:
-      driver: local
+    driver: local
 
 services:
   intectainment:
@@ -22,61 +22,59 @@ services:
     ports:
       - "80:80"
     environment:
-      - FLASK_APP=Intectainment
       - INTECTAINMENT_DB_URI=sqlite:///content/database.db
       - INTECTAINMENT_SECRET=Hallo
-      - INTECTAINMENT_LDAP=
-
-
-
 
     volumes:
       - content:/Intectainment/Intectainment/content
     networks:
       - intecwork
+    depends_on:
+    - openldap
   
-#  openldap:
-#    image: bitnami/openldap:latest
-#    ports:
-#      - '1389:1389'
-#      - '1636:1636'
-#    environment:
-#      - LDAP_ADMIN_USERNAME=admin
-#      - LDAP_ADMIN_PASSWORD=adminpassword
-#      - LDAP_USERS=user01,user02
-#      - LDAP_PASSWORDS=password1,password2
-#      - LDAP_ROOT=dc=intecsoft,dc=de
-#    volumes:
-#      - 'openldap_data:/bitnami/openldap'
-#    networks:
-#      - intecwork
-#  
-#  postgres:
-#      image: postgres
-#      volumes:
-#        - postgres_data:/var/lib/postgresql/data
-#      environment:
-#        POSTGRES_DB: keycloak
-#        POSTGRES_USER: keycloak
-#        POSTGRES_PASSWORD: password
-#      networks:
-#      - intecwork
-#  
-#  keycloak:
-#    image: quay.io/keycloak/keycloak:legacy
-#    environment:
-#      DB_VENDOR: POSTGRES
-#      DB_ADDR: postgres
-#      DB_DATABASE: keycloak
-#      DB_USER: keycloak
-#      DB_SCHEMA: public
-#      DB_PASSWORD: password
-#      KEYCLOAK_USER: admin
-#      KEYCLOAK_PASSWORD: Pa55w0rd
-#    ports:
-#      - 8080:8080
-#    depends_on:
-#      - postgres
-#    networks:
-#    - intecwork
-#
+  openldap:
+    image: bitnami/openldap:latest
+    ports:
+      - '1389:1389'
+      - '1636:1636'
+    environment:
+      - LDAP_ADMIN_USERNAME=admin
+      - LDAP_ADMIN_PASSWORD=adminpassword
+      - LDAP_USERS=user01,user02
+      - LDAP_USER_DC=users
+      - LDAP_PASSWORDS=password1,password2
+      - LDAP_ROOT=dc=intecsoft,dc=de
+    volumes:
+      - 'openldap_data:/bitnami/openldap'
+    networks:
+      - intecwork
+  
+  postgres:
+      image: postgres
+      volumes:
+        - postgres_data:/var/lib/postgresql/data
+      environment:
+        POSTGRES_DB: keycloak
+        POSTGRES_USER: keycloak
+        POSTGRES_PASSWORD: password
+      networks:
+      - intecwork
+  
+  keycloak:
+    image: jboss/keycloak
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: postgres
+      DB_DATABASE: keycloak
+      DB_USER: keycloak
+      DB_SCHEMA: public
+      DB_PASSWORD: password
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: Pa55w0rd
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgres
+      - openldap
+    networks:
+    - intecwork

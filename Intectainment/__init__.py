@@ -1,23 +1,18 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import OperationalError
-import argparse, os, sys
+import dotenv, os, sys
 
-parser = argparse.ArgumentParser(description="Intectainment is a infotainment-system")
-parser.add_argument('--db_uri', type=str, default=os.environ.get("INTECTAINMENT_DB_URI"),
-                    help='URI to database')
-parser.add_argument('--secret', type=str, default=os.environ.get("INTECTAINMENT_SECRET"),
-                    help='Secret do encode flask-sessions')
-args = parser.parse_args()
+dotenv.load_dotenv()
 
 app = Flask(__name__, template_folder="./webpages/templates", static_folder="./webpages/static")
 
 app.config["UPLOAD_FOLDER"] = os.path.join(os.path.dirname(__file__), app.static_folder, "img")
-app.config["SECRET_KEY"] = os.environ.get("INTECTAINMENT_SECRET", "replaceWhenDeployToDoThings")
+app.config["SECRET_KEY"] = os.getenv("INTECTAINMENT_SECRET")
 
 
 ## init database
-app.config["SQLALCHEMY_DATABASE_URI"] = args.db_uri
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("INTECTAINMENT_DB_URI")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 

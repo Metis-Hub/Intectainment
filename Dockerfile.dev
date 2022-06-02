@@ -14,5 +14,4 @@ COPY . .
 
 EXPOSE 80
 
-RUN chmod +x ./start.sh
 CMD [ "python3", "run.py" ]
