@@ -1,5 +1,5 @@
-import os, urllib.request, shutil
-from Intectainment.app import app, db
+import os, shutil
+from Intectainment import app, db
 from Intectainment.datamodels import Channel, User
 from flask import Flask, flash, request, redirect, url_for, render_template
 from werkzeug.utils import secure_filename
