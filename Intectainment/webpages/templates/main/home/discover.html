@@ -19,17 +19,18 @@
 </div>
 
 <div class="content-container">
-    <div class="channels text-white"><h2>Channels</h2><p></p>
+    <div class="channels"><h2>Channels</h2><p></p>
         {%if channels.total>0%}
             {%for channel in channels.items%}
             <a href="{{url_for('gui.channelView', channel=channel.name)}}">
-                <div class="blog w-50">
-                    <table border="0" width="100%">
-                        <tr valign="center">
-                            <td width="50%" align="center"><div class="channel-profile" style="margin-top: 10%;"><img src="{{ channel.getProfileImagePath() }}"/></div></td>
-                            <td width="50%"><div class="btn btn-outline-info border-0">{{channel.name}}</div></td>
-                        </tr>
-                    </table>
+                <div class="blog">
+                    
+                            <div class="channel-profile"><img src="{{ channel.getProfileImagePath() }}"/></div>
+
+                            
+                            <a href="{{url_for('gui.channelView', channel=channel.name)}}" class="channel-discover btn btn-outline-info border-0">{{channel.name}}</a>
+                    
+                    
                 </div>
             </a>
             {%endfor%}

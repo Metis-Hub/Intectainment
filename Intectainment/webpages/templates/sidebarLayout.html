@@ -1,64 +1,61 @@
 {% extends "defaultLayout.html" %}
 
 {% macro nav_link(endpoint, text) %}
-<a href="{{url_for(endpoint)}}">
-    <li class="nav-link tablinks">
-        <span class="mx-2">{{text}}</span>
+<a href="{{url_for(endpoint)}}" class="no-decoration">
+    <li class="nav-link">
+        <span class="mx-2 text-white">{{text}}</span>
     </li>
 </a>
 {% endmacro %}
 
 {%block body%}
     <div class="sidebar">
-        <div class="side-navbar active-nav d-flex justify-content-between flex-wrap flex-column width">
-                <ul class="nav flex-column w-100">
-                    <a href="{{url_for('gui.home')}}" class="nav-link h3 my-2 text-white">
-                        Navigation
-                    </a>
-
-                    {%if user%}
-                    {{ nav_link('gui.dashboard', 'Übersicht')}}
-                    {%endif%}
-
-                    {{ nav_link('gui.discover', 'Entdecken')}}
-
-                    {%if user%}
-                    {{ nav_link('gui.handle_subscriptions', 'Abonnierte Kanäle')}}
-
-                    {{ nav_link('gui.favorites', 'Favoriten')}}
-                    {%endif%}
-
-                    {{ nav_link('gui.profileSearch', 'Benutzer')}}
-
-                    {%if user%}
-                    {{ nav_link('gui.userconfig', 'Einstellungen')}}
-                    {%endif%}
-
-                    {%if user and user.permission >= user.PERMISSION.ADMIN%}
-                    {{ nav_link('gui.admin.main', 'Admin')}}
-                    {%endif%}
-
-                    {%if user%}
-                    <form method="post" action="{{url_for('interface.logout')}}" class="align-bottom">
-                            <input class="nav-link styled-submit" type="submit" value="Logout"/>
-                    </form>
-                    {%else%}
-                    <!--
-                    <form method="post" action="{{url_for('interface.login')}}">
-                        <label>Login</label>
-                        <input type="text" placeholder="Nutzername" name="username" required/>
-                        <input type="password" placeholder="Passwort" name="password" required/>
-                        <input type="submit"/>
-                    </form>
-                    -->
-                    <a href="{{url_for('gui.start')}}" class="bottom-sidebar">
-                        <li class="nav-link tablinks">
-                            <span class="mx-2">Login</span>
-                        </li>
-                    </a>
-                    {%endif%}
-                </ul>
+        <div class="top-sidebar active-nav d-flex justify-content-between flex-wrap flex-column nav-link">
+            <a href="{{url_for('gui.home')}}" class="h3 my-2 text-white no-decoration">
+                <span class="align-middle">Navigation</span>
+            </a>
         </div>
+        <div class="active-nav d-flex justify-content-between flex-wrap flex-column width">
+            <ul class="nav flex-column w-100">
+                    
+                {%if user%}
+                {{ nav_link('gui.dashboard', 'Übersicht')}}
+                {%endif%}
+
+                {{ nav_link('gui.discover', 'Entdecken')}}
+
+                {%if user%}
+                {{ nav_link('gui.handle_subscriptions', 'Abonnierte Kanäle')}}
+
+                {{ nav_link('gui.favorites', 'Favoriten')}}
+                {%endif%}
+
+                {{ nav_link('gui.profileSearch', 'Benutzer')}}
+
+                {%if user%}
+                {{ nav_link('gui.userconfig', 'Einstellungen')}}
+                {%endif%}
+
+                {%if user and user.permission >= user.PERMISSION.ADMIN%}
+                {{ nav_link('gui.admin.main', 'Admin')}}
+                {%endif%}
+            </ul>
+        </div>
+        {%if user%}
+            <div class="bottom-sidebar-user">
+                <form method="post" action="{{url_for('interface.logout')}}">
+                    <input class="nav-link styled-submit text-white" type="submit" value="Logout"/>
+                </form>
+            </div>
+        {%else%}
+            <div class="bottom-sidebar-nouser">
+                <a href="{{url_for('gui.start')}}" class="no-decoration">
+                    <li class="nav-link">
+                        <span class="mx-2 text-white">Login</span>
+                    </li>
+                </a>
+            </div>
+        {%endif%}
     </div>
 
     <div id="content" class="sidebar-content">{% block content %}{% endblock %}</div>
