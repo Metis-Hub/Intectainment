@@ -8,7 +8,6 @@ volumes:
   content:
   ldap_db:
   ldap_config:
-  postgres_data:
 
 services:
   intectainment:
@@ -41,37 +40,6 @@ services:
       - ldap_config:/etc/ldap/slapd.d
     networks:
       - intecwork
-  
-  postgres:
-      image: postgres
-      volumes:
-        - postgres_data:/var/lib/postgresql/data
-      environment:
-        POSTGRES_DB: keycloak
-        POSTGRES_USER: keycloak
-        POSTGRES_PASSWORD: password
-      networks:
-      - intecwork
-  
-  keycloak:
-    image: jboss/keycloak
-    environment:
-      DB_VENDOR: POSTGRES
-      DB_ADDR: postgres
-      DB_DATABASE: keycloak
-      DB_USER: keycloak
-      DB_SCHEMA: public
-      DB_PASSWORD: password
-      KEYCLOAK_USER: admin
-      KEYCLOAK_PASSWORD: Pa55w0rd
-    ports:
-      - 8080:8080
-    depends_on:
-      - postgres
-      - openldap
-    networks:
-    - intecwork
-  
   ldapadmin:
     image: osixia/phpldapadmin
 
