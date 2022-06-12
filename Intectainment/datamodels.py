@@ -1,5 +1,5 @@
 from Intectainment import db, app
-from Intectainment.ldapAuthentication import User, UserImage
+from Intectainment.ldapAuthentication import User
 
 import os.path, datetime
 from flask import session, url_for
@@ -25,7 +25,7 @@ Favorites = db.Table(
 )
 
 
-class User(db.Model):
+class OldUser:
     subscriptions = db.relationship(
         "Channel", secondary=Subscription, backref="subscibers"
     )
@@ -39,27 +39,6 @@ class User(db.Model):
 
     def getSubscriptions(self):
         return self.subscriptions
-
-
-class UserImage(db.Model):
-    def __init__(self, **kwargs):
-        super(UserImage, self).__init__(**kwargs)
-
-    userid = db.Column(db.String(80), primary_key=True)
-
-    icon_extension = db.Column(db.String(4))
-    img_xPos = db.Column(db.Integer, nullable=False, default=0)
-    img_yPos = db.Column(db.Integer, nullable=False, default=0)
-    img_zoom = db.Column(db.Integer, nullable=False, default=5500)
-
-    def getProfileImagePath(self):
-        if self.icon_extension:
-            return url_for(
-                "display_image_",
-                type="usr",
-                filename=str(self.id) + "." + self.icon_extension,
-            )
-        return url_for("static", filename="default_usrimg.png")
 
 
 class Channel(db.Model):
