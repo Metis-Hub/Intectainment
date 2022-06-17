@@ -20,6 +20,11 @@ Favorites = db.Table('favoritePost',
 	db.Column('post_id', db.Integer, db.ForeignKey('post.id'))
 )
 
+RssFeeds = db.Table('feed',
+    db.Column('channel_id', db.Integer, db.ForeignKey('channel.id')),
+	db.Column('rss_id', db.Integer, db.ForeignKey('RSS.id'))
+)
+
 class User(db.Model):
 	class PERMISSION:
 		GUEST = 0
@@ -251,6 +256,16 @@ class Post(db.Model):
 class Category(db.Model):
 	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 	name = db.Column( db.String(80), unique=True, nullable=False )
+
+	def __repr__(self):
+		return self.name
+
+class RSS(db.Model):
+	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+	rss = db.Column( db.String(64), unique=True, nullable=False)
+	
+	channel_id = db.Column(db.Integer, db.ForeignKey('channel.id'), nullable=False)
+	guid = db.Column(db.Integer, nullable=True)
 
 	def __repr__(self):
 		return self.name

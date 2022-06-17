@@ -4,7 +4,7 @@ from flask import render_template, send_from_directory, request, redirect, url_f
 from sqlalchemy import desc
 
 from Intectainment.app import app, db
-from Intectainment.datamodels import User, Post, Channel
+from Intectainment.datamodels import User, Post, Channel, RSS
 from Intectainment.util import login_required
 from Intectainment.images import upload_image, display_image
 
@@ -24,34 +24,55 @@ def start():
 
 @gui.route("/rss")
 def rss():
-	feed = feedparser.parse('https://rss.dw.com/xml/rss-de-all')
-	entry = feed['entries'][1]
-	title = ""
-	author = ""
-	link = ""
-	summary = ""
-	description = ""
-	pubDate = "Veröffentlichung: "+entry.published+"  \n"
+	feeds = RSS.query.all()
 
-	if ('title' in entry):
-		title = "# "+entry['title']+"\n"
-	if ('author' in entry):
-		author = "_von "+entry['author']+"_  \n"
-	if ('link' in entry):
-		link = "[Link zum Artikel]("+entry['link']+")\n  \n"
-	if ('description' in entry):
-		description = entry['description']
-	elif ('summary' in entry):
-		summary = entry['summary']
+	for feed in feeds:
+		url = feed.rss
+		parsedFeed = feedparser.parse(url)		
+		
+		readFeed = 0
+		for entry in parsedFeed['entries']:
+			print(entry['title'])
+			if (str(entry['guid']) == str(feed.guid)):
+				break
+			readFeed+=1
 
-	entryMd = title+pubDate+author+link+description+summary
-	# adding post
-	post = Post(channel_id=1, owner=User.query.filter_by(id=1).first())
-	db.session.add(post)
-	db.session.commit()
+		print(readFeed)
 
-	post.createFile()
-	post.setContent(entryMd)
+		feed.guid = parsedFeed['entries'][0]['guid']
+		for i in range(readFeed, 0, -1):
+			# das für alle abonnierten channels
+			channels = feed.channel_id
+
+			for channel in channels:
+				entry = parsedFeed['entries'][i]
+
+				title = ""
+				author = ""
+				link = ""
+				summary = ""
+				description = ""
+				pubDate = "Veröffentlichung: "+entry.published+"  \n"
+
+				if ('title' in entry):
+					title = "# "+entry['title']+"\n"
+				if ('author' in entry):
+					author = "_von "+entry['author']+"_  \n"
+				if ('link' in entry):
+					link = "[Link zum Artikel]("+entry['link']+")\n  \n"
+				if ('description' in entry):
+					description = entry['description']
+				elif ('summary' in entry):
+					summary = entry['summary']
+
+				entryMd = title+pubDate+author+link+description+summary
+				# adding post
+				post = Post(channel_id=channel, owner=User.query.filter_by(id=1).first())
+				db.session.add(post)
+				db.session.commit()
+
+				post.createFile()
+				post.setContent(entryMd)	
 
 	return "done"
 
