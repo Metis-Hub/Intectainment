@@ -1,10 +1,12 @@
 from Intectainment import db
 import Intectainment.datamodels as dbm
 
+from flask import session
+
 from ldap3 import Connection, Server, SUBTREE
 from ldap3.core.exceptions import LDAPBindError
 
-import random, os, threading, time, ast
+import random, os, threading, time, ast, string
 
 # loads a dict of (groupName -> permission) mappings and sorts them descendingly
 roles = os.getenv("INTECTAINMENT_LDAP_PERMISSIONS")
@@ -19,6 +21,22 @@ else:
     roles = {}
 
 
+# class OldUser:
+#    subscriptions = db.relationship(
+#        "Channel", secondary=Subscription, backref="subscibers"
+#    )
+#    favoritePosts = db.relationship("Post", secondary=Favorites, backref="favUsers")
+#
+#    channels = db.relationship("Channel", backref="owner")
+#    posts = db.relationship("Post", backref="owner")
+#
+#    def getFavoritePosts(self):
+#        return self.favoritePosts
+#
+#    def getSubscriptions(self):
+#        return self.subscriptions
+
+
 class User:
     activeUsers: dict = dict()
     TIMEOUT_TIME: int = 60 * 30
@@ -29,13 +47,13 @@ class User:
         MODERATOR = 100
         ADMIN = 255
 
-    def __init__(username: str, permission: int = None):
+    def __init__(self, username: str, permission: int = None):
         self.username = username
 
         if permission:
             self.permission = permission
         else:
-            self.permission = loadPermission(username)
+            self.permission = User.loadPermission(username)
 
         self.lastActive = time.time()
 
@@ -43,12 +61,12 @@ class User:
         return f"<User {self.username}>"
 
     @staticmethod
-    def login(username: str, password: str):
+    def logIn(username: str, password: str):
         if User.isLoggedIn():
             return True
         try:
             conn = Connection(
-                os.getenv("INTECTAINMENT_LDAP_HOST"),
+                os.getenv("INTECTAINMENT_LDAP_SERVER"),
                 getUserDN(username),
                 password,
                 auto_bind=True,
@@ -58,6 +76,7 @@ class User:
 
         user = User(username)
 
+        key: str = None
         while not key or key in User.activeUsers:
             key = "".join(
                 random.choices(
@@ -73,9 +92,9 @@ class User:
 
         return True
 
-    @staticmethod()
+    @staticmethod
     def loadPermission(uid: str):
-        return User.PERMISSIONS.ADMIN
+        return User.PERMISSION.ADMIN
 
     @staticmethod
     def getCurrentUser():

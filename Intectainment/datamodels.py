@@ -4,41 +4,20 @@ from Intectainment.ldapAuthentication import User
 import os.path, datetime
 from flask import session, url_for
 
-ChannelCategory = db.Table(
-    "channelCategories",
-    db.Column(
-        "category_id", db.Integer, db.ForeignKey("category.id"), primary_key=True
-    ),
-    db.Column("channel_id", db.Integer, db.ForeignKey("channel.id"), primary_key=True),
-)
 
-Subscription = db.Table(
-    "subscribedChannels",
-    db.Column("channel_id", db.Integer, db.ForeignKey("channel.id")),
-    db.Column("user_id", db.Integer, db.ForeignKey("user.id")),
-)
-
-Favorites = db.Table(
-    "favoritePost",
-    db.Column("user_id", db.Integer, db.ForeignKey("user.id")),
-    db.Column("post_id", db.Integer, db.ForeignKey("post.id")),
-)
+class ChannelCategory(db.Model):
+    category_id = db.Column(db.Integer, db.ForeignKey("category.id"), primary_key=True)
+    channel_id = db.Column(db.Integer, db.ForeignKey("channel.id"), primary_key=True)
 
 
-class OldUser:
-    subscriptions = db.relationship(
-        "Channel", secondary=Subscription, backref="subscibers"
-    )
-    favoritePosts = db.relationship("Post", secondary=Favorites, backref="favUsers")
+class Subscription(db.Model):
+    user_id = db.Column(db.String(80), primary_key=True)
+    channel_id = db.Column(db.Integer, db.ForeignKey("channel.id"), primary_key=True)
 
-    channels = db.relationship("Channel", backref="owner")
-    posts = db.relationship("Post", backref="owner")
 
-    def getFavoritePosts(self):
-        return self.favoritePosts
-
-    def getSubscriptions(self):
-        return self.subscriptions
+class Favorites(db.Model):
+    user_id = db.Column(db.String(80), primary_key=True)
+    post_id = db.Column(db.Integer, db.ForeignKey("post.id"), primary_key=True)
 
 
 class Channel(db.Model):
@@ -46,7 +25,7 @@ class Channel(db.Model):
 
     name = db.Column(db.String(80), unique=True, nullable=False)
     description = db.Column(db.String(80), nullable=True)
-    owner_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    owner = db.Column(db.String(80), nullable=False)
     icon_extension = db.Column(db.String(4))
     img_xPos = db.Column(db.Integer, nullable=False, default=0)
     img_yPos = db.Column(db.Integer, nullable=False, default=0)
@@ -81,7 +60,7 @@ class Post(db.Model):
     modDate = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
 
     channel_id = db.Column(db.Integer, db.ForeignKey("channel.id"), nullable=False)
-    owner_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    owner = db.Column(db.String(80), nullable=False)
 
     def getContent(self):
         """returns the content of post"""
