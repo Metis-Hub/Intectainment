@@ -94,6 +94,7 @@ class User:
 
     @staticmethod
     def loadPermission(uid: str):
+        # TODO
         return User.PERMISSION.ADMIN
 
     @staticmethod
@@ -126,6 +127,22 @@ class User:
             if session["User"] in User.activeUsers:
                 return User.activeUsers[session["User"]]
         return None
+
+    def getSubscriptions(self):
+        """
+        returns a query object to retrieve the subscriptions of the user
+        """
+        return dbm.Subscription.query.filter(
+            dbm.Subscription.user == self.username
+        ).join(dbm.Channel, dbm.Subscription.channel_id == dbm.Channel.id)
+
+    def getFavoritePosts(self):
+        """
+        returns a query object to retrieve the favorite posts of the user
+        """
+        return dbm.Favorites.query.filter(dbm.Favorites.user == self.username).join(
+            dbm.Post, dbm.Favorites.post_id == dbm.Post.id
+        )
 
 
 def getUserDN(user: str):

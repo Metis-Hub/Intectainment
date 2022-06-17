@@ -5,18 +5,22 @@ import os.path, datetime
 from flask import session, url_for
 
 
-class ChannelCategory(db.Model):
-    category_id = db.Column(db.Integer, db.ForeignKey("category.id"), primary_key=True)
-    channel_id = db.Column(db.Integer, db.ForeignKey("channel.id"), primary_key=True)
+ChannelCategory = db.Table(
+    "ChannelCategory",
+    db.Column(
+        "category_id", db.Integer, db.ForeignKey("category.id"), primary_key=True
+    ),
+    db.Column("channel_id", db.Integer, db.ForeignKey("channel.id"), primary_key=True),
+)
 
 
 class Subscription(db.Model):
-    user_id = db.Column(db.String(80), primary_key=True)
+    user = db.Column(db.String(80), primary_key=True)
     channel_id = db.Column(db.Integer, db.ForeignKey("channel.id"), primary_key=True)
 
 
 class Favorites(db.Model):
-    user_id = db.Column(db.String(80), primary_key=True)
+    user = db.Column(db.String(80), primary_key=True)
     post_id = db.Column(db.Integer, db.ForeignKey("post.id"), primary_key=True)
 
 

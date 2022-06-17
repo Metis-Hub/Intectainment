@@ -49,9 +49,7 @@ def dashboard():
             Post.channel_id.in_(
                 [
                     channel.id
-                    for channel in User.query.filter_by(id=User.getCurrentUser().id)
-                    .first()
-                    .subscriptions
+                    for channel in User.getCurrentUser().getSubscriptions().all()
                 ]
             )
         )
@@ -85,9 +83,7 @@ def favorites():
     return render_template(
         "main/home/favboard.html",
         user=User.getCurrentUser(),
-        favs=User.query.filter_by(id=User.getCurrentUser().id)
-        .first()
-        .getFavoritePosts(),
+        favs=User.getCurrentUser().getFavoritePosts().all(),
     )
 
 
