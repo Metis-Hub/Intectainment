@@ -12,14 +12,10 @@
     
     <h1>Abonnierte Kanäle:</h1>
 {% for channel in channels %}
-    <a href="{{url_for('gui.channelView', channel=channel.name)}}">
-        <div class="blog w-50">
-            <table border="0" width="100%">
-                <tr valign="center">
-                    <td width="50%" align="center"><div class="channel-profile" style="margin-top: 10%;"><div class="channel-profile">{{ profile_img(channel) }}</div></td>
-                    <td width="50%"><span class="btn btn-outline-info border-0">{{channel.name}}</span></td>
-                </tr>
-            </table>
+    <a class="no-decoration" href="{{url_for('gui.channelView', channel=channel.name)}}">
+        <div class="blog">
+            <img src="{{ profile_img(channel) }}"/>
+            <span class="channel-discover btn btn-outline-light text-dark custom-button">{{channel.name}}</span>
         </div>
     </a>
 {% endfor %}

@@ -14,10 +14,10 @@
 
 {% block content %}
 {{super()}}
-<div class="channelinfo d-flex justify-content-center">
-    <div class="channelinfo-image">
-        <div class="channel-profile">{{ profile_img(channel) }}</div>
-    </div>
+
+<div class="channelinfo justify-content-center">
+    <img src="{{ profile_img(channel) }}"/>
+    
     <div class="channelinfo-info">
         <h1>{{channel.name}}</h1>
 
@@ -58,12 +58,12 @@
     <!-- Latest posts -->
     {% for post in posts.items %}
     <div class="col">
-            <div class="card border-secondary post-margin" id="touch">
+            <div class="card card-border post-margin" id="touch">
                 <div class="card-text" >
                 <div class="postContent">
 {% for line in post.getContentLines()[:5]%}{{line}}{%endfor%}
                 </div>
-                <a href="{{url_for('gui.postView', postid=post.id)}}" class="btn btn-outline-primary w-100">Zum Post</a>
+                <a href="{{url_for('gui.postView', postid=post.id)}}" class="btn btn-outline-light text-dark custom-button w-100">Zum Post</a>
             </div>
             </div>
         </div>
