@@ -5,6 +5,7 @@
 
 {% extends "sidebarLayout.html" %}
 {% block title %}Kanalansicht{%endblock%}
+{% from "img/profile_images.html" import profile_img with context %}
 
 {% block head %}
   {{super()}}
@@ -13,9 +14,9 @@
 
 {% block content %}
 {{super()}}
+
 <div class="channelinfo justify-content-center">
-    
-        <img src="{{ channel.getProfileImagePath() }}"/>
+    <img src="{{ profile_img(channel) }}"/>
     
     <div class="channelinfo-info">
         <h1>{{channel.name}}</h1>

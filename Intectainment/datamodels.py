@@ -1,6 +1,6 @@
-import os.path, datetime, pathlib
+import os.path, datetime
 
-from Intectainment.app import db, app
+from Intectainment import db, app
 from flask import session, url_for
 import bcrypt, threading, time, string, random
 
@@ -35,10 +35,9 @@ class User(db.Model):
 	password	  	= db.Column(db.String(80), nullable=False)
 	permission	  	= db.Column(db.Integer, default=PERMISSION.USER)
 	icon_extension	= db.Column(db.String(4))
-	timeout 		= db.Column(db.Integer, default=60 * 30)
 	img_xPos		= db.Column(db.Integer, nullable=False, default=0)
 	img_yPos		= db.Column(db.Integer, nullable=False, default=0)
-	img_zoom		= db.Column(db.Integer, nullable=False, default=100000)
+	img_zoom		= db.Column(db.Integer, nullable=False, default=5500)
 
 	subscriptions 	= db.relationship("Channel", secondary=Subscription, backref="subscibers")
 	favoritePosts 	= db.relationship("Post", secondary=Favorites, backref="favUsers")
@@ -141,6 +140,9 @@ class Channel(db.Model):
 	description		= db.Column(db.String(80), nullable=True)
 	owner_id		= db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 	icon_extension	= db.Column(db.String(4))
+	img_xPos		= db.Column(db.Integer, nullable=False, default=0)
+	img_yPos		= db.Column(db.Integer, nullable=False, default=0)
+	img_zoom		= db.Column(db.Integer, nullable=False, default=5500)
 
 	categories		= db.relationship("Category", secondary=ChannelCategory, backref="channels")
 	posts			= db.relationship("Post", backref="channel")
@@ -259,7 +261,7 @@ class Category(db.Model):
 def checkUsers():
 	for key in User.activeUsers.keys():
 		user = User.activeUsers[key]
-		if time.time() - user.lastActive >= user.timeout and User.activeUsers[key].timeout != -1:
+		if time.time() - user.lastActive >= 60*20:
 			User.activeUsers.pop(key)
 		
 	time.sleep(60 * 1)

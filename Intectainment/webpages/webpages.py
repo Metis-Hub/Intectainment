@@ -2,7 +2,7 @@ import os
 from flask import render_template, send_from_directory, request, redirect, url_for, Blueprint, flash
 from sqlalchemy import desc
 
-from Intectainment.app import app, db
+from Intectainment import app, db
 from Intectainment.datamodels import User, Post, Channel
 from Intectainment.util import login_required
 from Intectainment.images import upload_image, display_image
@@ -163,12 +163,8 @@ def userconfig():
 				user.displayname = None
 			user.reload()
 			flash("Anzuzeigender Name wurde erfolgreich geändert!")
-		elif "timeout" in request.form:
-			user.timeout = int(request.form["timeout"]) * 60
-			user.reload()
-			flash("Timeout geändert!")
 
-	return render_template("main/user/userconfig.html", user=user, timeout=int(user.timeout / 60))
+	return render_template("main/user/userconfig.html", user=user)
 
 #Import other routing files
 from Intectainment.webpages import admin, channelsCategories
