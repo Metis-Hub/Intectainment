@@ -105,33 +105,6 @@ class Post(db.Model):
         user.permission >= User.PERMISSION.MODERATOR or user.id == self.owner.id
     )
 
-    def addFav(self, user=None, commit=True):
-
-        if not user:
-            if currentUser := User.getCurrentUser():
-                user = User.query.filter_by(id=currentUser.id).first()
-            else:
-                return False
-        if not self in user.favoritePosts:
-            user.favoritePosts.append(self)
-            if commit:
-                db.session.commit()
-            return True
-        return False
-
-    def remFav(self, user=None, commit=True):
-        if not user:
-            if currentUser := User.getCurrentUser():
-                user = User.query.filter_by(id=currentUser.id).first()
-            else:
-                return False
-        if self in user.favoritePosts:
-            user.favoritePosts.remove(self)
-            if commit:
-                db.session.commit()
-            return True
-        return False
-
     @staticmethod
     def new(channel_id, content, user=None):
         """To create a basic Post"""
@@ -139,7 +112,7 @@ class Post(db.Model):
         if not user:
             user = User.getCurrentUser()
 
-        post = Post(channel_id=channel_id, owner=user)
+        post = Post(channel_id=channel_id, owner=user.username)
         """post has to be commited befor file can be created since the id isn't yet available"""
         db.session.add(post)
         db.session.commit()

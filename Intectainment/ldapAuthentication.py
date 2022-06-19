@@ -136,6 +136,18 @@ class User:
             dbm.Subscription.user == self.username
         ).join(dbm.Channel, dbm.Subscription.channel_id == dbm.Channel.id)
 
+    def addSubscriptions(self, channel_id):
+        if not dbm.Subscription.query.filter_by(
+            user=self.username, channel_id=channel_id
+        ).first():
+            db.session.add(dbm.Subscription(user=self.username, channel_id=channel_id))
+
+    def removeSubscriptions(self, channel_id):
+        if subscription := dbm.Subscription.query.filter_by(
+            user=self.username, channel_id=channel_id
+        ).first():
+            db.session.delete(subscription)
+
     def getFavoritePosts(self):
         """
         returns a query object to retrieve the favorite posts of the user
@@ -143,6 +155,18 @@ class User:
         return dbm.Favorites.query.filter(dbm.Favorites.user == self.username).join(
             dbm.Post, dbm.Favorites.post_id == dbm.Post.id
         )
+
+    def addFavorite(self, post_id):
+        if not dbm.Favorites.query.filter_by(
+            user=self.username, post_id=post_id
+        ).first():
+            db.session.add(dbm.Favorites(user=self.username, post_id=post_id))
+
+    def removeFavorite(self, post_id):
+        if fav := dbm.Favorites.query.filter_by(
+            user=self.username, post_id=post_id
+        ).first():
+            db.session.delete(fav)
 
 
 def getUserDN(user: str):

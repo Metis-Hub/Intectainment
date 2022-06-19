@@ -120,7 +120,7 @@ def channelSettings(channel):
 def postView(postid):
     post = Post.query.filter_by(id=postid).first_or_404()
 
-    if request.method == "POST":
+    if request.method == "POST" and User.isLoggedIn():
         if "delete" in request.form:
             channel = ""
             if post.canModify(User.getCurrentUser()):
@@ -129,9 +129,11 @@ def postView(postid):
                 db.session.commit()
             return redirect(url_for("gui.channelView", channel=channel))
         elif "fav" in request.form:
-            post.addFav()
+            User.getCurrentUser().addFavorite(post.id)
+            db.session.commit()
         elif "defav" in request.form:
-            post.remFav()
+            User.getCurrentUser().removeFavorite(post.id)
+            db.session.commit()
 
     timeMessage = f"Erstellt am {post.creationDate.strftime('%d.%m.%Y %H:%M')}"
     if post.creationDate != post.modDate:
@@ -168,7 +170,7 @@ def createPost(channel):
     return render_template(
         "main/post/newPost.html",
         server=app.config["SERVER_NAME"],
-        usrid=User.getCurrentUser().id,
+        usrid=User.getCurrentUser().username,
     )
 
 
