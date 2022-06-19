@@ -7,7 +7,7 @@
 {% block content%}
 <div class="discover-head d-flex justify-content-evenly">
         <form method="get" class="input-group mb-3 w-50">
-            <input type="text" class="form-control search w-auto text-white" name="channel" placeholder="Kanalname">
+            <input type="text" class="form-control search w-auto" name="channel" placeholder="Kanalname">
             <button type="submit" class="btn btn-primary search-button">Suchen</button>
         </form>
 
@@ -19,21 +19,18 @@
 </div>
 
 <div class="content-container">
-    <div class="channels"><h2>Channels</h2><p></p>
+    <div class="channels">
+        <!-- <h2>Channels</h2><p></p> -->
         {%if channels.total>0%}
             {%for channel in channels.items%}
-            <a href="{{url_for('gui.channelView', channel=channel.name)}}">
-                <div class="blog">
-                    
-                            <div class="channel-profile"><img src="{{ channel.getProfileImagePath() }}"/></div>
-
-                            
-                            <a href="{{url_for('gui.channelView', channel=channel.name)}}" class="channel-discover btn btn-outline-info border-0">{{channel.name}}</a>
-                    
-                    
+            <div class="blog">
+                <img src="{{ channel.getProfileImagePath() }}" class="channelimage-disover" />
+                <div class="channelbutton-discover">
+                <a href="{{url_for('gui.channelView', channel=channel.name)}}" class="channel-discover btn btn-outline-light text-dark custom-button">{{channel.name}}</a>
                 </div>
-            </a>
+            </div>
             {%endfor%}
+
             {%if channels.pages > 1 %}
                 <hr/>
                 <ul class="pagination d-flex justify-content-center">

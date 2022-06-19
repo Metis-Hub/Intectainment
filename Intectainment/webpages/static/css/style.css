@@ -105,20 +105,17 @@
 	border-top: 1px solid darkgray;
 }
 .channels {
-	height: 85vh;
+	height: 88vh;
 	width: 100%;
-	border-top: 1px solid darkgray;
 	overflow: auto;
 	text-align: center;
-	align-items: center;
-	display: block;
-    background: yellow;
+    background: rgba(230, 230, 230, 0.2);
+    border: 1px solid rgba(160, 160, 160, 0.7);
 }
 .channels a {
 	text-decoration: none;
 }
 .content-container {
-	display: flex;
 	justify-content: center;
 	height: 95vh;
     background: white;
@@ -128,9 +125,13 @@
 	vertical-align: middle;
 }
 .blog {
-	border-bottom: 1px solid darkgray;
-    background: red;
+    height: 25vh;
+    padding-top: 2vh;
+    padding-bottom: 2vh;
     display: flex;
+    padding-left: 20vw;
+    border: 1px solid rgba(160, 160, 160, 0.2);
+    border-radius: 5px;
 }
 
 .blog a {
@@ -186,8 +187,8 @@
 }
 
 .discover-head {
-	padding-top: 20px;
-	padding-left: 20px;
+	padding-top: 3vh;
+	padding-left: 2vhw;
 	height: 12vh;
 }
 
@@ -196,12 +197,6 @@
 	vertical-align: middle;
 	height: 6vh;
 }
-
-.discover {
-	margin-top: -55vh;
-}
-
-/* style specally for markdown renders */
 
 .postcontainer {
     scrollbar-width: none;
@@ -245,6 +240,8 @@
     max-width: 65%;
     max-height: 65%;
 }
+
+
 
 .big-icon {
     font-size:26px;
@@ -448,13 +445,17 @@ a {
 }
 
 .favourite-posts {
+    position: absolute;
+    right: 0px;
+    top: 0px;
     overflow-y: auto;
     height: 100vh;
+    width: 86vw;
     scrollbar-width: none;
     -ms-overflow-style: none;
-    padding-left: 1vw;
-    padding-right: 1vw;
-    padding-top: 2vh;
+    padding-right: 2vw;
+    padding-top: 4vh;
+    background: rgba(230, 230, 230, 0.2);
 }
 
 .channel-creator {
@@ -531,6 +532,7 @@ a {
     overflow-x: hidden;
     scrollbar-width: none;
     -ms-overflow-style: none;
+    background: rgba(230, 230, 230, 0.2);
 }
 
 .channelview-container::-webkit-scrollbar {
@@ -566,10 +568,11 @@ a {
 }
 
 .channel-discover {
-    border: 5px solid black;
     height: 6vh;
     position: relative;
     top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%)
 }
 
 #border-bottom {
@@ -612,4 +615,19 @@ a {
 .custom-button:hover {
     background: rgb(0, 81, 78) !important;
     color: white !important;
+}
+
+.channelimage-discover {
+    max-width: 8vw;
+    max-height: 8vh;
+}
+
+.channelbutton-discover {
+    padding-left: 6vw;
+    padding-bottom: 4vh;
+}
+
+.card-border {
+    border: 1px solid rgba(160, 160, 160, 0.2);
+    border-radius: 5px;
 }

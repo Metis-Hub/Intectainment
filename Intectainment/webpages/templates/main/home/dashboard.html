@@ -18,12 +18,12 @@
 {%if favs.total > 0%}
     {%for post in favs.items%}
     <div class="col">
-        <div class="card post-margin border-secondary" id="touch">
+        <div class="card post-margin card-border" id="touch">
             <div class="card-text">
             <div class="postContent">
 {% for line in post.getContentLines()[:5]%}{{line}}{%endfor%}
             </div>
-            <a href="{{url_for('gui.postView', postid=post.id)}}" class="btn btn-outline-primary w-100">Zum Post</a>
+            <a href="{{url_for('gui.postView', postid=post.id)}}" class="btn btn-outline-light text-dark custom-button w-100">Zum Post</a>
         </div>
         </div>
     </div>
