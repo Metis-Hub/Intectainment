@@ -16,8 +16,10 @@
 {{super()}}
 
 <div class="channelinfo justify-content-center">
-    <img src="{{ profile_img(channel) }}"/>
     
+
+    {{ profile_img(channel) }}
+
     <div class="channelinfo-info">
         <h1>{{channel.name}}</h1>
 
