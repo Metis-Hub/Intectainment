@@ -60,14 +60,14 @@
     color: black;
 	right: 0px;
 	top: 0px;
-    z-index: 2;
     position: relative;
-    box-shadow: 0 0 0px 80px 0 rgb(255, 0, 0) inset;
+    background: rgba(230, 230, 230, 0.2);
 }
 
 .container {
 	display: flex;
 	justify-content: center;
+    background: rgba(230, 230, 230, 0.2);
 }
 #sidebar-block {
 	height: 7vh;
@@ -112,19 +112,18 @@
 	border-top: 1px solid darkgray;
 }
 .channels {
-	height: 88vh;
+	height: 100%;
 	width: 100%;
 	overflow: auto;
 	text-align: center;
     background: rgba(230, 230, 230, 0.2);
-    border: 1px solid rgba(160, 160, 160, 0.7);
 }
 .channels a {
 	text-decoration: none;
 }
 .content-container {
 	justify-content: center;
-	height: 100vh;
+	height: 88vh;
     background: white;
     width: 86vw;
 }
@@ -134,12 +133,24 @@
 }
 .blog {
     height: 25vh;
-    padding-top: 2vh;
-    padding-bottom: 2vh;
+    width: 43vw;
     display: flex;
-    padding-left: 20vw;
+    justify-content: center;
+    margin: auto;
+    margin-top: 4vh;
+    margin-bottom: 4vh;
+}
+
+.blog:hover {
     border: 1px solid rgba(160, 160, 160, 0.2);
     border-radius: 5px;
+    background: white;
+    box-shadow: 2vw 2vh 2vw 1vw rgba(160, 160, 160, 0.2);
+}
+
+.blog:hover .custom-button {
+    background: rgb(0, 81, 78) !important;
+    color: white !important;
 }
 
 .blog a {
@@ -196,8 +207,11 @@
 
 .discover-head {
 	padding-top: 3vh;
-	padding-left: 2vhw;
+	padding-left: 2vw;
 	height: 12vh;
+    background: rgba(0, 208, 255, 0.1);
+    position: relative;
+    z-index: 10;
 }
 
 .create-channel-button {
@@ -454,11 +468,12 @@ a {
 
 .favourite-posts {
     overflow-y: auto;
-    height: 100vh;
     width: 86vw;
+    max-height: 100vh;
     scrollbar-width: none;
     -ms-overflow-style: none;
     background: rgba(230, 230, 230, 0.2);
+    padding-bottom: 4vh;
 }
 
 .grid-container {
@@ -636,11 +651,6 @@ a {
     max-height: 8vh;
 }
 
-.channelbutton-discover {
-    padding-left: 6vw;
-    padding-bottom: 4vh;
-}
-
 .card-border {
     border: 1px solid rgba(160, 160, 160, 0.2);
     border-radius: 5px;
@@ -653,4 +663,10 @@ a {
 .custom-shadow:hover .custom-button {
     background: rgb(0, 81, 78) !important;
     color: white !important;
+}
+
+.styled-hr {
+    width: 40vw;
+    margin: auto;
+    background: rgba(100, 100, 100, 0.7);
 }

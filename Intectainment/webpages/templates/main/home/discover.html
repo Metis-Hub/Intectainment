@@ -1,5 +1,5 @@
 {#
-    URL: /home/discover
+URL: /home/discover
 #}
 
 {% extends "sidebarLayout.html" %}
@@ -7,47 +7,42 @@
 {% block content%}
 {% from "img/profile_images.html" import profile_img with context %}
 
-<div class="discover-head d-flex justify-content-evenly">
-        <form method="get" class="input-group mb-3 w-50">
-            <input type="text" class="form-control search w-auto" name="channel" placeholder="Kanalname">
-            <button type="submit" class="btn btn-primary search-button">Suchen</button>
-        </form>
-
-        {% if user %}
-        
-            <a href="{{url_for('gui.channelCreation')}}" class="create-channel-button btn btn-outline-primary"><i class="bi bi-plus-square"></i> Neuen Kanal erstellen</a>
-        
-        {% endif %}
+<div class="discover-head d-flex justify-content-evenly shadow">
+    <form method="get" class="input-group mb-3 w-50">
+        <input type="text" class="form-control search w-auto shadow" name="channel" placeholder="Kanalname">
+        <button type="submit" class="btn btn-primary search-button shadow">Suchen</button>
+    </form>
+    {% if user %}
+    <a href="{{url_for('gui.channelCreation')}}" class="create-channel-button btn btn-outline-primary shadow"><i class="bi bi-plus-square"></i> Neuen Kanal erstellen</a>
+    {% endif %}
 </div>
 
 <div class="content-container">
     <div class="channels">
-        <!-- <h2>Channels</h2><p></p> -->
         {%if channels.total>0%}
-            {%for channel in channels.items%}
-            <div class="blog">
-                
-                {{ profile_img(channel) }}
-                <div class="channelbutton-discover">
+        {%for channel in channels.items%}
+        <div class="blog">
+            {{ profile_img(channel) }}
+            <div class="channelbutton-discover">
                 <a href="{{url_for('gui.channelView', channel=channel.name)}}" class="channel-discover btn btn-outline-light text-dark custom-button">{{channel.name}}</a>
-                </div>
             </div>
-            {%endfor%}
+        </div>
+        <hr class="styled-hr" />
+        {%endfor%}
 
-            {%if channels.pages > 1 %}
-                <hr/>
-                <ul class="pagination d-flex justify-content-center">
-                {% for page in channels.iter_pages() %}
-                    {%if page%}
-                        <li class="page-item"><a class="page-link" href="?page={{page}}">{{page}}</a></li>
-                    {%else%}
-                        <li class="page-item"><a class="page-link">...</a></li>
-                    {%endif%}
-                {% endfor %}
-            </ul>
+        {%if channels.pages > 1 %}
+        <ul class="pagination d-flex justify-content-center">
+            {% for page in channels.iter_pages() %}
+            {%if page%}
+            <li class="page-item"><a class="page-link" href="?page={{page}}">{{page}}</a></li>
+            {%else%}
+            <li class="page-item"><a class="page-link">...</a></li>
             {%endif%}
+            {% endfor %}
+        </ul>
+        {%endif%}
         {%else%}
-            <p> Es wurden keine Kanäle gefunden </p>
+        <p> Es wurden keine Kanäle gefunden </p>
         {%endif%}
     </div>
 </div>
