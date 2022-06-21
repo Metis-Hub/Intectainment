@@ -21,41 +21,48 @@
 }
 
 .no-decoration {
-    text-decoration: none;
+    text-decoration: none !important;
+    color: black !important;
 }
 
 .sidebar {
 	height: 100vh;
 	width: 14vw;
-	position: fixed;
 	left: 0px;
 	top: 0px;
-    box-shadow: 5px 0 5px -5px 0 #888;
+    box-shadow: 0 0 0px 80px 0 rgb(255, 0, 0) inset;
     background: rgb(0, 81, 78);
-    /* background: linear-gradient(110deg, rgba(0,105,102,1) 0%, rgba(0,31,30,1) 100%); */
+    position: relative;
+    z-index: 100;
 }
 .top-sidebar {
     background: rgb(1, 66, 64);
     height: 14vh;
     vertical-align: middle;
-    box-shadow: 10px 0 5px -2px #888;
+    
+}
+.sidebar-shadow {
+    
 }
 .bottom-sidebar-user {
     background: rgb(1, 66, 64);
     margin-top: 25vh;
+    
 }
 .bottom-sidebar-nouser {
     background: rgb(1, 66, 64);
     margin-top: 60vh;
 }
 .sidebar-content {
-	height: 95vh;
+	height: 100vh;
 	width: 86vw;
     background: white;
     color: black;
-	position: fixed;
 	right: 0px;
 	top: 0px;
+    z-index: 2;
+    position: relative;
+    box-shadow: 0 0 0px 80px 0 rgb(255, 0, 0) inset;
 }
 
 .container {
@@ -117,8 +124,9 @@
 }
 .content-container {
 	justify-content: center;
-	height: 95vh;
+	height: 100vh;
     background: white;
+    width: 86vw;
 }
 .search {
 	max-width: 150  px;
@@ -153,7 +161,7 @@
 	margin-left: 20px;
 }
 .content {
-	background: white
+	background: white;
 }
 .side-navbar {
   background: rgb(0,224,219);
@@ -226,7 +234,6 @@
 
 .post-margin {
     overflow-y: auto;
-    margin-bottom: 4vh;
 }
 
 .channelinfo {
@@ -360,7 +367,6 @@ a {
 .container {
     min-width: 100vw;
     min-height: 100vh;
-    position: absolute;
     top: 0px;
     left: 0px;
     overflow: hidden;
@@ -371,6 +377,8 @@ a {
     overflow: hidden;
     text-align: center;
     background: white;
+    width: 100%;
+    height: 100%;
 }
 
 .align-correct {
@@ -445,17 +453,22 @@ a {
 }
 
 .favourite-posts {
-    position: absolute;
-    right: 0px;
-    top: 0px;
     overflow-y: auto;
     height: 100vh;
     width: 86vw;
     scrollbar-width: none;
     -ms-overflow-style: none;
-    padding-right: 2vw;
-    padding-top: 4vh;
     background: rgba(230, 230, 230, 0.2);
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    row-gap: 1vh;
+    column-gap: 1vw;
+    padding-right: 2vw;
+    padding-left: 2vw;
+    padding-top: 4vh;
 }
 
 .channel-creator {
@@ -464,6 +477,7 @@ a {
 
 .subscribed-channels {
     height: 100vh;
+    width: 86vw;
 	overflow: auto;
 	text-align: center;
 	align-items: center;
@@ -583,21 +597,21 @@ a {
     display: flex;
     overflow-x: hidden;
     overflow-y: hidden;
-    width: 84vw;
+    width: 86vw;
     height: 100vh;
-    margin-left: 1vw;
-    margin-right: 1vw;
+    padding-left: 1vw;
+    background: rgba(230, 230, 230, 0.2);
 }
 
 .start-container {
-    background: rgba(230, 230, 230, 0.2);
+    
     width: 84vw;
     padding-left: 1vw;
     padding-right: 1vw;
     padding-top: 2vh;
     padding-bottom: 2vh;
-    border: 1px solid rgba(160, 160, 160, 0.2);
-    border-radius: 5px;
+    /* border: 1px solid rgba(160, 160, 160, 0.2);
+    border-radius: 5px; */
 }
 
 .column-width {
@@ -630,4 +644,13 @@ a {
 .card-border {
     border: 1px solid rgba(160, 160, 160, 0.2);
     border-radius: 5px;
+}
+
+.custom-shadow:hover {
+    box-shadow: 0px 0px 5vh 1vh rgba(92, 148, 147, 1) !important;
+}
+
+.custom-shadow:hover .custom-button {
+    background: rgb(0, 81, 78) !important;
+    color: white !important;
 }

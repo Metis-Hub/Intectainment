@@ -14,19 +14,24 @@
 
 
 {%block content%}
-<div class="favourite-posts row row-cols-1 row-cols-md-3">
+<div class="favourite-posts grid-container">
 {%if favs.total > 0%}
     {%for post in favs.items%}
-    <div class="col">
-        <div class="card post-margin card-border" id="touch">
+        <!-- <div class="card post-margin card-border shadow" id="touch">
             <div class="card-text">
             <div class="postContent">
-{% for line in post.getContentLines()[:5]%}{{line}}{%endfor%}
+            {% for line in post.getContentLines()[:5]%}{{line}}{%endfor%}
             </div>
             <a href="{{url_for('gui.postView', postid=post.id)}}" class="btn btn-outline-light text-dark custom-button w-100">Zum Post</a>
-        </div>
-        </div>
-    </div>
+        </div> 
+        </div> -->
+        <div class="card shadow custom-shadow">
+            <div class="card-body">
+              <h5 class="card-title">{% for line in post.getContentLines()[:1]%}{{line}}{%endfor%}</h5>
+              <p class="card-text">{% for line in post.getContentLines()[:5]%}{{line}}{%endfor%}</p>
+              <a href="{{url_for('gui.postView', postid=post.id)}}" class="btn btn-outline-light text-dark custom-button">Zum Post <i class="bi bi-arrow-right"></i></a>
+            </div>
+          </div>
     {%endfor%}
     {%else%}
         <p> Es gibt noch keine gemerkten Posts. </p>

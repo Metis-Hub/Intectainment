@@ -15,7 +15,7 @@
                 <span class="align-middle">Navigation</span>
             </a>
         </div>
-        <div class="active-nav d-flex justify-content-between flex-wrap flex-column width">
+        <div class="active-nav d-flex justify-content-between flex-wrap flex-column width sidebar-shadow">
             <ul class="nav flex-column w-100">
                     
                 {%if user%}
@@ -58,5 +58,5 @@
         {%endif%}
     </div>
 
-    <div id="content" class="sidebar-content">{% block content %}{% endblock %}</div>
+    <div class="sidebar-content">{% block content %}{% endblock %}</div>
 {%endblock%}

@@ -14,7 +14,7 @@
 {% for channel in channels %}
     <a class="no-decoration" href="{{url_for('gui.channelView', channel=channel.name)}}">
         <div class="blog">
-            <img src="{{ profile_img(channel) }}"/>
+            {{ profile_img(channel) }}
             <span class="channel-discover btn btn-outline-light text-dark custom-button">{{channel.name}}</span>
         </div>
     </a>
