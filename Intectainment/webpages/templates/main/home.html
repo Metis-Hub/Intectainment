@@ -1,36 +1,107 @@
 {#
-    URL: /
+URL: /
 #}
 
 {% extends "sidebarLayout.html" %}
 {% block title %}Home{%endblock%}
 
 {%block content%}
-<div>
-    <center>
-        <img src="{{url_for('static', filename='logo.png')}}" style="width: 50%; height: auto;">
-        <h1 style="font-size: 400%;">Herzlich Willkommen bei Intectainment!</h1>
-
-        <div style="font-size: 200%">
-            {%if user%}
-            <a href="{{url_for('gui.dashboard')}}">Übersicht</a>: Dein indivdueller Feed
-            <br>
-            {%endif%}
-
-            <a href="{{url_for('gui.discover')}}">Entdecken</a>: Neue Kanäle und Posts finden
-            <br>
-
-            {%if user%}
-            <a href="{{url_for('gui.handle_subscriptions')}}">Abonnierte Kanäle</a>: Deine Lieblingskanäle
-            <br>
-
-            <a href="{{url_for('gui.favorites')}}">Favoriten</a>: Die Posts, die du dir merken wolltest
-            <br>
-            {%endif%}
-
-            <a href="{{url_for('gui.start')}}">Start</a>: zurück zum Start
+<div class="start-div">
+  <center>
+    <img src="{{url_for('static', filename='logo.png')}}" style="width: 50%; height: auto;" />
+    <div class="start-container">
+      {%if user%}
+      <div class="row">
+        <div class="col">
+          <a href="{{url_for('gui.dashboard')}}" class="no-decoration">
+            <div class="card shadow custom-shadow">
+              <div class="card-body">
+                <h5 class="card-title">Übersicht</h5>
+                <p class="card-text">In deiner Übersicht befindet sich dein individueller Feed der neusten Blogs.</p>
+                <a href="{{url_for('gui.dashboard')}}" class="btn btn-outline-light text-dark custom-button">Zur
+                  Übersicht <i class="bi bi-arrow-right"></i></a>
+              </div>
+            </div>
+          </a>
         </div>
-        
-    </center>
+        <div class="col">
+          <a href="{{url_for('gui.discover')}}" class="no-decoration">
+            <div class="card shadow custom-shadow">
+              <div class="card-body">
+                <h5 class="card-title">Entdecken</h5>
+                <p class="card-text">Hier kannst du neue Kanäle und Posts finden.</p>
+                <a href="{{url_for('gui.discover')}}" class="btn btn-outline-light text-dark custom-button">Entdecken <i
+                    class="bi bi-arrow-right"></i></a>
+              </div>
+            </div>
+          </a>
+        </div>
+        <div class="col">
+          <a href="{{url_for('gui.handle_subscriptions')}}" class="no-decoration">
+            <div class="card shadow custom-shadow">
+              <div class="card-body">
+                <h5 class="card-title">Abonnierte Kanäle</h5>
+                <p class="card-text">Hier findest du alle Kanäle die du abonniert hast.</p>
+                <a href="{{url_for('gui.handle_subscriptions')}}"
+                  class="btn btn-outline-light text-dark custom-button">Abonnierte Kanäle <i
+                    class="bi bi-arrow-right"></i></a>
+              </div>
+            </div>
+          </a>
+        </div>
+        <div class="col">
+          <a href="{{url_for('gui.favorites')}}" class="no-decoration">
+            <div class="card shadow custom-shadow">
+              <div class="card-body">
+                <h5 class="card-title">Favoriten</h5>
+                <p class="card-text">Alle deine Posts die du dir gemerkt hast.</p>
+                <a href="{{url_for('gui.favorites')}}" class="btn btn-outline-light text-dark custom-button">Zu
+                  Favoriten
+                  <i class="bi bi-arrow-right"></i></a>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="row grid-top-margin">
+        <div class="col">
+          <div class="card shadow custom-shadow">
+            <div class="card-body">
+              <h5 class="card-title">Start</h5>
+              <p class="card-text">Die Startseite auf denen du alle Möglichkeiten von Intectainement einsehen kannst.
+              </p>
+              <a href="{{url_for('gui.start')}}" class="btn btn-outline-light text-dark custom-button">Zum Start <i
+                  class="bi bi-arrow-right"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      {%else%}
+      <div class="row">
+        <div class="col">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Entdecken</h5>
+              <p class="card-text">Hier kannst du neue Kanäle und Posts finden.</p>
+              <a href="{{url_for('gui.discover')}}" class="btn btn-outline-light text-dark custom-button">Entdecken <i
+                  class="bi bi-arrow-right"></i></a>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Start</h5>
+              <p class="card-text">Die Startseite auf denen du alle Möglichkeiten von Intectainement einsehen kannst.
+              </p>
+              <a href="{{url_for('gui.start')}}" class="btn btn-outline-light text-dark custom-button">Zum Start <i
+                  class="bi bi-arrow-right"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      {%endif%}
+    </div>
+  </center>
 </div>
 {%endblock%}

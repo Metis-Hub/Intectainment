@@ -1,9 +1,5 @@
 @import url('//cdn.jsdelivr.net/npm/bootstrap-icons@1.6.1/font/bootstrap-icons.css');
 
-html {
-
-}
-
 .profile {
     width: 200px;
     height: 200px;
@@ -14,36 +10,64 @@ html {
 }
 
 .channel-profile {
-    width: 200px;
-    height: 200px;
+    width: 100%;
+    height: 100%;
     overflow: hidden;
+    border: 5px solid black;
 }
 .channel-profile img {
     max-width: 200px;
     max-height: 200px;
 }
 
-.sidebar {
-	height: 95vh;
-	width: 12	vw;
-	border-right: 1px solid darkgray;
+.no-decoration {
+    text-decoration: none !important;
+    color: black !important;
+}
 
-	position: fixed;
+.sidebar {
+	height: 100vh;
+	width: 14vw;
 	left: 0px;
 	top: 0px;
+    box-shadow: 0 0 0px 80px 0 rgb(255, 0, 0) inset;
+    background: rgb(0, 81, 78);
+    position: relative;
+    z-index: 100;
+}
+.top-sidebar {
+    background: rgb(1, 66, 64);
+    height: 14vh;
+    vertical-align: middle;
+    
+}
+.sidebar-shadow {
+    
+}
+.bottom-sidebar-user {
+    background: rgb(1, 66, 64);
+    margin-top: 25vh;
+    
+}
+.bottom-sidebar-nouser {
+    background: rgb(1, 66, 64);
+    margin-top: 60vh;
 }
 .sidebar-content {
-	height: 95vh;
+	height: 100vh;
 	width: 86vw;
     background: white;
     color: black;
-	position: fixed;
 	right: 0px;
 	top: 0px;
+    position: relative;
+    background: rgba(230, 230, 230, 0.2);
 }
+
 .container {
 	display: flex;
 	justify-content: center;
+    background: rgba(230, 230, 230, 0.2);
 }
 #sidebar-block {
 	height: 7vh;
@@ -88,42 +112,49 @@ html {
 	border-top: 1px solid darkgray;
 }
 .channels {
-	height: 85vh;
+	height: 100%;
 	width: 100%;
-	border-top: 1px solid darkgray;
 	overflow: auto;
 	text-align: center;
-	align-items: center;
-	display: block
+    background: rgba(230, 230, 230, 0.2);
 }
 .channels a {
 	text-decoration: none;
 }
 .content-container {
-	display: flex;
 	justify-content: center;
-	height: 95vh;
+	height: 88vh;
     background: white;
+    width: 86vw;
 }
 .search {
 	max-width: 150  px;
 	vertical-align: middle;
 }
 .blog {
-	height: 25%;
-	border-bottom: 1px solid darkgray;
-	padding-bottom: 5vh;
-	margin-top: 5vh;
-	display: inline-block;
+    height: 25vh;
+    width: 43vw;
+    display: flex;
+    justify-content: center;
+    margin: auto;
+    margin-top: 4vh;
+    margin-bottom: 4vh;
+}
+
+.blog:hover {
+    border: 1px solid rgba(160, 160, 160, 0.2);
+    border-radius: 5px;
+    background: white;
+    box-shadow: 2vw 2vh 2vw 1vw rgba(160, 160, 160, 0.2);
+}
+
+.blog:hover .custom-button {
+    background: rgb(0, 81, 78) !important;
+    color: white !important;
 }
 
 .blog a {
 	text-decoration: none;
-}
-
-.blog .channel-profile img {
-    max-width: 50%;
-	max-height: 50%;
 }
 
 .search {
@@ -141,13 +172,9 @@ html {
 	margin-left: 20px;
 }
 .content {
-	background: white
+	background: white;
 }
 .side-navbar {
-  width: 180px;
-  height: 100%;
-  position: fixed;
-  margin-left: -300px;
   background: rgb(0,224,219);
   background: rgb(0,105,102);
   background: linear-gradient(110deg, rgba(0,105,102,1) 0%, rgba(0,31,30,1) 100%);
@@ -158,6 +185,7 @@ html {
 .nav-link:hover {
   background-color: #ffffff26;
 }
+
 .my-container {
   transition: 0.4s;
 }
@@ -178,9 +206,12 @@ html {
 }
 
 .discover-head {
-	padding-top: 20px;
-	padding-left: 20px;
+	padding-top: 3vh;
+	padding-left: 2vw;
 	height: 12vh;
+    background: rgba(0, 208, 255, 0.1);
+    position: relative;
+    z-index: 10;
 }
 
 .create-channel-button {
@@ -188,12 +219,6 @@ html {
 	vertical-align: middle;
 	height: 6vh;
 }
-
-.discover {
-	margin-top: -55vh;
-}
-
-/* style specally for markdown renders */
 
 .postcontainer {
     scrollbar-width: none;
@@ -223,7 +248,6 @@ html {
 
 .post-margin {
     overflow-y: auto;
-    margin-bottom: 4vh;
 }
 
 .channelinfo {
@@ -237,6 +261,8 @@ html {
     max-width: 65%;
     max-height: 65%;
 }
+
+
 
 .big-icon {
     font-size:26px;
@@ -298,28 +324,17 @@ html {
 
 .styled-submit {
     border: none;
-    background: none;
     margin: 0px;
     padding: 0px;
     width: 14vw;
     height: 8vh;
-    position: absolute;
-    bottom: 5vh;
-    left: 0vw;
     text-align: left;
-    color: #BFEFFF !important;
     text-indent: 2px;
+    background: rgb(1, 66, 64);
 }
 
 .bottom {
     float: bottom;
-}
-
-.bottom-sidebar {
-    position: absolute;
-    bottom: 5vh;
-    left: 0vw;
-    width: 14vw;
 }
 
 .inline-form {
@@ -366,7 +381,6 @@ a {
 .container {
     min-width: 100vw;
     min-height: 100vh;
-    position: absolute;
     top: 0px;
     left: 0px;
     overflow: hidden;
@@ -377,6 +391,8 @@ a {
     overflow: hidden;
     text-align: center;
     background: white;
+    width: 100%;
+    height: 100%;
 }
 
 .align-correct {
@@ -452,12 +468,22 @@ a {
 
 .favourite-posts {
     overflow-y: auto;
-    height: 100vh;
+    width: 86vw;
+    max-height: 100vh;
     scrollbar-width: none;
     -ms-overflow-style: none;
-    padding-left: 1vw;
-    padding-right: 1vw;
-    padding-top: 2vh;
+    background: rgba(230, 230, 230, 0.2);
+    padding-bottom: 4vh;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    row-gap: 1vh;
+    column-gap: 1vw;
+    padding-right: 2vw;
+    padding-left: 2vw;
+    padding-top: 4vh;
 }
 
 .channel-creator {
@@ -466,6 +492,7 @@ a {
 
 .subscribed-channels {
     height: 100vh;
+    width: 86vw;
 	overflow: auto;
 	text-align: center;
 	align-items: center;
@@ -534,6 +561,7 @@ a {
     overflow-x: hidden;
     scrollbar-width: none;
     -ms-overflow-style: none;
+    background: rgba(230, 230, 230, 0.2);
 }
 
 .channelview-container::-webkit-scrollbar {
@@ -557,11 +585,6 @@ a {
     overflow: hidden;
 }
 
-.tablinks {
-    color: white !important;
-    text-decoration: none !important;
-}
-
 .white {
     background: white !important; 
     color: red !important;
@@ -571,4 +594,79 @@ a {
 .card {
     color: black; 
     background: white;
+}
+
+.channel-discover {
+    height: 6vh;
+    position: relative;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%)
+}
+
+#border-bottom {
+    border-bottom: 1px soldid black !important;
+}
+
+.start-div {
+    display: flex;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    width: 86vw;
+    height: 100vh;
+    padding-left: 1vw;
+    background: rgba(230, 230, 230, 0.2);
+}
+
+.start-container {
+    
+    width: 84vw;
+    padding-left: 1vw;
+    padding-right: 1vw;
+    padding-top: 2vh;
+    padding-bottom: 2vh;
+    /* border: 1px solid rgba(160, 160, 160, 0.2);
+    border-radius: 5px; */
+}
+
+.column-width {
+    width: 12%;
+}
+
+.grid-top-margin {
+    padding-top: 4vh;
+}
+
+.custom-button {
+    background: rgba(92, 148, 147, 0.25) !important;
+}
+
+.custom-button:hover {
+    background: rgb(0, 81, 78) !important;
+    color: white !important;
+}
+
+.channelimage-discover {
+    max-width: 8vw;
+    max-height: 8vh;
+}
+
+.card-border {
+    border: 1px solid rgba(160, 160, 160, 0.2);
+    border-radius: 5px;
+}
+
+.custom-shadow:hover {
+    box-shadow: 0px 0px 5vh 1vh rgba(92, 148, 147, 1) !important;
+}
+
+.custom-shadow:hover .custom-button {
+    background: rgb(0, 81, 78) !important;
+    color: white !important;
+}
+
+.styled-hr {
+    width: 40vw;
+    margin: auto;
+    background: rgba(100, 100, 100, 0.7);
 }
