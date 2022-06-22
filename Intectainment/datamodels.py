@@ -22,7 +22,7 @@ Favorites = db.Table('favoritePost',
 
 RssFeeds = db.Table('feed',
     db.Column('channel_id', db.Integer, db.ForeignKey('channel.id')),
-	db.Column('rss_id', db.Integer, db.ForeignKey('RSS.id'))
+	db.Column('rss_id', db.Integer, db.ForeignKey('rss_link.id'))
 )
 
 class User(db.Model):
@@ -260,15 +260,15 @@ class Category(db.Model):
 	def __repr__(self):
 		return self.name
 
-class RSS(db.Model):
+class Rss_link(db.Model):
 	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-	rss = db.Column( db.String(64), unique=True, nullable=False)
-	
-	channel_id = db.Column(db.Integer, db.ForeignKey('channel.id'), nullable=False)
+	url = db.Column( db.String(64), unique=True, nullable=False)
+	channel = db.relationship("Channel", secondary=RssFeeds, backref="subscribedChannels")
+
 	guid = db.Column(db.Integer, nullable=True)
 
-	def __repr__(self):
-		return self.name
+	def getChannel(self):
+		return self.channel
 
 # init timeout check
 def checkUsers():
