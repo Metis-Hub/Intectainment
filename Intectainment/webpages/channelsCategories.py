@@ -51,15 +51,12 @@ def channelView(channel):
 
     channel = Channel.query.filter_by(name=channel).first_or_404()
 
-    if request.method == "POST":
+    if request.method == "POST" and User.isLoggedIn():
         if "subscr" in request.form:
-            # TODO
-            user = User.query.filter_by(id=User.getCurrentUser().id).first()
-            user.subscriptions.append(channel)
+            User.getCurrentUser().addSubscriptions(channel.id)
             db.session.commit()
         elif "desubscr" in request.form:
-            user = User.query.filter_by(id=User.getCurrentUser().id).first()
-            user.subscriptions.remove(channel)
+            User.getCurrentUser().removeSubscriptions(channel.id)
             db.session.commit()
 
     posts = (

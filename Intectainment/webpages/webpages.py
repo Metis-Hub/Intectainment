@@ -48,8 +48,8 @@ def dashboard():
         Post.query.filter(
             Post.channel_id.in_(
                 [
-                    channel.id
-                    for channel in User.getCurrentUser().getSubscriptions().all()
+                    subscription.channel_id
+                    for subscription in User.getCurrentUser().getSubscriptions().all()
                 ]
             )
         )

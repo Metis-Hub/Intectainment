@@ -152,6 +152,7 @@ class User:
         """
         returns a query object to retrieve the favorite posts of the user
         """
+
         return dbm.Favorites.query.filter(dbm.Favorites.user == self.username).join(
             dbm.Post, dbm.Favorites.post_id == dbm.Post.id
         )
