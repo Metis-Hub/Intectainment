@@ -157,10 +157,10 @@ def createPost(channel):
         if "create" in request.form:
             post = Post.new(channel.id, request.form.get("content") or "")
             content = post.getContent().replace(
-                "tmp/" + str(User.getCurrentUser().id), "p/" + str(post.id)
+                "tmp/" + str(User.getCurrentUser().username), "p/" + str(post.id)
             )
             post.setContent(content)
-            move_images(User.getCurrentUser().id, post.id)
+            move_images(User.getCurrentUser().username, post.id)
             return redirect(url_for("gui.postView", postid=post.id))
         elif "exit" in request.form:
             return redirect(url_for("gui.channelView", channel=channel.name))
