@@ -18,7 +18,7 @@ services:
     container_name: Intectainment
 
     ports:
-      - "80:80"
+      - 3000:5000
     environment:
       - INTECTAINMENT_DB_URI=sqlite:///content/database.db
       - INTECTAINMENT_SECRET=Hallo
@@ -41,11 +41,15 @@ services:
       - ldap_config:/etc/ldap/slapd.d
     networks:
       - intecwork
+    
+    environment:
+      - LDAP_DOMAIN="intecsoft.de"
+      - LDAP_BASE_DN="dc=intecsoft,dc=de"
   ldapadmin:
     image: osixia/phpldapadmin
 
     ports:
-    - 3000:80
+    - 3001:80
     #- 443:443
 
     environment:
