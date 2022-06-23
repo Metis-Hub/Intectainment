@@ -10,12 +10,3 @@ for dir in ["Intectainment/content/posts", "Intectainment/content/img"]:
         os.makedirs(path)
 
 db.create_all()
-
-# create default super user
-if not dbm.User.query.filter_by(username="Admin").first():
-    user = dbm.User()
-    user.permission = dbm.User.PERMISSION.ADMIN
-    user.username = "Admin"
-    user.changePassword("intectainment")
-    db.session.add(user)
-    db.session.commit()
