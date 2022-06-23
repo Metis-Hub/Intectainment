@@ -21,22 +21,6 @@ else:
     roles = {}
 
 
-# class OldUser:
-#    subscriptions = db.relationship(
-#        "Channel", secondary=Subscription, backref="subscibers"
-#    )
-#    favoritePosts = db.relationship("Post", secondary=Favorites, backref="favUsers")
-#
-#    channels = db.relationship("Channel", backref="owner")
-#    posts = db.relationship("Post", backref="owner")
-#
-#    def getFavoritePosts(self):
-#        return self.favoritePosts
-#
-#    def getSubscriptions(self):
-#        return self.subscriptions
-
-
 class User:
     activeUsers: dict = dict()
     TIMEOUT_TIME: int = 60 * 30
@@ -132,9 +116,17 @@ class User:
         """
         returns a query object to retrieve the subscriptions of the user
         """
-        return dbm.Subscription.query.filter(
-            dbm.Subscription.user == self.username
-        ).join(dbm.Channel, dbm.Subscription.channel_id == dbm.Channel.id)
+
+        return dbm.Channel.query.filter(
+            dbm.Channel.id.in_(
+                [
+                    result.channel_id
+                    for result in dbm.Subscription.query.filter_by(
+                        user=self.username
+                    ).all()
+                ]
+            )
+        )
 
     def addSubscriptions(self, channel_id):
         if not dbm.Subscription.query.filter_by(
@@ -152,9 +144,15 @@ class User:
         """
         returns a query object to retrieve the favorite posts of the user
         """
-
-        return dbm.Favorites.query.filter(dbm.Favorites.user == self.username).join(
-            dbm.Post, dbm.Favorites.post_id == dbm.Post.id
+        return dbm.Post.query.filter(
+            dbm.Post.id.in_(
+                [
+                    result.post_id
+                    for result in dbm.Favorites.query.filter_by(
+                        user=self.username
+                    ).all()
+                ]
+            )
         )
 
     def addFavorite(self, post_id):
