@@ -8,9 +8,15 @@
 
 {% block content%}
 
+<div class="subscriptions-head d-flex justify-content-evenly shadow">
+    <div class="head-div">
+        <h1 class="center-h1">Abonnierte Kanäle</h1>
+    </div>
+</div>
+
 <div class="subscribed-channels">
     
-    <h1>Abonnierte Kanäle:</h1>
+    
 {% for channel in channels %}
     <a class="no-decoration" href="{{url_for('gui.channelView', channel=channel.name)}}">
         <div class="blog">
@@ -18,6 +24,7 @@
             <span class="channel-discover btn btn-outline-light text-dark custom-button">{{channel.name}}</span>
         </div>
     </a>
+    <hr class="styled-hr" />
 {% endfor %}
 </div>
 {% endblock %}

@@ -1,6 +1,6 @@
 {#
-    URL: /channel/(channel)
-    Description: Displays channel details
+URL: /channel/(channel)
+Description: Displays channel details
 #}
 
 {% extends "sidebarLayout.html" %}
@@ -8,88 +8,92 @@
 {% from "img/profile_images.html" import profile_img with context %}
 
 {% block head %}
-  {{super()}}
-  <script src="https://cdn.rawgit.com/showdownjs/showdown/1.0.1/dist/showdown.min.js"></script>
+{{super()}}
+<script src="https://cdn.rawgit.com/showdownjs/showdown/1.0.1/dist/showdown.min.js"></script>
 {% endblock %}
 
 {% block content %}
 {{super()}}
 
-<div class="channelinfo justify-content-center">
-    
+<div class="channelinfo justify-content-center shadow">
+
 
     {{ profile_img(channel) }}
 
     <div class="channelinfo-info">
         <h1>{{channel.name}}</h1>
 
-    {% if channel.description %}
-    <p>{{channel.description}}</p>
-    {%endif%}
+        {% if channel.description %}
+        <p>{{channel.description}}</p>
+        {%endif%}
 
     </div>
     <div class="channelinfo-buttons">
         <div class="big-text">
             <div>
-            {% if user %}
+                {% if user %}
                 <form method="post" class="inline-form">
-                    {% if subscribed %}<button class="btn btn-outline-danger" type="submit" name="desubscr">Deabonnieren</button>
+                    {% if subscribed %}<button class="btn btn-outline-danger" type="submit"
+                        name="desubscr">Deabonnieren</button>
                     {% else %}<button class="btn btn-danger" type="submit" name="subscr">Abonnieren</button>
                     {% endif %}
                 </form>
-            {% endif %}
+                {% endif %}
             </div>
             <div>
-            {% if canModify %}
-            <a class="btn btn-outline-secondary" href="{{url_for('gui.channelSettings', channel=channel.name)}}"><i class="bi bi-gear"></i> Einstellungen</a>
-            {% endif %}
+                {% if canModify %}
+                <a class="btn btn-outline-secondary" href="{{url_for('gui.channelSettings', channel=channel.name)}}"><i
+                        class="bi bi-gear"></i> Einstellungen</a>
+                {% endif %}
             </div>
             <div>
-            {% if user %}
-            <a class="btn btn-outline-primary" href="{{url_for('gui.createPost', channel=channel.name)}}"><i class="bi bi-plus-square"></i> Neuer Post</a>
-            {% endif %}
+                {% if user %}
+                <a class="btn btn-outline-primary" href="{{url_for('gui.createPost', channel=channel.name)}}"><i
+                        class="bi bi-plus-square"></i> Neuer Post</a>
+                {% endif %}
             </div>
-            </div>
-        
+        </div>
+
     </div>
 </div>
 {%if posts.total > 0 %}
-<div class="channelview-container">
-    <div class="postcontainer row row-cols-1 row-cols-md-3">
-    
-    <!-- Latest posts -->
-    {% for post in posts.items %}
-    <div class="col">
-            <div class="card card-border post-margin" id="touch">
-                <div class="card-text" >
-                <div class="postContent">
-{% for line in post.getContentLines()[:5]%}{{line}}{%endfor%}
-                </div>
-                <a href="{{url_for('gui.postView', postid=post.id)}}" class="btn btn-outline-light text-dark custom-button w-100">Zum Post</a>
-            </div>
+<div class="channelview-wrapper">
+    <div class="channelview-container grid-container">
+        {% for post in posts.items %}
+
+        <div class="card shadow custom-shadow">
+            <div class="card-body">
+                <h5 class="card-title postContent">{% for line in post.getContentLines()[:1]%}{{line}}{%endfor%}</h5>
+                <p class="card-text postContent">{% for line in post.getContentLines()[:5]%}{{line}}{%endfor%}</p>
+                <a href="{{url_for('gui.postView', postid=post.id)}}"
+                    class="btn btn-outline-light text-dark custom-button">Zum Post <i class="bi bi-arrow-right"></i></a>
             </div>
         </div>
-    {%endfor%}
-    
-    
+        {%endfor%}
 
-    </div>
-    <div>
-        {%if posts.pages > 1 %}
-    <hr/>
-    <ul class="pagination d-flex justify-content-center">
-    {% for page in posts.iter_pages() %}
-        {%if page%}
-            <li class="page-item"><a class="page-link" href="?page={{page}}">{{page}}</a></li>
+
+
+    
+    
+        
         {%else%}
-            <li class="page-item"><a class="page-link">...</a></li>
+        <div class="nopostcontainer">Kein Post auf diesem Kanal</div>
         {%endif%}
-    {% endfor %}
-</ul>
-    {%endif%}
-{%else%}
-    <div class="nopostcontainer">Kein Post auf diesem Kanal</div>
-{%endif%}
+    
+    </div>
+    <div class="channelpost-pagination">
+    {%if posts.pages > 1 %}
+        <hr class="styled-hr" />
+        <ul class="pagination d-flex justify-content-center pagination-margin">
+            {% for page in posts.iter_pages() %}
+            {%if page%}
+            <li class="page-item"><a class="page-link" href="?page={{page}}">{{page}}</a></li>
+            {%else%}
+            <li class="page-item"><a class="page-link">...</a></li>
+            {%endif%}
+            {% endfor %}
+        </ul>
+        {%endif%}
     </div>
 </div>
 
