@@ -45,10 +45,13 @@ services:
     image: osixia/phpldapadmin
 
     ports:
-    - 6443:443
+    - 3000:80
+    #- 443:443
 
     environment:
       - PHPLDAPADMIN_LDAP_HOSTS=ldap://openldap
-
+      
+      # you may change the http policy if you want use it properly 
+      - PHPLDAPADMIN_HTTPS=false 
     networks:
     - intecwork
