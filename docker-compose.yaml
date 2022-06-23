@@ -43,8 +43,8 @@ services:
       - intecwork
     
     environment:
-      - LDAP_DOMAIN="intecsoft.de"
-      - LDAP_BASE_DN="dc=intecsoft,dc=de"
+      - LDAP_DOMAIN=intecsoft.de
+      - LDAP_BASE_DN=dc=intecsoft,dc=de
   ldapadmin:
     image: osixia/phpldapadmin
 
