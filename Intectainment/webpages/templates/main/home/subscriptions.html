@@ -14,17 +14,21 @@
     </div>
 </div>
 
-<div class="subscribed-channels">
-    
-    
-{% for channel in channels %}
-    <a class="no-decoration" href="{{url_for('gui.channelView', channel=channel.name)}}">
-        <div class="blog">
-            {{ profile_img(channel) }}
-            <span class="channel-discover btn btn-outline-light text-dark custom-button">{{channel.name}}</span>
-        </div>
-    </a>
-    <hr class="styled-hr" />
-{% endfor %}
+<div class="content-container">
+    <div class="channels">
+        {% for channel in channels %}
+        <a href="{{url_for('gui.channelView', channel=channel.name)}}" class="no-decoration">
+            <div class="blog">
+                {{ profile_img(channel) }}
+                <div>
+                    <span class="channel-discover btn btn-outline-light text-dark custom-button">{{channel.name}}</span>
+                </div>
+            </div>
+        </a>
+        <hr class="styled-hr" />
+        {%endfor%}
+
+        
+    </div>
 </div>
 {% endblock %}

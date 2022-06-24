@@ -40,9 +40,7 @@
     vertical-align: middle;
     
 }
-.sidebar-shadow {
-    
-}
+
 .bottom-sidebar-user {
     background: rgb(1, 66, 64);
     margin-top: 25vh;
@@ -61,12 +59,13 @@
 	top: 0px;
     position: relative;
     background: rgba(230, 230, 230, 0.2);
+    z-index: 1000;
 }
-
-.container {
-	display: flex;
-	justify-content: center;
-    background: rgba(230, 230, 230, 0.2);
+.main-wrapper {
+    max-height: 100vh;
+    width: 100vw;
+    overflow: auto;
+    display: flex;
 }
 #sidebar-block {
 	height: 7vh;
@@ -290,34 +289,22 @@
     display: inline;
 }
 
-.forms {
-    display: flex;
-    margin-top: 1vh;
-    margin-left: 1vw;
-    margin-right: 1vw;
-}
-
 .post-ta {
     word-wrap: break-word;
-    max-height: 84vh;
-    min-height: 84vh;
-    min-width: 48vw;
+    margin-right: 2vh;
+    height: 80vh;
+    width: 44vw;
+    overflow-y: auto;
 }
 
 .preview {
-    max-width: 48vw;
-    min-width: 48vw;
     word-wrap: break-word;
-    margin-left: 10px;
+    margin-left: 2vh;
+    height: 80vh;
+    width: 44vw;
     overflow-y: auto;
-    max-height: 84vh;
-    min-height: 84vh;
 }
 .edit-post-header {
-    margin-left: 1vw;
-    margin-top: 1vh;
-}
-.edit-post-button {
     margin-left: 1vw;
     margin-top: 1vh;
 }
@@ -400,6 +387,8 @@ a {
     left: 0px;
     overflow: hidden;
     background: white;
+    margin: none;
+    padding: none;
 }
 
 .main-content {
@@ -408,11 +397,6 @@ a {
     background: white;
     width: 100%;
     height: 100%;
-}
-
-.align-correct {
-    margin-top: 1vh;
-    margin-left: 1vw;
 }
 
 .settings-categories {
@@ -463,9 +447,15 @@ a {
 }
 
 .channelinfo-buttons {
-    text-align: right;
-    float: right;
+    
     font-size: 26px;
+    position: relative;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    height: fit-content;
+    display: flex;
+    width: fit-content;
 }
 
 .channelinfo-info {
@@ -473,6 +463,11 @@ a {
     max-width: 30vw;
     padding-left: 1vw;
     padding-right: 1vw;
+    position: relative;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    height: fit-content;
 }
 
 .card-bottom {
@@ -727,4 +722,45 @@ a {
 
 .pagination-margin {
     margin-top: 3vh;
+}
+
+.infobutton-margin {
+    margin-left: 2vw;
+}
+
+.newpost-head {
+    height: 12vh;
+    width: 100vw;
+    background: rgba(0, 208, 255, 0.1);
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    display: flex;
+    
+}
+
+.newpost-body {
+    width: 100vw;
+    padding: 4vh;
+    background: rgba(230, 230, 230, 0.2);
+}
+
+.newpost-buttons {
+    height: fit-content;
+    position: relative;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+.newpost-h1 {
+    height: fit-content;
+    position: relative;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    margin-right: 6vw;
+}
+
+.button-margin {
+    margin-right: 3vw;
 }
