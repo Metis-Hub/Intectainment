@@ -72,8 +72,6 @@ class User:
         User.activeUsers[key] = user
         session["User"] = key
 
-        print(f"User {username} was successfully logged in")
-
         return True
 
     @staticmethod
