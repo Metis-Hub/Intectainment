@@ -25,6 +25,13 @@ class Subscription(db.Model):
     channel_id = db.Column(db.Integer, db.ForeignKey("channel.id"), primary_key=True)
 
 
+RssFeeds = db.Table(
+    "feed",
+    db.Column("channel_id", db.Integer, db.ForeignKey("channel.id")),
+    db.Column("rss_id", db.Integer, db.ForeignKey("rss_link.id")),
+)
+
+
 class Favorites(db.Model):
     user = db.Column(db.String(80), primary_key=True)
     post_id = db.Column(db.Integer, db.ForeignKey("post.id"), primary_key=True)
@@ -155,22 +162,17 @@ class RSS(db.Model):
     guid = db.Column(db.Integer, nullable=True)
 
     def __repr__(self):
-        return self.name
+        return self.rss
 
 
-# init timeout check
-def checkUsers():
-    for key in User.activeUsers.keys():
-        user = User.activeUsers[key]
-        if (
-            time.time() - user.lastActive >= user.timeout
-            and User.activeUsers[key].timeout != -1
-        ):
-            User.activeUsers.pop(key)
+class Rss_link(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    url = db.Column(db.String(64), unique=True, nullable=False)
+    channel = db.relationship(
+        "Channel", secondary=RssFeeds, backref="subscribedChannels"
+    )
 
-    time.sleep(60 * 1)
+    guid = db.Column(db.Integer, nullable=True)
 
-
-afkCheckThread = threading.Thread(name="afkChecker", target=checkUsers)
-afkCheckThread.daemon = True
-afkCheckThread.start()
+    def getChannel(self):
+        return self.channel

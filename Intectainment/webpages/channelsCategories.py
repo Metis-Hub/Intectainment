@@ -1,5 +1,5 @@
 from Intectainment import app, db
-from Intectainment.datamodels import Channel, Category, Post, User
+from Intectainment.datamodels import Channel, Category, Post, User, Rss_link, RssFeeds
 from Intectainment.webpages.webpages import gui
 from Intectainment.util import login_required
 from Intectainment.images import move_images
@@ -8,7 +8,7 @@ from flask import request, render_template, redirect, url_for
 from sqlalchemy import desc
 
 
-import datetime
+import datetime, feedparser
 
 ##### Kanäle #####
 @gui.route("/home/subscriptions", methods=["POST", "GET"])
@@ -110,6 +110,47 @@ def channelSettings(channel):
         channel=channel,
         categories=Category.query.all(),
     )
+
+
+@gui.route("/rss/new", methods=["GET", "POST"])
+@login_required
+def newRss():
+    if request.method == "POST":
+        name = request.form.get("name")
+        rss_url = request.form.get("rss-url")
+        print(rss_url)
+
+        if name:
+            if not Channel.query.filter_by(name=name).first():
+                channel = Channel(
+                    name=name,
+                    owner=User.query.filter_by(id=User.getCurrentUser().id).first(),
+                )
+                db.session.add(channel)
+                db.session.commit()
+            else:
+                return render_template(
+                    "main/channel/channelCreation.html", error="Kanal existiert schon"
+                )
+
+        if rss_url:
+            print("Enabling rss")
+            if Rss_link.query.filter_by(url=rss_url).first():
+                Rss_link.query.filter_by(url=rss_url).channel.append(
+                    Channel.query.filter_by(name=name).first()
+                )
+            else:
+                # last hree entries will be shown
+                parsedFeed = feedparser.parse(rss_url)
+                lastGuid = parsedFeed["entries"][3]["guid"]
+
+                feed = Rss_link(url=rss_url, guid=lastGuid)
+                feed.channel.append(Channel.query.filter_by(name=name).first())
+
+                db.session.add(feed)
+                db.session.commit()
+
+    return render_template("main/channel/rssCreation.html")
 
 
 ##### Posts #####

@@ -11,7 +11,7 @@ from flask import (
 from sqlalchemy import desc
 
 from Intectainment import app, db
-from Intectainment.datamodels import User, Post, Channel, RSS
+from Intectainment.datamodels import User, Post, Channel, RssFeeds, Rss_link
 from Intectainment.util import login_required
 from Intectainment.images import upload_image, display_image
 
@@ -32,12 +32,20 @@ def start():
 
 @gui.route("/rss")
 def rss():
-    feeds = RSS.query.all()
+	feeds = Rss_link.query.all()
 
-    for feed in feeds:
-        url = feed.rss
-        parsedFeed = feedparser.parse(url)
+	for feed in feeds:
+		url = feed.url
 
+		parsedFeed = feedparser.parse(url)		
+		
+		readFeed = 0
+		for entry in parsedFeed['entries']:
+			print(entry['title'])
+			if (str(entry['guid']) == str(feed.guid)):
+				print(str(entry['guid'])+" = "+str(feed.guid))
+				break
+            readFeed+=1
         readFeed = 0
         for entry in parsedFeed["entries"]:
             print(entry["title"])
@@ -45,33 +53,41 @@ def rss():
                 break
             readFeed += 1
 
-        print(readFeed)
+		feed.guid = parsedFeed['entries'][0]['guid']
+		for i in range(readFeed, 0, -1):
+			entry = parsedFeed['entries'][i]
 
-        feed.guid = parsedFeed["entries"][0]["guid"]
-        for i in range(readFeed, 0, -1):
-            # das für alle abonnierten channels
-            channels = feed.channel_id
+			title = ""
+			author = ""
+			link = ""
+			summary = ""
+			description = ""
+			pubDate = "Veröffentlichung: "+entry.published+"  \n"
 
-            for channel in channels:
-                entry = parsedFeed["entries"][i]
+			if ('title' in entry):
+				title = "# "+entry['title']+"\n"
+			if ('author' in entry):
+				author = "_von "+entry['author']+"_  \n"
+			if ('link' in entry):
+				link = "[Link zum Artikel]("+entry['link']+")\n  \n"
+			if ('description' in entry):
+				description = entry['description']
+			elif ('summary' in entry):
+				summary = entry['summary']
 
-                title = ""
-                author = ""
-                link = ""
-                summary = ""
-                description = ""
-                pubDate = "Veröffentlichung: " + entry.published + "  \n"
+			entryMd = title+pubDate+author+link+description+summary		
 
-                if "title" in entry:
-                    title = "# " + entry["title"] + "\n"
-                if "author" in entry:
-                    author = "_von " + entry["author"] + "_  \n"
-                if "link" in entry:
-                    link = "[Link zum Artikel](" + entry["link"] + ")\n  \n"
-                if "description" in entry:
-                    description = entry["description"]
-                elif "summary" in entry:
-                    summary = entry["summary"]
+			print("Writing post with "+entryMd)	
+
+			channels = feed.getChannel()
+
+			for channel in channels:
+
+				
+				# adding post
+				post = Post(channel_id=channel.id, owner=User.query.filter_by(id=1).first())
+				db.session.add(post)
+				db.session.commit()
 
                 entryMd = title + pubDate + author + link + description + summary
                 # adding post
@@ -86,6 +102,7 @@ def rss():
 
     return "done"
 
+	return "fertsch"
 
 @gui.route("/home")
 def home():
