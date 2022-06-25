@@ -25,14 +25,20 @@ URL: /home/dashboard
             <a href="{{url_for('gui.postView', postid=post.id)}}" class="btn btn-outline-light text-dark custom-button w-100">Zum Post</a>
         </div> 
         </div> -->
+        <div>
+            <a href="{{url_for('gui.postView', postid=post.id)}}" class="no-decoration">
     <div class="card shadow custom-shadow">
+        
         <div class="card-body">
             <h5 class="card-title postContent">{% for line in post.getContentLines()[:1]%}{{line}}{%endfor%}</h5>
-            <p class="card-text postContent">{% for line in post.getContentLines()[:5]%}{{line}}{%endfor%}</p>
-            <a href="{{url_for('gui.postView', postid=post.id)}}"
-                class="btn btn-outline-light text-dark custom-button">Zum Post <i class="bi bi-arrow-right"></i></a>
+            <p class="card-text postContent">{% for line in post.getContentLines()[2:6]%}{{line}}{%endfor%}</p>
+            <span class="btn btn-outline-light text-dark custom-button">Zum Post <i class="bi bi-arrow-right"></i></span>
         </div>
+  
     </div>
+</a>
+</div>
+
     {%endfor%}
     {%else%}
     <p> Es gibt noch keine gemerkten Posts. </p>

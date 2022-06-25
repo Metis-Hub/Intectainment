@@ -1,37 +1,48 @@
 {#
-    URL: /showPost
-  #}
-  
-  {% extends "defaultLayout.html" %}
-  {% block title %}Post bearbeiten{% endblock %}
-  
-  {% block head %}
-    {{super()}}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/postStyle.css') }}">
-    <script src="https://cdn.rawgit.com/showdownjs/showdown/1.9.0/dist/showdown.min.js"></script>
-  {% endblock %}
-  
-  {% block content %}
-    <div class="edit-post-header">
-        <h3>Post Editor</h3>
+URL: /showPost
+#}
 
+{% extends "defaultLayout.html" %}
+{% block title %}Post bearbeiten{% endblock %}
+
+{% block head %}
+{{super()}}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/postStyle.css') }}">
+<script src="https://cdn.rawgit.com/showdownjs/showdown/1.9.0/dist/showdown.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="newpost-wrapper">
+  <form method="POST">
+    <div class="newpost-head shadow justify-content-center">
+      <h1 class="newpost-h1">Post Editor</h1>
+      <div class="newpost-buttons">
+        <input class="btn btn-outline-success button-margin shadow" type="submit" name="update" value="Updaten" />
+        <input class="btn btn-outline-danger button-margin shadow" type="submit" name="exit" value="Abbrechen" />
+        <a class="btn btn-outline-info button-margin shadow" href="{{url_for('upload_form', type='p', id=post.id)}}"
+          onclick="open_wnd(this.href); return false">Bild hochladen</a>
+      </div>
     </div>
 
-    <form method="POST">
-        <!-- post area -->
-        <div class="forms">
-          <textarea class="form-control p-3 post-ta" name="content" id="conent" oninput="run()">{{post.getContent()}}</textarea>
-          <!-- vorschau des posts -->
-          <div id="rendert" class="preview form-control"></div>
-        </div>
-        <div>
-          <input class="btn btn-primary edit-post-button" type="submit" name="update" value="Updaten"></input>
-          <input class="btn btn-primary edit-post-button" type="submit" name="exit" value="Abbrechen"/>
-		      <a class="btn btn-primary align-correct" href="{{url_for('upload_form', type='p', id=post.id)}}" onclick="open_wnd(this.href); return false">Bild hochladen</a>
-        </div>
-    </form>
+    <div>
 
-    <script type="text/JavaScript">
+
+      <!-- post area -->
+      <div class="d-flex newpost-body">
+        <textarea class="form-control post-ta shadow" name="content" id="conent"
+          oninput="run()">{{post.getContent()}}</textarea>
+
+        <!-- vorschau des posts -->
+        <div id="rendert" class="preview form-control shadow">
+
+        </div>
+      </div>
+
+    </div>
+  </form>
+</div>
+
+<script type="text/JavaScript">
         function run() {
             var text = document.getElementById('conent').value,
             target = document.getElementById('rendert'),
@@ -42,4 +53,4 @@
         }
         run();
     </script>
-  {% endblock %}
+{% endblock %}
