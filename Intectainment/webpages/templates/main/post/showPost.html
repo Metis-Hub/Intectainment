@@ -44,7 +44,7 @@
   </button>
 </div>
   <p>{{timeMessage}}</p>
-  <p>Erstellt von <a href="{{url_for('gui.profile', search=post.owner.username)}}">{{post.owner.getName()}}</a></p>
+  <p>Erstellt von {{post.owner}}</p>
   
   <form method="post">
   
