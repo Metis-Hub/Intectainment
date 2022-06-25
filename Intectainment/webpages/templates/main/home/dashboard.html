@@ -1,5 +1,5 @@
 {#
-    URL: /home/dashboard
+URL: /home/dashboard
 #}
 
 {% extends "sidebarLayout.html" %}
@@ -7,30 +7,42 @@
 {%block title%}Dashboard{%endblock%}
 
 {%block head%}
-    {{super()}}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/postStyle.css') }}">
-    <script src="https://cdn.rawgit.com/showdownjs/showdown/1.9.0/dist/showdown.min.js"></script>
+{{super()}}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/postStyle.css') }}">
+<script src="https://cdn.rawgit.com/showdownjs/showdown/1.9.0/dist/showdown.min.js"></script>
 {%endblock%}
 
 
 {%block content%}
-<div class="favourite-posts row row-cols-1 row-cols-md-3">
-{%if favs.total > 0%}
+<div class="favourite-posts grid-container">
+    {%if favs.total > 0%}
     {%for post in favs.items%}
-    <div class="col">
-        <div class="card bg-dark text-white post-margin border-light border-1" id="touch">
+    <!-- <div class="card post-margin card-border shadow" id="touch">
             <div class="card-text">
             <div class="postContent">
-{% for line in post.getContentLines()[:5]%}{{line}}{%endfor%}
+            {% for line in post.getContentLines()[:5]%}{{line}}{%endfor%}
             </div>
-            <a href="{{url_for('gui.postView', postid=post.id)}}" class="btn btn-outline-primary w-100">Zum Post</a>
+            <a href="{{url_for('gui.postView', postid=post.id)}}" class="btn btn-outline-light text-dark custom-button w-100">Zum Post</a>
+        </div> 
+        </div> -->
+        <div>
+            <a href="{{url_for('gui.postView', postid=post.id)}}" class="no-decoration">
+    <div class="card shadow custom-shadow">
+        
+        <div class="card-body">
+            <h5 class="card-title postContent">{% for line in post.getContentLines()[:1]%}{{line}}{%endfor%}</h5>
+            <p class="card-text postContent">{% for line in post.getContentLines()[2:6]%}{{line}}{%endfor%}</p>
+            <span class="btn btn-outline-light text-dark custom-button">Zum Post <i class="bi bi-arrow-right"></i></span>
         </div>
-        </div>
+  
     </div>
+</a>
+</div>
+
     {%endfor%}
     {%else%}
-        <p> Es gibt noch keine gemerkten Posts. </p>
-{%endif%}
+    <p> Es gibt noch keine gemerkten Posts. </p>
+    {%endif%}
 </div>
 {%endblock%}
 

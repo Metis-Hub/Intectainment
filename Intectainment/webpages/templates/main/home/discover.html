@@ -1,52 +1,51 @@
 {#
-    URL: /home/discover
+URL: /home/discover
 #}
 
 {% extends "sidebarLayout.html" %}
 {% block title %}Entdecken{%endblock%}
 {% block content%}
-<div class="discover-head d-flex justify-content-evenly">
-        <form method="get" class="input-group mb-3 w-50">
-            <input type="text" class="form-control search bg-dark w-auto text-white" name="channel" placeholder="Kanalname">
-            <button type="submit" class="btn btn-primary search-button">Suchen</button>
-        </form>
+{% from "img/profile_images.html" import profile_img with context %}
 
-        {% if user %}
-        
-            <a href="{{url_for('gui.channelCreation')}}" class="create-channel-button btn btn-outline-primary"><i class="bi bi-plus-square"></i> Neuen Kanal erstellen</a>
-        
-        {% endif %}
+<div class="discover-head d-flex justify-content-evenly shadow">
+    <form method="get" class="input-group w-50">
+        <input type="text" class="form-control search w-auto shadow" name="channel" placeholder="Kanalname">
+        <button type="submit" class="btn btn-primary search-button shadow">Suchen</button>
+    </form>
+    {% if user %}
+    <a href="{{url_for('gui.channelCreation')}}" class="create-channel-button btn btn-outline-primary shadow"><i
+            class="bi bi-plus-square"></i> Neuen Kanal erstellen</a>
+    {% endif %}
 </div>
 
 <div class="content-container">
-    <div class="channels text-white"><h2>Channels</h2><p></p>
+    <div class="channels">
         {%if channels.total>0%}
-            {%for channel in channels.items%}
-            <a href="{{url_for('gui.channelView', channel=channel.name)}}">
-                <div class="blog w-50">
-                    <table border="0" width="100%">
-                        <tr valign="center">
-                            <td width="50%" align="center"><div class="channel-profile" style="margin-top: 10%;"><img src="{{ channel.getProfileImagePath() }}"/></div></td>
-                            <td width="50%"><div class="btn btn-outline-info border-0">{{channel.name}}</div></td>
-                        </tr>
-                    </table>
+        {%for channel in channels.items%}
+        <a href="{{url_for('gui.channelView', channel=channel.name)}}" class="no-decoration">
+            <div class="blog">
+                {{ profile_img(channel) }}
+                <div>
+                    <span class="channel-discover btn btn-outline-light text-dark custom-button">{{channel.name}}</span>
                 </div>
-            </a>
-            {%endfor%}
-            {%if channels.pages > 1 %}
-                <hr/>
-                <ul class="pagination d-flex justify-content-center">
-                {% for page in channels.iter_pages() %}
-                    {%if page%}
-                        <li class="page-item"><a class="page-link" href="?page={{page}}">{{page}}</a></li>
-                    {%else%}
-                        <li class="page-item"><a class="page-link">...</a></li>
-                    {%endif%}
-                {% endfor %}
-            </ul>
+            </div>
+        </a>
+        <hr class="styled-hr" />
+        {%endfor%}
+
+        {%if channels.pages > 1 %}
+        <ul class="pagination d-flex justify-content-center pagination-margin">
+            {% for page in channels.iter_pages() %}
+            {%if page%}
+            <li class="page-item"><a class="page-link" href="?page={{page}}">{{page}}</a></li>
+            {%else%}
+            <li class="page-item"><a class="page-link">...</a></li>
             {%endif%}
+            {% endfor %}
+        </ul>
+        {%endif%}
         {%else%}
-            <p> Es wurden keine Kanäle gefunden </p>
+        <p> Es wurden keine Kanäle gefunden </p>
         {%endif%}
     </div>
 </div>
