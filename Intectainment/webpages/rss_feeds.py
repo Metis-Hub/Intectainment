@@ -3,7 +3,7 @@ import feedparser, threading, time
 from flask import render_template, request, redirect, url_for
 
 from Intectainment import db
-from Intectainment.datamodels import RssFeeds, Rss_link, Channel, User, Post
+import Intectainment.datamodels as dbm
 from Intectainment.webpages import gui
 from Intectainment.util import moderator_required
 
@@ -15,8 +15,8 @@ def newRss():
         name, rss_url = request.form.get("name"), request.form.get("rss-url")
 
         if name:
-            if not Channel.query.filter_by(name=name).first():
-                channel = Channel(
+            if not dbm.Channel.query.filter_by(name=name).first():
+                channel = dbm.Channel(
                     name=name,
                     owner="RSS-Feed",
                 )
@@ -28,16 +28,16 @@ def newRss():
                 )
 
         if rss_url:
-            if Rss_link.query.filter_by(url=rss_url).first():
-                Rss_link.query.filter_by(url=rss_url).channel.append(
-                    Channel.query.filter_by(name=name).first()
+            if dbm.Rss_link.query.filter_by(url=rss_url).first():
+                dbm.Rss_link.query.filter_by(url=rss_url).channel.append(
+                    dbm.Channel.query.filter_by(name=name).first()
                 )
             else:
                 # last three entries will be shown
                 parsedFeed = feedparser.parse(rss_url)
                 lastGuid = parsedFeed["entries"][3]["guid"]
 
-                feed = Rss_link(url=rss_url, guid=lastGuid)
+                feed = dbm.Rss_link(url=rss_url, guid=lastGuid)
                 feed.channel.append(Channel.query.filter_by(name=name).first())
 
                 db.session.add(feed)
@@ -49,7 +49,7 @@ def newRss():
 
 
 def update_rss():
-    for feed in Rss_link.query.all():
+    for feed in dbm.Rss_link.query.all():
         url = feed.url
 
         parsedFeed = feedparser.parse(url)
@@ -79,7 +79,7 @@ def update_rss():
 
             for channel in feed.getChannel():
                 # adding post
-                post = Post(channel_id=channel.id, owner=entry["author"])
+                post = dbm.Post(channel_id=channel.id, owner=entry["author"])
                 db.session.add(post)
                 db.session.commit()
 
