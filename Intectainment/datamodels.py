@@ -13,12 +13,6 @@ ChannelCategory = db.Table(
     db.Column("channel_id", db.Integer, db.ForeignKey("channel.id"), primary_key=True),
 )
 
-RssFeeds = db.Table(
-    "feed",
-    db.Column("channel_id", db.Integer, db.ForeignKey("channel.id")),
-    db.Column("rss_id", db.Integer, db.ForeignKey("RSS.id")),
-)
-
 
 class Subscription(db.Model):
     user = db.Column(db.String(80), primary_key=True)
