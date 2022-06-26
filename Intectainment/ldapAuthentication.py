@@ -4,7 +4,7 @@ import Intectainment.datamodels as dbm
 from flask import session
 
 from ldap3 import Connection, Server, SUBTREE
-from ldap3.core.exceptions import LDAPBindError
+from ldap3.core.exceptions import LDAPBindError, LDAPSocketOpenError
 
 import random, os, threading, time, ast, string
 
@@ -55,7 +55,7 @@ class User:
                 password,
                 auto_bind=True,
             )
-        except LDAPBindError:
+        except LDAPBindError and LDAPSocketOpenError:
             return False
 
         user = User(username)
