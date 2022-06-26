@@ -64,7 +64,7 @@ def update_rss():
             continue
         feed.guid = parsedFeed["entries"][0]["guid"]
         for i in range(readFeed, 0, -1):
-            entry = parsedFeed["entries"].get(i)
+            entry = parsedFeed["entries"][i]
 
             if entry == None:
                 break
