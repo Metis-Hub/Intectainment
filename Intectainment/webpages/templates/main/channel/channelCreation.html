@@ -17,5 +17,9 @@
         <input class="form-control w-auto" type="text" placeholder="Name" name="name" required/>
         <input class="btn btn-outline-primary form-control" type="submit" value="Neuen Kanal erstellen" />
     </form>
+
+    {% if isMod %}
+        <a href="{{url_for('gui.newRss')}}">neuer RSS-link Channel</a>
+    {%endif%}
 </div>
 {%endblock%}

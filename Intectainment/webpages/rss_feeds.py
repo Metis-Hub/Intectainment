@@ -43,8 +43,8 @@ def newRss():
                 db.session.add(feed)
                 db.session.commit()
             return redirect(url_for("gui.channelView", channel=name))
+            update_rss()
 
-    update_rss()
     return render_template("main/channel/rssCreation.html")
 
 

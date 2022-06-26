@@ -34,9 +34,14 @@ def channelCreation():
                 return redirect(url_for("gui.channelView", channel=name))
             else:
                 return render_template(
-                    "main/channel/channelCreation.html", error="Kanal existiert schon"
+                    "main/channel/channelCreation.html",
+                    error="Kanal existiert schon",
+                    isMod=User.getCurrentUser().permission >= User.PERMISSION.MODERATOR,
                 )
-    return render_template("main/channel/channelCreation.html")
+    return render_template(
+        "main/channel/channelCreation.html",
+        isMod=User.getCurrentUser().permission >= User.PERMISSION.MODERATOR,
+    )
 
 
 @gui.route("/c/<channel>", methods=["POST", "GET"])
