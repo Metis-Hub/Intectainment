@@ -59,12 +59,9 @@ def update_rss():
             if str(entry["guid"]) == str(feed.guid):
                 break
             readFeed += 1
-        readFeed = 0
-        for entry in parsedFeed["entries"]:
-            if str(entry["guid"]) == str(feed.guid):
-                break
-            readFeed += 1
 
+        if readFeed == 0:
+            continue
         feed.guid = parsedFeed["entries"][0]["guid"]
         for i in range(readFeed, 0, -1):
             entry = parsedFeed["entries"].get(i)
