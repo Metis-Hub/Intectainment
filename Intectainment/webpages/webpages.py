@@ -32,20 +32,20 @@ def start():
 
 @gui.route("/rss")
 def rss():
-	feeds = Rss_link.query.all()
+    feeds = Rss_link.query.all()
 
-	for feed in feeds:
-		url = feed.url
+    for feed in feeds:
+        url = feed.url
 
-		parsedFeed = feedparser.parse(url)		
-		
-		readFeed = 0
-		for entry in parsedFeed['entries']:
-			print(entry['title'])
-			if (str(entry['guid']) == str(feed.guid)):
-				print(str(entry['guid'])+" = "+str(feed.guid))
-				break
-            readFeed+=1
+        parsedFeed = feedparser.parse(url)
+
+        readFeed = 0
+        for entry in parsedFeed["entries"]:
+            print(entry["title"])
+            if str(entry["guid"]) == str(feed.guid):
+                print(str(entry["guid"]) + " = " + str(feed.guid))
+                break
+            readFeed += 1
         readFeed = 0
         for entry in parsedFeed["entries"]:
             print(entry["title"])
@@ -53,41 +53,41 @@ def rss():
                 break
             readFeed += 1
 
-		feed.guid = parsedFeed['entries'][0]['guid']
-		for i in range(readFeed, 0, -1):
-			entry = parsedFeed['entries'][i]
+        feed.guid = parsedFeed["entries"][0]["guid"]
+        for i in range(readFeed, 0, -1):
+            entry = parsedFeed["entries"][i]
 
-			title = ""
-			author = ""
-			link = ""
-			summary = ""
-			description = ""
-			pubDate = "Veröffentlichung: "+entry.published+"  \n"
+            title = ""
+            author = ""
+            link = ""
+            summary = ""
+            description = ""
+            pubDate = "Veröffentlichung: " + entry.published + "  \n"
 
-			if ('title' in entry):
-				title = "# "+entry['title']+"\n"
-			if ('author' in entry):
-				author = "_von "+entry['author']+"_  \n"
-			if ('link' in entry):
-				link = "[Link zum Artikel]("+entry['link']+")\n  \n"
-			if ('description' in entry):
-				description = entry['description']
-			elif ('summary' in entry):
-				summary = entry['summary']
+            if "title" in entry:
+                title = "# " + entry["title"] + "\n"
+            if "author" in entry:
+                author = "_von " + entry["author"] + "_  \n"
+            if "link" in entry:
+                link = "[Link zum Artikel](" + entry["link"] + ")\n  \n"
+            if "description" in entry:
+                description = entry["description"]
+            elif "summary" in entry:
+                summary = entry["summary"]
 
-			entryMd = title+pubDate+author+link+description+summary		
+            entryMd = title + pubDate + author + link + description + summary
 
-			print("Writing post with "+entryMd)	
+            print("Writing post with " + entryMd)
 
-			channels = feed.getChannel()
+            channels = feed.getChannel()
 
-			for channel in channels:
-
-				
-				# adding post
-				post = Post(channel_id=channel.id, owner=User.query.filter_by(id=1).first())
-				db.session.add(post)
-				db.session.commit()
+            for channel in channels:
+                # adding post
+                post = Post(
+                    channel_id=channel.id, owner=User.query.filter_by(id=1).first()
+                )
+                db.session.add(post)
+                db.session.commit()
 
                 entryMd = title + pubDate + author + link + description + summary
                 # adding post
@@ -102,7 +102,6 @@ def rss():
 
     return "done"
 
-	return "fertsch"
 
 @gui.route("/home")
 def home():
