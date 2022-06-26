@@ -38,7 +38,7 @@ def newRss():
                 lastGuid = parsedFeed["entries"][3]["guid"]
 
                 feed = dbm.Rss_link(url=rss_url, guid=lastGuid)
-                feed.channel.append(Channel.query.filter_by(name=name).first())
+                feed.channel.append(dbm.Channel.query.filter_by(name=name).first())
 
                 db.session.add(feed)
                 db.session.commit()
