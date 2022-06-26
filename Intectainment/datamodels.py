@@ -19,6 +19,13 @@ class Subscription(db.Model):
     channel_id = db.Column(db.Integer, db.ForeignKey("channel.id"), primary_key=True)
 
 
+RssFeeds = db.Table(
+    "feed",
+    db.Column("channel_id", db.Integer, db.ForeignKey("channel.id")),
+    db.Column("rss_id", db.Integer, db.ForeignKey("rss_link.id")),
+)
+
+
 class Favorites(db.Model):
     user = db.Column(db.String(80), primary_key=True)
     post_id = db.Column(db.Integer, db.ForeignKey("post.id"), primary_key=True)
@@ -139,3 +146,27 @@ class Category(db.Model):
 
     def __repr__(self):
         return self.name
+
+
+class RSS(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    rss = db.Column(db.String(64), unique=True, nullable=False)
+
+    channel_id = db.Column(db.Integer, db.ForeignKey("channel.id"), nullable=False)
+    guid = db.Column(db.Integer, nullable=True)
+
+    def __repr__(self):
+        return self.rss
+
+
+class Rss_link(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    url = db.Column(db.String(64), unique=True, nullable=False)
+    channel = db.relationship(
+        "Channel", secondary=RssFeeds, backref="subscribedChannels"
+    )
+
+    guid = db.Column(db.Integer, nullable=True)
+
+    def getChannel(self):
+        return self.channel

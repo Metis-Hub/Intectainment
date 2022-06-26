@@ -1,12 +1,11 @@
 from Intectainment import app, db
 from Intectainment.datamodels import Channel, Category, Post, User
-from Intectainment.webpages.webpages import gui
+from Intectainment.webpages import gui
 from Intectainment.util import login_required
 from Intectainment.images import move_images
 
 from flask import request, render_template, redirect, url_for
 from sqlalchemy import desc
-
 
 import datetime
 
@@ -35,9 +34,14 @@ def channelCreation():
                 return redirect(url_for("gui.channelView", channel=name))
             else:
                 return render_template(
-                    "main/channel/channelCreation.html", error="Kanal existiert schon"
+                    "main/channel/channelCreation.html",
+                    error="Kanal existiert schon",
+                    isMod=User.getCurrentUser().permission >= User.PERMISSION.MODERATOR,
                 )
-    return render_template("main/channel/channelCreation.html")
+    return render_template(
+        "main/channel/channelCreation.html",
+        isMod=User.getCurrentUser().permission >= User.PERMISSION.MODERATOR,
+    )
 
 
 @gui.route("/c/<channel>", methods=["POST", "GET"])

@@ -151,7 +151,7 @@ def display_image_posts(type, post_id, filename):
 
 # Import other routing files
 from Intectainment.webpages import channelsCategories
-
+import Intectainment.webpages.rss_feeds
 
 app.register_blueprint(ap)
 app.register_blueprint(gui)

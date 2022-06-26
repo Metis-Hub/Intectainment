@@ -5,9 +5,13 @@ import dotenv, os, sys
 
 dotenv.load_dotenv()
 
-app = Flask(__name__, template_folder="./webpages/templates", static_folder="./webpages/static")
+app = Flask(
+    __name__, template_folder="./webpages/templates", static_folder="./webpages/static"
+)
 
-app.config["UPLOAD_FOLDER"] = os.path.join(os.path.dirname(__file__), app.static_folder, "img")
+app.config["UPLOAD_FOLDER"] = os.path.join(
+    os.path.dirname(__file__), app.static_folder, "img"
+)
 app.config["SECRET_KEY"] = os.getenv("INTECTAINMENT_SECRET")
 
 
@@ -18,13 +22,15 @@ db = SQLAlchemy(app)
 
 
 try:
-	db.engine.execute("SELECT 1")
+    db.engine.execute("SELECT 1")
 except OperationalError:
-	print("Could not connect to database!\nPlease make sure you entered the correct database-URI")
-	exit()
+    print(
+        "Could not connect to database!\nPlease make sure you entered the correct database-URI"
+    )
+    exit()
 
 # load webpages
-from Intectainment.webpages import webpages
+import Intectainment.webpages
 
-if __name__ == '__main__':
-	app.run()
+if __name__ == "__main__":
+    app.run()
