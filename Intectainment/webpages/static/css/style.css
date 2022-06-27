@@ -62,7 +62,9 @@
 }
 .bottom-sidebar-nouser {
     background: rgb(1, 66, 64);
-    margin-top: 60vh;
+    position: absolute;
+    bottom: 6vh;
+    width: 14vw;
 }
 .sidebar-content {
 	height: 100vh;
