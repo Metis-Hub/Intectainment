@@ -414,16 +414,13 @@ a {
 }
 
 .settings-categories {
-    border-bottom: 1px solid darkgray;
     display: flex;
     padding-bottom: 2vh;
-    width: 100vw;
 }
 
 .settings-description {
-    margin-top: 2vh;
-    padding-bottom: 1vh;
-    border-bottom: 1px solid darkgray;
+    margin-top: 3vh;
+    margin-bottom: 3vh;
 }
 
 .text-right {
@@ -455,9 +452,8 @@ a {
 }
 
 .settings-picture {
-    padding-top: 1vh;
-    border-top: 1px solid darkgray;
-    display: inline-block
+    display: flex;
+    height: 25vh;
 }
 
 .channelinfo-buttons {
@@ -843,4 +839,35 @@ a {
 
 .channelcreation-mid {
     margin-left: 30vw;
+}
+
+.channelsettings-head {
+    height: 12vh;
+    width: 100vw;
+    background: rgba(0, 208, 255, 0.1);
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    display: flex;
+    align-items: center;
+}
+
+.channelsettings-body {
+    margin-top: 3vh;
+    align-items: center;
+    align-content: center;
+    padding-left: 25vw;
+    padding-right: 25vw;
+}
+
+.change-picture {
+    height: fit-content;
+    position: relative;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+.channelsettings-mid {
+    margin-left: 35vw;
 }
