@@ -1,6 +1,6 @@
 {% macro profile_img(object) %}
 <div class="profile">
-    <canvas id="{{object.getProfileImagePath()}}{{object.id}}" width="200px" height="200px"></canvas>
+    <canvas id="{{object.getProfileImagePath()}}{{object.id}}" width="234" height="234%" class="profile-canvas"></canvas>
     <script type="text/JavaScript">loadimg('{{object.getProfileImagePath()}}',{{object.img_zoom/1000.0}},{{object.img_xPos/1000.0}},{{object.img_yPos/1000.0}},{{object.id}});</script>
 </div>
 {% endmacro %}

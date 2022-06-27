@@ -10,11 +10,15 @@
 
 {%block body%}
     <div class="sidebar">
+
         <div class="top-sidebar active-nav d-flex justify-content-between flex-wrap flex-column nav-link">
-            <a href="{{url_for('gui.home')}}" class="h3 my-2 text-white no-decoration">
-                <span class="align-middle">Navigation</span>
-            </a>
+            <div class="top-sidebar-text">
+                <a href="{{url_for('gui.home')}}" class="h3 my-2 text-white no-decoration">
+                    <h1>Navigation</h1>
+                </a>
+            </div>
         </div>
+
         <div class="active-nav d-flex justify-content-between flex-wrap flex-column width sidebar-shadow">
             <ul class="nav flex-column w-100">
                     

@@ -30,7 +30,7 @@
         <div class="card shadow custom-shadow">
             <div class="card-body">
                 <h5 class="card-title post-preview">{% for line in post.getContentLines()[:1]%}{{line}}{%endfor%}</h5>
-                <p class="card-text post-preview">{% for line in post.getContentLines()[:5]%}{{line}}{%endfor%}</p>
+                <p class="card-text post-preview">{% for line in post.getContentLines()[2:6]%}{{line}}{%endfor%}</p>
                 <a href="{{url_for('gui.postView', postid=post.id)}}"
                     class="btn btn-outline-light text-dark custom-button">Zum Post <i class="bi bi-arrow-right"></i></a>
             </div>
