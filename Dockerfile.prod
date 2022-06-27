@@ -15,10 +15,12 @@ RUN pip install -r requirements.txt
 RUN python setup.py
 
 COPY . .
+
 RUN mv deploy/* .
 RUN mv nginx.conf /etc/nginx
+RUN systemctl enable nginx
 
 EXPOSE 80
 
 RUN chmod +x ./start.sh
-CMD ["./start.sh"]
+CMD ["uwsgi" "--ini" "uwsgi.ini"]
