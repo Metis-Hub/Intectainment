@@ -254,7 +254,8 @@
 }
 
 .nopostcontainer {
-    height: 78vh;
+    height: 76vh;
+    width: auto;
     text-align: center;
     display: flex;
     justify-content: center;
@@ -819,4 +820,27 @@ a {
 .showpost-head-info {
     margin-left: 5vw;
     font-weight: bold;
+}
+
+.channelcreation-head {
+    height: 12vh;
+    width: 100vw;
+    background: rgba(0, 208, 255, 0.1);
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    display: flex;
+    align-items: center;
+}
+
+.channelcreation-body {
+    margin-top: 3vh;
+    align-items: center;
+    align-content: center;
+    padding-left: 25vw;
+    padding-right: 25vw;
+}
+
+.channelcreation-mid {
+    margin-left: 30vw;
 }
