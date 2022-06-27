@@ -22,36 +22,48 @@
       {% if faved %}
       <button class="unstyle link-button text-left nav-link" type="submit" name="defav"><span class="bi bi-star-fill big-icon"> Unmerken</span></button>
       {%else%}
-      <button class="unstyle link-button text-left" type="submit" name="fav"><span class="bi bi-star big-icon"> Merken</span></button>
+      <button class="unstyle link-button text-left nav-link" type="submit" name="fav"><span class="bi bi-star big-icon"> Merken</span></button>
       {%endif%}
     </form>
     {%endif%}
     <br>
-    <a href="{{url_for('gui.channelView', channel=post.channel.name)}}"><span class="bi bi-person-circle big-icon text-left"> Kanal</span></a>
+    <a href="{{url_for('gui.channelView', channel=post.channel.name)}}"><button class="unstyle link-button text-left nav-link"><span class="bi bi-person-circle big-icon text-left"> Kanal</span></button></a>
     <br>
     {%if canModify %}
-    <a href="{{url_for('gui.postEdit', postid=post.id)}}"><span class="bi bi-pencil-square big-icon text-left"> Bearbeiten</span></a>
+    <a href="{{url_for('gui.postEdit', postid=post.id)}}"><button class="unstyle link-button text-left nav-link"><span class="bi bi-pencil-square big-icon text-left"> Bearbeiten</span></button></a>
     <form method="POST">
-      <button class="unstyle link-button text-left" type="submit" name="delete"><span class="bi bi-trash big-icon"> Löschen</span></button>
+      <button class="unstyle link-button text-left nav-link" type="submit" name="delete"><span class="bi bi-trash big-icon"> Löschen</span></button>
     </form>
 	{%endif%}
   </div>
 </div>
 
-<div class="container-fluid mt-3">
-  <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#demo">
-    <i class="bi bi-list"></i>
-  </button>
-</div>
-  <p>{{timeMessage}}</p>
-  <p>Erstellt von {{post.owner}}</p>
-  
-  <form method="post">
-  
-  </form>
-  
 
-  <div class="show-post" id="postConent">{{post.getContent()}}</div>
+<div class="showpost-head shadow justify-content-start">
+  <div class="showpost-head-button">
+    <button class="btn btn-primary showpost-button shadow" type="button" data-bs-toggle="offcanvas" data-bs-target="#demo">
+      <i class="bi bi-list"></i>
+    </button>
+  </div>
+  
+  <div class="showpost-head-info">
+    <p>{{timeMessage}}</p>
+    <p>Erstellt von {{post.owner}}</p>
+  </div>
+  
+</div>
+<div class="showpost-body">
+    
+    
+    <form method="post">
+    
+    </form>
+    
+  
+    <div class="show-post" id="postConent">{{post.getContent()}}</div>
+</div>
+
+
 
   <script type="text/JavaScript">
     var target = document.getElementById('postConent');

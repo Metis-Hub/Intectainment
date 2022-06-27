@@ -787,3 +787,36 @@ a {
     word-wrap: break-word;
     max-width: 14vw;
 }
+
+.showpost-head {
+    height: 12vh;
+    width: 100vw;
+    background: rgba(0, 208, 255, 0.1);
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    display: flex;
+    align-items: center;
+}
+
+.showpost-body {
+    height: 88vh;
+    width: 100vw;
+    padding-left: 5vw;
+    padding-right: 5vw;
+    text-align: start;
+    padding-top: 3vh;
+}
+
+.showpost-button {
+    height: fit-content;
+}
+
+.showpost-head-button {
+    margin-left: 7vw;
+}
+
+.showpost-head-info {
+    margin-left: 5vw;
+    font-weight: bold;
+}
