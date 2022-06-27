@@ -12,6 +12,8 @@ RUN pip install -r requirements-dev.txt
 
 COPY . .
 
+RUN python setup.py
+
 EXPOSE 80
 
 CMD [ "python3", "run.py" ]
