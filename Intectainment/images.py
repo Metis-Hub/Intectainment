@@ -23,7 +23,9 @@ def create_subfolder(path):
 def deleteImage(user: User):
     if user.icon_extension:
         source_path = os.path.join(
-            app.config["UPLOAD_FOLDER"], "usr/", str(user.id) + user.icon_extension
+            app.config["UPLOAD_FOLDER"],
+            "usr/",
+            str(user.username) + user.icon_extension,
         )
         user.icon_extension = None
         if os.path.exists(source_path):
@@ -36,7 +38,7 @@ def softImageDelete(user: User):
         source_path = os.path.join(
             app.config["UPLOAD_FOLDER"],
             "usr/",
-            str(user.id) + "." + user.icon_extension,
+            str(user.username) + "." + user.icon_extension,
         )
         if os.path.exists(source_path):
             os.remove(source_path)
