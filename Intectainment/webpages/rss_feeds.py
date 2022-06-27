@@ -18,7 +18,7 @@ def newRss():
             if not dbm.Channel.query.filter_by(name=name).first():
                 channel = dbm.Channel(
                     name=name,
-                    owner="RSS-Feed",
+                    owner=dbm.User.getCurrentUser().username,
                 )
                 db.session.add(channel)
                 db.session.commit()
