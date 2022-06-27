@@ -8,17 +8,7 @@ from ldap3.core.exceptions import LDAPBindError, LDAPSocketOpenError
 
 import random, os, threading, time, ast, string
 
-# loads a dict of (groupName -> permission) mappings and sorts them descendingly
-roles = os.getenv("INTECTAINMENT_LDAP_PERMISSIONS")
-if roles:
-    roles = {
-        k: v
-        for k, v in sorted(
-            ast.literal_eval(roles).items(), key=lambda item: item[1], reverse=True
-        )
-    }
-else:
-    roles = {}
+LDAP_SERVER = Server(os.getenv("INTECTAINMENT_LDAP_SERVER"))
 
 
 class User:
@@ -37,7 +27,7 @@ class User:
         if permission:
             self.permission = permission
         else:
-            self.permission = User.loadPermission(username)
+            self.permission = loadPermission(username)
 
         self.lastActive = time.time()
 
@@ -50,7 +40,7 @@ class User:
             return True
         try:
             conn = Connection(
-                os.getenv("INTECTAINMENT_LDAP_SERVER"),
+                LDAP_SERVER,
                 getUserDN(username),
                 password,
                 auto_bind=True,
@@ -73,11 +63,6 @@ class User:
         session["User"] = key
 
         return True
-
-    @staticmethod
-    def loadPermission(uid: str):
-        # TODO
-        return User.PERMISSION.ADMIN
 
     @staticmethod
     def getCurrentUser():
@@ -172,6 +157,47 @@ def getUserDN(user: str):
 
 def getGroupDN(group: str):
     return f"{os.getenv('INTECTAINMENT_LDAP_GROUP_ID')}={group},{os.getenv('INTECTAINMENT_LDAP_GROUP_DN')},{os.getenv('INTECTAINMENT_LDAP_ROOT')}"
+
+
+# loads a dict of (groupName -> permission) mappings
+roles = ast.literal_eval(os.getenv("INTECTAINMENT_LDAP_PERMISSIONS"))
+
+# creates a ldap filter with all relevant groups
+search_filter = f"(&(objectclass={os.getenv('INTECTAINMENT_LDAP_GROUP_OBJ_CLASS')})(|"
+for group in roles:
+    search_filter = (
+        search_filter + f"({os.getenv('INTECTAINMENT_LDAP_GROUP_ID')}={group})"
+    )
+search_filter = search_filter + ")"
+
+
+def loadPermission(uid: str) -> int:
+    try:
+        conn = Connection(
+            LDAP_SERVER,
+            user=os.getenv("INTECTAINMENT_LDAP_ELEVATED_USER"),
+            password=os.getenv("INTECTAINMENT_LDAP_ELEVATED_PWD"),
+            auto_bind=True,
+            use_referral_cache=True,
+        )
+
+        conn.search(
+            f"{os.getenv('INTECTAINMENT_LDAP_GROUP_DN')},{os.getenv('INTECTAINMENT_LDAP_ROOT')}",
+            search_filter
+            + f"({os.getenv('INTECTAINMENT_LDAP_GROUP_MEMBER_ATTR')}={uid}))",
+            attributes=[
+                os.getenv("INTECTAINMENT_LDAP_GROUP_ID"),
+            ],
+        )
+
+        permission = 0
+        for entry in conn.entries:
+            permission = roles[
+                str(entry.__getattribute__(os.getenv("INTECTAINMENT_LDAP_GROUP_ID")))
+            ]
+        return permission
+    except LDAPBindError and LDAPSocketOpenError:
+        return User.PERMISSION.GUEST
 
 
 # init timeout check

@@ -1,5 +1,5 @@
 from Intectainment import db, app
-from Intectainment.ldapAuthentication import User
+from Intectainment.ldap_authentication import User
 
 import os.path, datetime
 from flask import session, url_for
