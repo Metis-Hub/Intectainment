@@ -1,3 +1,7 @@
+import os
+import setup
+
+
 from Intectainment import app
 
 if __name__ == "__main__":
