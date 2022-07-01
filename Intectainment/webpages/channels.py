@@ -1,8 +1,9 @@
 from Intectainment import app, db
-from Intectainment.datamodels import Channel, Post, User
+from Intectainment.datamodels import Channel, Post, User, RssLink
 from Intectainment.webpages import gui
 from Intectainment.util import login_required
 from Intectainment.images import move_images
+from Intectainment.webpages.rss_feeds import createRssLink
 
 from flask import request, render_template, redirect, url_for
 from sqlalchemy import desc
@@ -91,16 +92,19 @@ def channelSettings(channel):
 
     if request.method == "POST":
         if request.form.get("addRss") and request.form.get("rssLink"):
-            pass
+            createRssLink(request.form.get("rssLink"), channel)
         elif request.form.get("remRss") and request.form.get("rssLink"):
-            pass
+            channel.feeds.remove(
+                RssLink.query.filter_by(url=request.form.get("rssLink")).first()
+            )
+            db.session.commit()
+
         elif request.form.get("changeDescription"):
             channel.description = request.form.get("description", "")
             db.session.commit()
 
     return render_template(
-        "main/channel/channelSettings.html",
-        channel=channel,
+        "main/channel/channelSettings.html", channel=channel, user=User.getCurrentUser()
     )
 
 

@@ -128,25 +128,12 @@ class Post(db.Model):
         db.session.delete(self)
 
 
-class RSS(db.Model):
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    rss = db.Column(db.String(64), unique=True, nullable=False)
-
-    channel_id = db.Column(db.Integer, db.ForeignKey("channel.id"), nullable=False)
-    guid = db.Column(db.Integer, nullable=True)
-
-    def __repr__(self):
-        return self.rss
-
-
-class Rss_link(db.Model):
+class RssLink(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     url = db.Column(db.String(64), unique=True, nullable=False)
-    channel = db.relationship(
-        "Channel", secondary=RssFeeds, backref="subscribedChannels"
-    )
+    channel = db.relationship("Channel", secondary=RssFeeds, backref="feeds")
 
-    guid = db.Column(db.Integer, nullable=True)
+    guid = db.Column(db.Integer, nullable=False, default=0)
 
     def getChannel(self):
         return self.channel

@@ -3,54 +3,37 @@ import feedparser, threading, time
 from flask import render_template, request, redirect, url_for
 
 from Intectainment import app, db
-import Intectainment.datamodels as dbm
+from Intectainment.datamodels import Channel, RssLink, Post
 from Intectainment.webpages import gui
 from Intectainment.util import moderator_required
 
 
-@gui.route("/rss/new", methods=["GET", "POST"])
-@moderator_required
-def newRss():
-    if request.method == "POST":
-        name, rss_url = request.form.get("name"), request.form.get("rss-url")
+def createRssLink(rss_url, channel):
+    if feed := RssLink.query.filter_by(url=rss_url).first():
+        feed.channel.append(channel)
+    else:
+        # last three entries will be shown
+        parsedFeed = feedparser.parse(rss_url)
 
-        if name:
-            if not dbm.Channel.query.filter_by(name=name).first():
-                channel = dbm.Channel(
-                    name=name,
-                    owner=dbm.User.getCurrentUser().username,
-                )
-                db.session.add(channel)
-                db.session.commit()
-            else:
-                return render_template(
-                    "main/channel/channelCreation.html", error="Kanal existiert schon"
-                )
+        index = min(3, len(parsedFeed["entries"]) - 1)
+        if index >= 0:
+            lastGuid = parsedFeed["entries"][index]["guid"]
+        else:
+            lastGuid = 0
+        feed = RssLink(url=rss_url, guid=lastGuid)
+        feed.channel.append(channel)
 
-        if rss_url:
-            if dbm.Rss_link.query.filter_by(url=rss_url).first():
-                dbm.Rss_link.query.filter_by(url=rss_url).channel.append(
-                    dbm.Channel.query.filter_by(name=name).first()
-                )
-            else:
-                # last three entries will be shown
-                parsedFeed = feedparser.parse(rss_url)
-                lastGuid = parsedFeed["entries"][3]["guid"]
+        db.session.add(feed)
+        db.session.commit()
 
-                feed = dbm.Rss_link(url=rss_url, guid=lastGuid)
-                feed.channel.append(dbm.Channel.query.filter_by(name=name).first())
+        update_rss()
 
-                db.session.add(feed)
-                db.session.commit()
-
-            update_rss()
-            return redirect(url_for("gui.channelView", channel=name))
-
-    return render_template("main/channel/rssCreation.html")
+        return feed
+    return None
 
 
 def update_rss():
-    for feed in dbm.Rss_link.query.all():
+    for feed in RssLink.query.all():
         url = feed.url
 
         parsedFeed = feedparser.parse(url)
@@ -65,10 +48,9 @@ def update_rss():
             continue
         feed.guid = parsedFeed["entries"][0]["guid"]
         for i in range(readFeed, 0, -1):
+            if i >= len(parsedFeed["entries"]):
+                continue
             entry = parsedFeed["entries"][i]
-
-            if entry == None:
-                break
 
             pubDate = "Veröffentlichung: " + entry.published + "  \n"
 
@@ -80,7 +62,7 @@ def update_rss():
 
             for channel in feed.getChannel():
                 # adding post
-                post = dbm.Post(channel_id=channel.id, owner=entry["author"])
+                post = Post(channel_id=channel.id, owner=entry["author"])
                 db.session.add(post)
                 db.session.commit()
 

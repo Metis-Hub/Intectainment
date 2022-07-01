@@ -17,32 +17,29 @@ Description: Displays channel details
 
 <div class="channelsettings-body">
     <div class="settings-categories">
-        <div class="categories">Kategorien: </div>
-        <div class="text-right">{% if channel.categories | length > 0 %}
-            {%for cat in channel.categories %}
+        {% if user.permission >= user.PERMISSION.MODERATOR %}
+        <div class="add-categories">
+            <form method="POST" class="input-group mb-3 w-auto shadow">
+                <input class="form-control w-auto" placeholder="RSS-Link" name="rssLink" />
+                <input class="btn btn-outline-primary" type="submit" name="addRss" value="Hinzufügen" />
+            </form>
+        </div>
+        
+        <div class="categories">RSS-Feeds: </div>
+        <div class="text-right">{% if channel.feeds | length > 0 %}
+            {%for feed in channel.feeds %}
             <form method="POST">
-                {{cat.name}}
-                <input class="btn btn-outline-danger btn-sm list-margin shadow" type="submit" name="deleteCategory"
+                {{feed.url}}
+                <input class="btn btn-outline-danger btn-sm list-margin shadow" type="submit" name="remRss"
                     value="Löschen" />
-                <input type="hidden" name="category" value="{{cat.name}}" />
+                <input type="hidden" name="rssLink" value="{{feed.url}}" />
             </form>
             {%endfor%}
             {%else%}
             keine
             {%endif%}
         </div>
-
-        <div class="add-categories">
-            <form method="POST" class="input-group mb-3 w-auto shadow">
-
-                <input class="form-control w-auto" list="categories" placeholder="Kategorie" name="category" />
-                <datalist id="categories">
-                    {% for cat in categories %}<option class="dropdown-item" value="{{cat.name}}">{% endfor %}
-                </datalist>
-                <input class="btn btn-outline-primary" type="submit" name="addCategory" value="Hinzufügen" />
-
-            </form>
-        </div>
+        {% endif %}
     </div>
     <hr />
 
