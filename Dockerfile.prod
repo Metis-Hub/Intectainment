@@ -16,9 +16,8 @@ COPY . .
 
 RUN mv deploy/* .
 RUN mv nginx.conf /etc/nginx
-RUN chmod +x ./start.sh
 
 EXPOSE 80
 
 
-CMD ["./start.sh"]
+CMD ["bash", "./start.sh"]
