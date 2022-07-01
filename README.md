@@ -19,50 +19,58 @@ Intectainment soll den Austausch zwischen Mitarbeitern in einer Firma unterstüt
 
 ## Deployment
 ### Anforderungen
-Intectainment benötigt eine `SQL-Engine` (z. B. sqlite3 oder MySQL) sowie eine Python Runtime (getestet auf `Python 3.10`).
+Intectainment benötigt eine `SQL-Datenbankanbindung`, eine Python Runtime (getestet auf `Python 3.10`) sowie einen `LDAP-Server` zur Nutzerauthentifizierung.
 
-### Installation der benötigten Python Frameworks und Bibliotheken:
+### Lokales Aufsetzten für Development
+1. Installieren der Python-Bibliotheken
 ```
-pip install -r requirements.txt
+pip install -r requirements-dev.txt
 ```
-_siehe auch Umsetzung - Libraries und Frameworks_
+2. Setzen der Umbegungsvariablen (siehe [Konfiguration](#konfiguration))
 
-### Erste Ausführung/Initialisierung:
-```
-python run.py --init
-```
-
-Dadurch wird eine Konfigurationsdatei `Intectainment/config.conf` erstellt. 
-In dieser sollte wenigstens der Database-URI Parameter angepasst werden.
-Wurde die Config angepasst, kann durch das Pressen einer beliebigen Taste die Initialisierung fortgesetzt werden.
-```
-[Server]
-server = localhost
-port = 3000
-secretKey = [OWN KEY]
-
-
-[Database]
-URI = [YOUR DATABASEURI]
-```
-#### Standard-Nutzer
-Beim Initialisieren wird ein Nutzer `Admin` mit dem Passwort `intectainment` hinzugefügt, welcher Administrationsberechtigungen hat. Es wird empfohlen das Kennwort und ggf. auch den Nutzernamen später zu ändern.
-
-
-#### Database-URI-Schemata:
-* MySQL: `mysql+pymysql://[user]:[password]@[host]/[database]`
-* sqlite3: `sqlite:///[path]/[file].db`
-
-Je nach verwendeter Datenbank-Engine können für die Installation zusätzliche Module nötig sein.
-
-#### Einfügung eines Testdatensatzes
-Im Administrationsinterface, welches sich über die Home-Leiste erreichen lässt, gibt es unter dem Reiter "Starthilfe" die Möglichkeit, einen Standard-Datensatz einzufügen, welcher einige Kanäle, Kategorien, Posts und Nutzer beinhaltet.
-Diese Option bietet sich an, wenn Sie Ihr lokales System auf Funktionstüchtigkeit überprüfen wollen. 
-
-### Starten des Servers
+3. Zum starten folgenden Befehl ausführen:
+   - beim erstmaligen Ausführen wird die Datenbank aufgesetzt
 ```
 python run.py
 ```
+
+Für ein richtiges Deployment sollte nicht der flaskinterne Webserver, sondern das Webserverinterface [uWSGI](https://flask.palletsprojects.com/en/2.0.x/deploying/uwsgi/) verwendet werden. Eine Beispielimplementation mit [NGINX](https://www.nginx.com/) ist auch in der [Production Dockerfile](Dockerfile.prod) einzusehen.
+
+
+### Aufsetzen per Docker
+```
+docker build -f "Dockerfile.prod" -t intectainment:latest .
+docker run -p 80:80 --env INTECTAINMENT_LDAP_SERVER=ldap://localhost -d intectainment
+```
+
+### Aufsetzen mit docker-compose
+Bearbeite die Enstellungen in der [docker compose](docker-compose.yaml)-Datei. In der Standardeinstellung wird ein Intectainment-Server sowohl als auch ein LDAP-Server mit Admin-Panel.
+```
+docker-compose up
+```
+
+## Konfiguration
+Die Einstellungen können sowohl durch systemweite Umgebungsvariablen als auch in der [.env](.env)-Datei festgelegt werden. Existiert eine systemweite Umgebungsvariable so überschreibt diese den Wert welcher in der .env-Datei festgelegt wird.
+
+
+|Name|Beschreibung|Default Wert|
+|----|------------|------------|
+|INTECTAINMENT_DB_URI|Die Database-URI dient zur Verbindung zur Datenbank. Für Kompatibilität siehe auch [SqlAlchemy-URIs](https://docs.sqlalchemy.org/en/14/core/engines.html)|sqlite:///content/database.db|
+|INTECTAINMENT_SECRET|Flask verwendet diesen Wert zur Verschlüsselung von Sessions o.ä. Sollte auf jeden Fall geheim beiben||
+|INTECTAINMENT_LDAP_SERVER|URL für den LDAP-Server zur Nutzerauthentifizierung|
+|INTECTAINMENT_LDAP_ROOT||dc=intecsoft,dc=de|
+|INTECTAINMENT_LDAP_USER_DN||ou=users|
+|INTECTAINMENT_LDAP_GROUP_DN||ou=groups|
+|INTECTAINMENT_LDAP_USER_ID||cn|
+|INTECTAINMENT_LDAP_GROUP_ID||cn|
+|INTECTAINMENT_LDAP_GROUP_OBJ_CLASS||posixGroup|
+|INTECTAINMENT_LDAP_GROUP_MEMBER_ATTR||memberUid|
+|INTECTAINMENT_LDAP_PERMISSIONS|Ein python dict welches einen LDAP-Gruppen-Namen zu einem Permission-Level mappt|{'user': 10, 'moderator': 100, 'admin': 255}|
+|INTECTAINMENT_LDAP_ELEVATED_USER|User-DN welche zur Berechtigungs-Bestimmung benötigt wird||
+|INTECTAINMENT_LDAP_ELEVATED_PWD|Passwort für den elevated user||
+
+## Einfügung eines Testdatensatzes
+Durch das Ausführen der [Example-Content-Datei](exampleDbContent.py) werden einige Beispieldatensätze eingefügt die zur Demonstration des Projektes verwendet werden können.
 
 ## Umsetzung
 ### Libraries und Frameworks
@@ -70,14 +78,11 @@ Die Backend-Verwaltung wird mithilfe des Frameworks [Flask](https://flask.pallet
 Flask ermöglicht das dynamische Erstellen von Websites und das Abrufen/Eintragen von Informationen aus bzw. in einer Datenbank mit Nutzung von Python-Code. 
 Wir haben uns für die Nutzung des Frameworks entschieden, da es das Anzeigen von gleichförmigen, aber unterschiedlichen Daten (also z. B. Posts, Kanäle und Dashboards, welche alle der gleichen Struktur folgen, jedoch trotzdem verschiedene Eigenschaften haben) deutlich vereinfacht.
 
-Zum Verschlüsseln von Passwörtern wurde die [bcrypt-Library](https://pypi.org/project/bcrypt/) genutzt.
+Zur Nutzerauthentifizierung und Berechtigungsbestimmung verwenden wir LDAP. 
 
 Das Frontend basiert hauptsächlich auf dem Framework [Bootstrap 5](https://getbootstrap.com/docs/5.0/getting-started/introduction/).
 
-Die Übersetzung von Markdown in HTML wurde mit dem Converter [Showdown](http://showdownjs.com/) umgesetzt. 
-Wir haben uns für einen in Javascript geschriebenen Converter entschieden, da der Server somit nur für das Speichern und Abrufen von Posts zuständig ist und die Markdown-zu-HTML-Konvertierung auf den Client ausgelagert wird. Dieser Aspekt ist besonders wichtig, da das Ergebnis der Konvertierung bereits beim Schreiben von Posts angezeigt werden soll. 
-Die Nutzung von Showdown soll nicht nur dabei helfen, den Server zu entlasten, sondern auch dabei, die Latenz zu verringern.
-
+Die live-Übersetzung von Markdown in HTML wurde mit dem Converter [Showdown](http://showdownjs.com/) umgesetzt. 
 ### Datenbankarchitektur
 Die wichtigsten Daten von Intectainment, welche die Grundlage für das System bilden, sind unten dargestellt.
 ![DatabaseModel.PNG](https://raw.githubusercontent.com/Metis-Hub/Intectainment/main/docs/DatabaseModel.PNG)
@@ -121,24 +126,11 @@ Auch nach der Veröffentlichung kann der User, welcher den Post erstellt hat, di
 
 #### Redaktion und Moderation
 Um die Verwaltung des Systems kümmert sich mit den Administratoren auch eine Redaktion. Diese ist die einzige Instanz, welche - neben dem entsprechenden Nutzer - Posts und Kanäle bearbeiten kann. 
-
-## Probleme
-Das Projekt weist keine schwerwiegenden Probleme auf. Auch wenn die grundlegende Funktionalität gewährleistet ist, konnten nicht alle im Pflichtenheft festgeschriebenen Features umgesetzt werden.
-Insbesondere die Erstellung indivudeller Dashboards mit zugeordnenten Kacheln wurde nicht realisiert; da diese Funktion für Nutzer einen hohen Zeit- und Arbeitsaufwand bedeutet hätte, haben wir uns dafür entschieden, statt der Inhalte festgelegter Kanäle die jeweils neuesten Post aller abonnierten Kanäle anzuzeigen.
-Auch Nutzerprofile bzw. Kanalbeschreibungen konnten nicht umgesetzt werden.
-
 ## Erweiterungsmöglichkeiten
 
 Intectainment stellt als soziale Plattform ein Projekt mit vielen verschiedenen **Erweiterungsmöglichkeiten** dar, weswegen im folgenden Abschnitt nur einige, besonders bedeutsame beleuchtet werden können.
-
-### Nutzerprofile
-Nutzerprofile enthalten momentan nur die essentielle Information des Namen des entsprechenden Users. Eine mögliche Erweiterung wäre die Personalisierung von Profilen durch Beschreibungen, Verlinkungen zu anderen Profilen und ähnlichem.
 
 ### Nutzung auf Displays
 Als Sammelpunkt für Informationen über und Geschehnisse im Unternehmen wäre auch die Nutzung von Intectainment auf Bildschirmen (z. B. im Eingangsbereich oder auf den Gängen der jeweiligen Firma) ohne Nutzerinput denkbar. Ein eigens für diese Aufgabe eingerichtetes Dashboard würde die aktuell wichtigsten Informationen bereitstellen. 
 Diese Bildschirme könnten für verschiedene Nutzergruppen angepasst werden: während neue Kunden sich einen Überblick über das Unternehmen verschaffen wollen, sind für Entwickler Updates von Projekten oder Änderungen im Zeitplan eher von Bedeutung.
 Die Positionierung der Displays im Gebäude wäre dann von der entsprechenden Zielgruppe abhängig.
-
-### Nutzung externer Ressourcen
-Neben den von Usern geschriebenen Posts wäre auch die Nutzung externer Quellen möglich: statt für jedes Update einen Post zu verfassen, könnten Kanäle auch die Möglichkeit haben, von z. B. GitHub bereitgestellte Informationen (im Bezug auf die Aktivität, die letzten Updates, die mitarbeitenden Personen usw.) zu nutzen.
-Die nutzbaren Ressourcen hängen hierbei vom jeweiligen Unternehmen ab: wenn vorhanden, ist die Nutzung von Social-Media-Kanälen möglich; auch eine Anbindung an die offizielle Website der Firma wäre denkbar.
