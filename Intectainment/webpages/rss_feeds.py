@@ -18,7 +18,7 @@ def newRss():
             if not dbm.Channel.query.filter_by(name=name).first():
                 channel = dbm.Channel(
                     name=name,
-                    owner="RSS-Feed",
+                    owner=dbm.User.getCurrentUser().username,
                 )
                 db.session.add(channel)
                 db.session.commit()
@@ -42,8 +42,9 @@ def newRss():
 
                 db.session.add(feed)
                 db.session.commit()
-            return redirect(url_for("gui.channelView", channel=name))
+
             update_rss()
+            return redirect(url_for("gui.channelView", channel=name))
 
     return render_template("main/channel/rssCreation.html")
 

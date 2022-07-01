@@ -48,7 +48,7 @@ class Channel(db.Model):
     posts = db.relationship("Post", backref="channel")
 
     canModify = lambda self, user: user and (
-        user.permission >= User.PERMISSION.MODERATOR or user.id == self.owner.id
+        user.permission >= User.PERMISSION.MODERATOR or user.username == self.owner
     )
 
     def getProfileImagePath(self):
@@ -109,7 +109,7 @@ class Post(db.Model):
                 pass
 
     canModify = lambda self, user: user and (
-        user.permission >= User.PERMISSION.MODERATOR or user.id == self.owner.id
+        user.permission >= User.PERMISSION.MODERATOR or user.username == self.owner
     )
 
     @staticmethod

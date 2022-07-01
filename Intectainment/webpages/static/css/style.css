@@ -1,12 +1,26 @@
 @import url('//cdn.jsdelivr.net/npm/bootstrap-icons@1.6.1/font/bootstrap-icons.css');
 
 .profile {
-    width: 200px;
-    height: 200px;
+    width: 20vw;
+    height: 25vh;
     overflow: hidden;
     border-radius: 200px;
     -moz-border-radius: 200px;
 	-webkit-border-radius: 200px;
+}
+
+.profile2 {
+    width: 20vw;
+    height: 25vh;
+    overflow: hidden;
+    border-radius: 200px;
+    -moz-border-radius: 200px;
+	-webkit-border-radius: 200px;
+    margin-bottom: 1vh;
+}
+
+.profile-canvas {
+    margin-top: 2vh;
 }
 
 .channel-profile {
@@ -43,12 +57,14 @@
 
 .bottom-sidebar-user {
     background: rgb(1, 66, 64);
-    margin-top: 25vh;
-    
+    position: absolute;
+    bottom: 5vh;
 }
 .bottom-sidebar-nouser {
     background: rgb(1, 66, 64);
-    margin-top: 60vh;
+    position: absolute;
+    bottom: 6vh;
+    width: 14vw;
 }
 .sidebar-content {
 	height: 100vh;
@@ -127,7 +143,6 @@
 	justify-content: center;
 	height: 88vh;
     background: white;
-    width: 86vw;
     background: rgba(230, 230, 230, 0.2);
 }
 .search {
@@ -241,7 +256,8 @@
 }
 
 .nopostcontainer {
-    height: 78vh;
+    height: 76vh;
+    width: auto;
     text-align: center;
     display: flex;
     justify-content: center;
@@ -262,7 +278,7 @@
 }
 
 .channelinfo {
-    height: 22vh;
+    height: 24vh;
     text-align: center;
     display: flex;
     width: 86vw;
@@ -400,16 +416,13 @@ a {
 }
 
 .settings-categories {
-    border-bottom: 1px solid darkgray;
     display: flex;
     padding-bottom: 2vh;
-    width: 100vw;
 }
 
 .settings-description {
-    margin-top: 2vh;
-    padding-bottom: 1vh;
-    border-bottom: 1px solid darkgray;
+    margin-top: 3vh;
+    margin-bottom: 3vh;
 }
 
 .text-right {
@@ -441,9 +454,8 @@ a {
 }
 
 .settings-picture {
-    padding-top: 1vh;
-    border-top: 1px solid darkgray;
-    display: inline-block
+    display: flex;
+    height: 25vh;
 }
 
 .channelinfo-buttons {
@@ -478,7 +490,7 @@ a {
 
 .favourite-posts {
     overflow-y: auto;
-    width: 86vw;
+    
     max-height: 100vh;
     scrollbar-width: none;
     -ms-overflow-style: none;
@@ -709,7 +721,7 @@ a {
 }
 
 .channelview-wrapper {
-    max-height: 78vh;
+    max-height: 76vh;
     scrollbar-width: none;
     -ms-overflow-style: none;
     overflow-y: auto;
@@ -763,4 +775,101 @@ a {
 
 .button-margin {
     margin-right: 3vw;
+}
+
+.top-sidebar-text {
+    height: fit-content;
+    position: relative;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    word-wrap: break-word;
+    max-width: 14vw;
+}
+
+.showpost-head {
+    height: 12vh;
+    width: 100vw;
+    background: rgba(0, 208, 255, 0.1);
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    display: flex;
+    align-items: center;
+}
+
+.showpost-body {
+    height: 88vh;
+    width: 100vw;
+    padding-left: 5vw;
+    padding-right: 5vw;
+    text-align: start;
+    padding-top: 3vh;
+}
+
+.showpost-button {
+    height: fit-content;
+}
+
+.showpost-head-button {
+    margin-left: 7vw;
+}
+
+.showpost-head-info {
+    margin-left: 5vw;
+    font-weight: bold;
+}
+
+.channelcreation-head {
+    height: 12vh;
+    width: 100vw;
+    background: rgba(0, 208, 255, 0.1);
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    display: flex;
+    align-items: center;
+}
+
+.channelcreation-body {
+    margin-top: 3vh;
+    align-items: center;
+    align-content: center;
+    padding-left: 25vw;
+    padding-right: 25vw;
+}
+
+.channelcreation-mid {
+    margin-left: 30vw;
+}
+
+.channelsettings-head {
+    height: 12vh;
+    width: 100vw;
+    background: rgba(0, 208, 255, 0.1);
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    display: flex;
+    align-items: center;
+}
+
+.channelsettings-body {
+    margin-top: 3vh;
+    align-items: center;
+    align-content: center;
+    padding-left: 25vw;
+    padding-right: 25vw;
+}
+
+.change-picture {
+    height: fit-content;
+    position: relative;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+.channelsettings-mid {
+    margin-left: 35vw;
 }
