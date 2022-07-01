@@ -45,7 +45,9 @@ class User:
                 password,
                 auto_bind=True,
             )
-        except LDAPBindError and LDAPSocketOpenError:
+        except LDAPBindError:
+            return False
+        except LDAPSocketOpenError:
             return False
 
         user = User(username)
@@ -196,7 +198,9 @@ def loadPermission(uid: str) -> int:
                 str(entry.__getattribute__(os.getenv("INTECTAINMENT_LDAP_GROUP_ID")))
             ]
         return permission
-    except LDAPBindError and LDAPSocketOpenError:
+    except LDAPBindError:
+        return User.PERMISSION.GUEST
+    except LDAPSocketOpenError:
         return User.PERMISSION.GUEST
 
 
