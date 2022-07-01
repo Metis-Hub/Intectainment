@@ -13,9 +13,7 @@ WORKDIR /Intectainment
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 
-
 COPY . .
-RUN python setup.py
 
 RUN mv deploy/* .
 RUN mv nginx.conf /etc/nginx
