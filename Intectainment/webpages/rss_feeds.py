@@ -62,7 +62,7 @@ def update_rss():
 
             for channel in feed.getChannel():
                 # adding post
-                post = Post(channel_id=channel.id, owner=entry["author"])
+                post = Post(channel_id=channel.id, owner=f'#{entry["author"]}')
                 db.session.add(post)
                 db.session.commit()
 
