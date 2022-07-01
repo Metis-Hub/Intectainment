@@ -21,13 +21,16 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
 
-try:
-    db.engine.execute("SELECT 1")
-except OperationalError:
-    print(
-        "Could not connect to database!\nPlease make sure you entered the correct database-URI"
-    )
-    exit()
+@app.before_first_request
+def db_test():
+    try:
+        db.engine.execute("SELECT 1")
+    except OperationalError:
+        print(
+            "Could not connect to database!\nPlease make sure you entered the correct database-URI"
+        )
+        exit()
+
 
 # load webpages
 import Intectainment.webpages

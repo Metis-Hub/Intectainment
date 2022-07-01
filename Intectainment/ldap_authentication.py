@@ -1,4 +1,4 @@
-from Intectainment import db
+from Intectainment import app, db
 import Intectainment.datamodels as dbm
 
 from flask import session
@@ -210,6 +210,8 @@ def checkUsers():
     time.sleep(60 * 1)
 
 
-afkCheckThread = threading.Thread(name="afkChecker", target=checkUsers)
-afkCheckThread.daemon = True
-afkCheckThread.start()
+@app.before_first_request
+def startup():
+    afkCheckThread = threading.Thread(name="afkChecker", target=checkUsers)
+    afkCheckThread.daemon = True
+    afkCheckThread.start()

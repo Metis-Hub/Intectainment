@@ -2,7 +2,7 @@ import feedparser, threading, time
 
 from flask import render_template, request, redirect, url_for
 
-from Intectainment import db
+from Intectainment import app, db
 import Intectainment.datamodels as dbm
 from Intectainment.webpages import gui
 from Intectainment.util import moderator_required
@@ -92,6 +92,8 @@ def timed_rss_update():
     time.sleep(60 * 60 * 12)
 
 
-rssThread = threading.Thread(name="rssQuery", target=timed_rss_update)
-rssThread.daemon = True
-rssThread.start()
+@app.before_first_request
+def startup():
+    rssThread = threading.Thread(name="rssQuery", target=timed_rss_update)
+    rssThread.daemon = True
+    rssThread.start()
