@@ -5,15 +5,6 @@ import os.path, datetime
 from flask import session, url_for
 
 
-ChannelCategory = db.Table(
-    "ChannelCategory",
-    db.Column(
-        "category_id", db.Integer, db.ForeignKey("category.id"), primary_key=True
-    ),
-    db.Column("channel_id", db.Integer, db.ForeignKey("channel.id"), primary_key=True),
-)
-
-
 class Subscription(db.Model):
     user = db.Column(db.String(80), primary_key=True)
     channel_id = db.Column(db.Integer, db.ForeignKey("channel.id"), primary_key=True)
@@ -42,9 +33,6 @@ class Channel(db.Model):
     img_yPos = db.Column(db.Integer, nullable=False, default=0)
     img_zoom = db.Column(db.Integer, nullable=False, default=5500)
 
-    categories = db.relationship(
-        "Category", secondary=ChannelCategory, backref="channels"
-    )
     posts = db.relationship("Post", backref="channel")
 
     canModify = lambda self, user: user and (
@@ -138,14 +126,6 @@ class Post(db.Model):
             os.remove(source_path)
         os.remove(self.getFilePath())
         db.session.delete(self)
-
-
-class Category(db.Model):
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    name = db.Column(db.String(80), unique=True, nullable=False)
-
-    def __repr__(self):
-        return self.name
 
 
 class RSS(db.Model):

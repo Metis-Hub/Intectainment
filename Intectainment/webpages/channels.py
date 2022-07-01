@@ -1,5 +1,5 @@
 from Intectainment import app, db
-from Intectainment.datamodels import Channel, Category, Post, User
+from Intectainment.datamodels import Channel, Post, User
 from Intectainment.webpages import gui
 from Intectainment.util import login_required
 from Intectainment.images import move_images
@@ -90,21 +90,10 @@ def channelSettings(channel):
         return redirect(url_for("gui.channelView", channel=channel.name))
 
     if request.method == "POST":
-        if request.form.get("addCategory") and request.form.get("category"):
-            name = request.form.get("category")
-            category = Category.query.filter_by(name=name).first()
-            if not category:
-                category = Category(name=name)
-                db.session.add(category)
-
-            if category not in channel.categories:
-                channel.categories.append(category)
-                db.session.commit()
-        elif request.form.get("deleteCategory") and request.form.get("category"):
-            channel.categories.remove(
-                Category.query.filter_by(name=request.form.get("category")).first()
-            )
-            db.session.commit()
+        if request.form.get("addRss") and request.form.get("rssLink"):
+            pass
+        elif request.form.get("remRss") and request.form.get("rssLink"):
+            pass
         elif request.form.get("changeDescription"):
             channel.description = request.form.get("description", "")
             db.session.commit()
@@ -112,7 +101,6 @@ def channelSettings(channel):
     return render_template(
         "main/channel/channelSettings.html",
         channel=channel,
-        categories=Category.query.all(),
     )
 
 
@@ -195,50 +183,3 @@ def postEdit(postid):
         post=post,
         canModify=post.canModify(User.getCurrentUser()),
     )
-
-
-##### Kategorien #####
-@gui.route("/categories", methods=["GET"])
-def viewCategories():
-    page_num = 1
-    try:
-        page_num = int(request.args.get("page"))
-    except (ValueError, TypeError):
-        pass
-
-    categories = Category.query.paginate(per_page=20, page=page_num, error_out=False)
-    return render_template("main/category/categoryList.html", categories=categories)
-
-
-@gui.route("/categories/new", methods=["GET", "POST"])
-@login_required
-def createCategory():
-    if request.method == "GET":
-        return render_template("main/category/categoryCreation.html")
-    elif request.method == "POST":
-        name = request.form.get("name")
-        if name:
-            if Category.query.filter_by(name=name).count() > 0:
-                # exists allready
-                return render_template(
-                    "main/category/categoryCreation.html",
-                    error="exists",
-                    message="Die Kategorie existiert bereits",
-                )
-                pass
-            else:
-                category = Category(name=name)
-                db.session.add(category)
-                db.session.commit()
-
-                return render_template(
-                    "main/category/categoryCreation.html",
-                    message="Kategorie erfolgreich erstellt",
-                )
-                pass
-        else:
-            return render_template(
-                "main/category/categoryCreation.html",
-                error="noargument",
-                message="Name als Argument benötigt",
-            )
