@@ -19,9 +19,9 @@ RUN python setup.py
 
 RUN mv deploy/* .
 RUN mv nginx.conf /etc/nginx
-
-# RUN service nginx enable
+RUN chmod +x ./start.sh
 
 EXPOSE 80
 
-CMD ["service", "nginx", "start", "&&", "uwsgi", "uwsgi.ini"]
+
+CMD ["./start.sh"]
