@@ -26,7 +26,7 @@ Intectainment benötigt eine `SQL-Datenbankanbindung`, eine Python Runtime (gete
 ```
 pip install -r requirements-dev.txt
 ```
-2. Setzen der Umbegungsvariablen (siehe [Konfiguration](#konfiguration))
+2. Setzen der Umgebungsvariablen (siehe [Konfiguration](#konfiguration))
 
 3. Zum starten folgenden Befehl ausführen:
    - beim erstmaligen Ausführen wird die Datenbank aufgesetzt
@@ -42,9 +42,13 @@ Für ein richtiges Deployment sollte nicht der flaskinterne Webserver, sondern d
 docker build -f "Dockerfile.prod" -t intectainment:latest .
 docker run -p 80:80 --env INTECTAINMENT_LDAP_SERVER=ldap://localhost -d intectainment
 ```
+Für die volle Liste von env-Parametern siehe auch [Konfiguration](#konfiguration).
+Um Posts und Bilder dauerhaft zu speichern muss der Pfad `/Intectainment/Intectainment/content` als [Volume](https://docs.docker.com/storage/volumes/) festgelegt werden.
+
 
 ### Aufsetzen mit docker-compose
-Bearbeite die Enstellungen in der [docker compose](docker-compose.yaml)-Datei. In der Standardeinstellung wird ein Intectainment-Server sowohl als auch ein LDAP-Server mit Admin-Panel.
+In der Standardeinstellung wird ein Intectainment-Server sowohl als auch ein LDAP-Server mit Admin-Panel aufgesetzt.
+Um die Installation anzupassen müssen einfach die Enstellungen in der [docker compose](docker-compose.yaml)-Datei bearbeitet werden.
 ```
 docker-compose up
 ```
@@ -58,13 +62,13 @@ Die Einstellungen können sowohl durch systemweite Umgebungsvariablen als auch i
 |INTECTAINMENT_DB_URI|Die Database-URI dient zur Verbindung zur Datenbank. Für Kompatibilität siehe auch [SqlAlchemy-URIs](https://docs.sqlalchemy.org/en/14/core/engines.html)|sqlite:///content/database.db|
 |INTECTAINMENT_SECRET|Flask verwendet diesen Wert zur Verschlüsselung von Sessions o.ä. Sollte auf jeden Fall geheim beiben||
 |INTECTAINMENT_LDAP_SERVER|URL für den LDAP-Server zur Nutzerauthentifizierung|
-|INTECTAINMENT_LDAP_ROOT||dc=intecsoft,dc=de|
-|INTECTAINMENT_LDAP_USER_DN||ou=users|
-|INTECTAINMENT_LDAP_GROUP_DN||ou=groups|
-|INTECTAINMENT_LDAP_USER_ID||cn|
-|INTECTAINMENT_LDAP_GROUP_ID||cn|
-|INTECTAINMENT_LDAP_GROUP_OBJ_CLASS||posixGroup|
-|INTECTAINMENT_LDAP_GROUP_MEMBER_ATTR||memberUid|
+|INTECTAINMENT_LDAP_ROOT|Search Base DN für alle Operationen|dc=intecsoft,dc=de|
+|INTECTAINMENT_LDAP_USER_DN|Search Path für Nutzer|ou=users|
+|INTECTAINMENT_LDAP_GROUP_DN|Search Path für Gruppen|ou=groups|
+|INTECTAINMENT_LDAP_USER_ID|Nutzer RDN-Attribut|cn|
+|INTECTAINMENT_LDAP_GROUP_ID|Gruppen RDN-Attribut|cn|
+|INTECTAINMENT_LDAP_GROUP_OBJ_CLASS|object-class der Gruppen zur Nutzerauthentifizierung|posixGroup|
+|INTECTAINMENT_LDAP_GROUP_MEMBER_ATTR|Attribut einer Gruppe welches die zugewiesenen Nutzer beinhaltet|memberUid|
 |INTECTAINMENT_LDAP_PERMISSIONS|Ein python dict welches einen LDAP-Gruppen-Namen zu einem Permission-Level mappt|{'user': 10, 'moderator': 100, 'admin': 255}|
 |INTECTAINMENT_LDAP_ELEVATED_USER|User-DN welche zur Berechtigungs-Bestimmung benötigt wird||
 |INTECTAINMENT_LDAP_ELEVATED_PWD|Passwort für den elevated user||
@@ -85,21 +89,13 @@ Das Frontend basiert hauptsächlich auf dem Framework [Bootstrap 5](https://getb
 Die live-Übersetzung von Markdown in HTML wurde mit dem Converter [Showdown](http://showdownjs.com/) umgesetzt. 
 ### Datenbankarchitektur
 Die wichtigsten Daten von Intectainment, welche die Grundlage für das System bilden, sind unten dargestellt.
-![DatabaseModel.PNG](https://raw.githubusercontent.com/Metis-Hub/Intectainment/main/docs/DatabaseModel.PNG)
+![DatabaseModel.PNG](docs/img/DatabaseModel.PNG)
 *Abb. 1: Vereinfachtes Datenbankmodell von Intectainment*
 
 Alle essentiellen Funktionen - Nutzerprofile, Kanäle und Posts sowie deren Erweiterungen (namentlich Abonnements, Kategorien und das Merken von Veröffentlichungen) - werden so wie hier dargestellt realisiert.
 Die Darstellung umfasst jedoch nur die Grundlagen des Backend-Systems und besitzt somit keinen Anspruch auf Vollständigkeit.
 
 ### Wichtige Abläufe
-#### Erstellung von Nutzern
-![Benutzerkonfiguration.PNG](https://raw.githubusercontent.com/Metis-Hub/Intectainment/main/docs/img/Benutzerkonfiguration.png)
-*Abb. 2: Erstellen von Nutzern mithilfe des Admin-Interfaces*
-
-Die verschiedenen User, die die lokale Instanz von Intectainment nutzen, müssen von dem Administrator des Netzwerk in einem eigenen Interface erstellt werden. 
-Es gibt keine Möglichkeit, nicht vom Administrator genehmigte Accounts zu erstellen. Auch wenn durch diese Regelung die erste Einrichtung des Systems etwas anspruchsvoller macht, kann so verhindert werden, dass Unbefugte Zugriff auf das Netzwerk erlangen.
-Dem Nutzer ist ein Berechtigungsleven in Form einer Zahl zugeordnet. 0 - Guest, 10 - User, 100 - Moderator, 255 - Admin. Dieser Parameter entscheidet über die Zugriffsrechte des Nutzers und kann in der Nutzereinstellung verändert werden.
-
 #### Erstellen von Kanälen
 
 Jeder Nutzer kann Kanäle erstellen, die gemeinschaftlich von allen Mitarbeitern des Unternehmens genutzt und betrieben werden. Den Kanälen kann bei ihrer Erstellung eine Kategorie zugewiesen werden (z. B. C++, IoT, Web-Development usw.), die die Suche nach und das Entdecken von Kanälen erleichtert.
@@ -107,7 +103,7 @@ Wie bereits erwähnt, werden alle Kanäle nicht von einzelnen Usern, sondern von
 
 #### Kanalansicht und -navigation
 
-![Kanalansicht.PNG](https://raw.githubusercontent.com/Metis-Hub/Intectainment/main/docs/img/Kanalansicht.PNG)
+![Kanalansicht.PNG](docs/img/Kanalansicht.PNG)
 *Abb. 3: Beispielansicht eines Kanals inklusive der neuesten Posts*
 
 Wählt man einen Kanal aus, wird eine Vorschau der aktuellsten Posts angezeigt, welche die ersten Zeilen des Textes umfasst. Über die Schaltfläche "Zum Post" lässt sich der Text in voller Länge aufrufen. Dort kann man diesen auch als Favoriten markieren und ggf. bearbeiten.
